@@ -1,5 +1,6 @@
 package test;
 
+import alde.commons.util.window.UtilityJFrame;
 import discord.Discord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,7 +33,7 @@ public class Main {
 
 		if (Properties.IS_FIRST_LAUNCH.getBooleanValue()) {
 
-			JFrame f = new JFrame();
+			UtilityJFrame f = new UtilityJFrame();
 			f.setTitle("Set properties");
 			f.add(Properties.getPropertiesPanel(), BorderLayout.CENTER);
 			Button closeButton = new Button("Close");
@@ -56,6 +57,9 @@ public class Main {
 					run();
 				}
 			});
+
+
+
 
 			f.pack();
 

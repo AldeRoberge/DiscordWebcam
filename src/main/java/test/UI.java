@@ -2,8 +2,11 @@ package test;
 
 import alde.commons.util.window.UtilityJFrame;
 import opencv.CameraPanel;
+import properties.Properties;
 
 import javax.swing.*;
+import javax.swing.event.InternalFrameAdapter;
+import javax.swing.event.InternalFrameEvent;
 import java.awt.*;
 import java.awt.event.*;
 
@@ -28,7 +31,7 @@ public class UI extends UtilityJFrame {
 			}
 		});
 
-		setSize(500, 300);
+		setSize(Properties.WIDTH.getIntValue(), Properties.HEIGHT.getIntValue());
 
 		// Menu
 
@@ -57,30 +60,12 @@ public class UI extends UtilityJFrame {
 
 		desktop = new JDesktopPane();
 
-		int attempt = 0;
-
-		while (true) {
-
-			try {
-				System.out.println("Serialiser : " + cameraListSerializer.get().size());
-
-				for (NetworkCamera n : cameraListSerializer.get()) {
-					addCamera(n);
-				}
-
-				break;
-			} catch (Exception e) {
-				System.out.println("Error with serialization. Deleting the serialization file at " + cameraListSerializer.file + ". Answer : " + cameraListSerializer.file.delete());
-
-				attempt++;
+		try {
+			for (NetworkCamera n : cameraListSerializer.get()) {
+				addCamera(n);
 			}
-
-			if (attempt > 2) {
-				System.out.println("Could not get deserialization to work. Exiting.");
-
-				System.exit(-1);
-			}
-
+		} catch (Exception e) {
+			System.out.println("Error with serialization. Try deleting the serialization file at " + cameraListSerializer.file.getAbsolutePath() + ".");
 		}
 
 		add(desktop);
@@ -88,26 +73,51 @@ public class UI extends UtilityJFrame {
 		setVisible(true);
 	}
 
+	boolean hasChanged = false;
+
 	public void addCamera(NetworkCamera n) {
 
 		CameraPanel panel = new CameraPanel(n);
 
-		JInternalFrame if1 = new JInternalFrame(n.name, true, true, true, true);
-		if1.setSize(300, 300);
-		if1.setLocation(n.x, n.y);
-		if1.setVisible(true);
+		JInternalFrame cameraPanelFrame = new JInternalFrame(n.name, true, true, true, true);
+		cameraPanelFrame.setSize(n.width, n.height);
+		cameraPanelFrame.setLocation(n.x, n.y);
+		cameraPanelFrame.setVisible(true);
 
-		if1.addComponentListener(new ComponentAdapter() {
-			public void componentMoved(ComponentEvent e) {
-				n.x = if1.getX();
-				n.y = if1.getY();
+		cameraPanelFrame.addInternalFrameListener(new InternalFrameAdapter(){
+			public void internalFrameClosing(InternalFrameEvent e) {
+				removeCamera(n);
 			}
 		});
 
-		if1.add(panel, BorderLayout.CENTER);
+		cameraPanelFrame.addComponentListener(new ComponentAdapter() {
+			public void componentMoved(ComponentEvent e) {
+				super.componentMoved(e);
 
-		desktop.add(if1);
+				n.x = cameraPanelFrame.getX();
+				n.y = cameraPanelFrame.getY();
+			}
 
+			@Override
+			public void componentResized(ComponentEvent e) {
+				super.componentResized(e);
+
+				n.height = cameraPanelFrame.getHeight();
+				n.width = cameraPanelFrame.getWidth();
+			}
+		});
+
+		cameraPanelFrame.setFrameIcon(Constants.cameraIcon);
+
+		cameraPanelFrame.add(panel, BorderLayout.CENTER);
+
+		desktop.add(cameraPanelFrame);
+
+	}
+
+	private void removeCamera(NetworkCamera n) {
+		cameraListSerializer.get().remove(n);
+		cameraListSerializer.save();
 	}
 
 	public void saveNewCamera(NetworkCamera n) {
@@ -119,6 +129,12 @@ public class UI extends UtilityJFrame {
 
 		System.out.println("Saving...");
 		cameraListSerializer.save();
+
+		Properties.X.setIntValue(getX());
+		Properties.Y.setIntValue(getY());
+		Properties.WIDTH.setIntValue(getWidth());
+		Properties.HEIGHT.setIntValue(getHeight());
+
 		System.exit(0);
 	}
 

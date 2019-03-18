@@ -7,8 +7,11 @@ public class NetworkCamera implements Serializable {
 	public String name;
 	public String networkAddress;
 
-	public int x;
-	public int y;
+	public int x = 20;
+	public int y = 20;
+
+	public int height = 400;
+	public int width = 400;
 
 	public NetworkCamera(String name, String networkAddress) {
 		this.name = name;
