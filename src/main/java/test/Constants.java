@@ -20,34 +20,45 @@ public class Constants {
 	public static BufferedImage cameraIcon;
 	public static BufferedImage cameraIconGrayScale;
 
-
 	public static BufferedImage loggerIcon;
+
+	public static BufferedImage running;
+	public static BufferedImage waiting;
+	public static BufferedImage stopped;
+
+	public static BufferedImage cameraUnavailable;
 
 	static {
 		try {
 
-			softwareIcon = ImageIO.read(ClassLoader.getSystemResource("softwareIcon.png"));
+			softwareIcon = read("softwareIcon.png", 64);
 
-			gearIcon = ImageIO.read(ClassLoader.getSystemResource("gear.png"));
-			gearIconGrayScale = ImageIO.read(ClassLoader.getSystemResource("gear_bw.png"));
+			gearIcon = read("gear.png", 16);
+			gearIconGrayScale = read("gear_bw.png", 16);
 
-			cameraIcon = ImageIO.read(ClassLoader.getSystemResource("camera.png"));
-			cameraIconGrayScale = ImageIO.read(ClassLoader.getSystemResource("camera_bw.png"));
+			cameraIcon = read("camera.png", 16);
+			cameraIconGrayScale = read("camera_bw.png", 16);
 
-			loggerIcon = ImageIO.read(ClassLoader.getSystemResource("logger.png"));
+			loggerIcon = read("logger.png", 16);
+
+			running = read("status_running.png", 16);
+			waiting = read("status_waiting.png", 16);
+			stopped = read("status_stopped.png", 16);
+
+			cameraUnavailable = read("cameraUnavailable.png");
 
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
-		try {
-			cameraIcon = resize(cameraIcon, 64, 64);
-			gearIcon = resize(gearIcon, 16, 16);
-			softwareIcon = resize(softwareIcon, 64, 64);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+	}
 
+	public static BufferedImage read(String path, int size) throws IOException {
+		return resize(read(path), size, size);
+	}
+
+	public static BufferedImage read(String path) throws IOException {
+		return ImageIO.read(ClassLoader.getSystemResource(path));
 	}
 
 	public static BufferedImage resize(BufferedImage img, int newW, int newH) {

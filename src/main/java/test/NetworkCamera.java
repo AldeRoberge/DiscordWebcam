@@ -18,7 +18,7 @@ public class NetworkCamera implements Serializable {
 	public boolean motionDetection = false;
 	public int threshold = 15; //max = 255
 
-	public boolean publishOnDiscord;
+	public boolean sendOnDiscord;
 
 	public NetworkCamera(String name, String networkAddress) {
 		this.name = name;
@@ -36,30 +36,8 @@ public class NetworkCamera implements Serializable {
 				", width=" + width +
 				", motionDetection=" + motionDetection +
 				", threshold=" + threshold +
-				", publishOnDiscord=" + publishOnDiscord +
+				", sendOnDiscord=" + sendOnDiscord +
 				'}';
 	}
 
-
-	// Allows disabling a re-enabling
-
-
-	public boolean isEnabled = true;
-
-	private boolean cachedMotionDetection = false;
-	private boolean cachedPublishOnDiscord = false;
-
-	public void toggleEnabled() {
-		if (isEnabled) {
-			cachedMotionDetection = motionDetection;
-			cachedPublishOnDiscord = publishOnDiscord;
-
-			isEnabled = false;
-		} else {
-			motionDetection = cachedMotionDetection;
-			publishOnDiscord = cachedPublishOnDiscord;
-
-			isEnabled = true;
-		}
-	}
 }

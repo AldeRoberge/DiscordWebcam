@@ -146,14 +146,14 @@ public class EditCameraUI extends UtilityJFrame {
 		publishOnDiscordPanel.setLayout(new BoxLayout(publishOnDiscordPanel, BoxLayout.X_AXIS));
 
 		JCheckBox chckbxPublishOnDiscord = new JCheckBox("Publish on Discord");
-		chckbxPublishOnDiscord.setSelected(n.publishOnDiscord);
+		chckbxPublishOnDiscord.setSelected(n.sendOnDiscord);
 		chckbxPublishOnDiscord.setHorizontalAlignment(SwingConstants.CENTER);
 		publishOnDiscordPanel.add(chckbxPublishOnDiscord);
 
 		chckbxPublishOnDiscord.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				n.publishOnDiscord = chckbxPublishOnDiscord.isSelected();
+				n.sendOnDiscord = chckbxPublishOnDiscord.isSelected();
 			}
 		});
 

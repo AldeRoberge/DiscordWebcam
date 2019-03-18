@@ -16,9 +16,9 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
-import javax.swing.event.MenuEvent;
-import javax.swing.event.MenuListener;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.image.BufferedImage;
@@ -66,6 +66,9 @@ public class CameraPanel extends JInternalFrame {
 		new CameraPanel(new NetworkCamera("Test camera", "http://192.168.0.107:8080/video"
 		), () -> log.info("On close"));
 	}
+
+	JMenuItem sendOnDiscord;
+	JMenuItem motionDetection;
 
 	public CameraPanel(NetworkCamera n, Runnable onRemove) {
 
@@ -120,66 +123,76 @@ public class CameraPanel extends JInternalFrame {
 
 		setFrameIcon(new ImageIcon(Constants.cameraIcon));
 
-		image = new ImagePanel(new ImageIcon("figs/320x240.gif").getImage());
+		image = new ImagePanel(Constants.cameraUnavailable);
 		setLayout(new BorderLayout());
 		add(image, BorderLayout.CENTER);
 
 		menuBar = new JMenuBar();
 		menuBar.setVisible(false);
 
-		JMenu settings = new JMenu("Settings");
+		JMenuItem settings = new JMenuItem("Settings");
 		settings.setIcon(new ImageIcon(Constants.gearIcon));
 		menuBar.add(settings);
 
-		settings.addMenuListener(new MenuListener() {
+		settings.addActionListener(new ActionListener() {
 			@Override
-			public void menuSelected(MenuEvent e) {
+			public void actionPerformed(ActionEvent e) {
 				log.info("Opening settings");
 				new EditCameraUI(n, new Runnable() {
 					@Override
 					public void run() {
 						setTitle(n.name);
+						updateMotionDetectionIcon(n.motionDetection);
+						updateSendOnDiscordIcon(n.sendOnDiscord);
 					}
 				});
 			}
-
-			@Override
-			public void menuDeselected(MenuEvent e) {
-			}
-
-			@Override
-			public void menuCanceled(MenuEvent e) {
-			}
 		});
 
-		JMenu disable = new JMenu("Disable");
+		// BEGIN MOTION DETECTION TOGGLE //
 
-		disable.addMenuListener(new MenuListener() {
+		motionDetection = new JMenuItem("Detection");
+		motionDetection.addActionListener(new ActionListener() {
 			@Override
-			public void menuSelected(MenuEvent e) {
-				n.toggleEnabled();
-
-				if (n.isEnabled) {
-					disable.setText("Disable");
-					setFrameIcon(new ImageIcon(Constants.cameraIcon));
-					settings.setIcon(new ImageIcon(Constants.gearIcon));
+			public void actionPerformed(ActionEvent e) {
+				if (n.motionDetection) {
+					n.motionDetection = false;
 				} else {
-					disable.setText("Enable");
-					setFrameIcon(new ImageIcon(Constants.cameraIconGrayScale));
-					settings.setIcon(new ImageIcon(Constants.gearIconGrayScale));
+					n.motionDetection = true;
 				}
+
+				updateMotionDetectionIcon(n.motionDetection);
 			}
 
-			@Override
-			public void menuDeselected(MenuEvent e) {
-			}
-
-			@Override
-			public void menuCanceled(MenuEvent e) {
-			}
 		});
 
-		menuBar.add(disable);
+		updateMotionDetectionIcon(n.motionDetection);
+
+		menuBar.add(motionDetection);
+
+		// BEGIN DISCORD //
+
+		sendOnDiscord = new JMenuItem("Discord");
+		sendOnDiscord.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				if (n.sendOnDiscord) {
+					n.sendOnDiscord = false;
+				} else {
+					n.sendOnDiscord = true;
+				}
+
+				updateSendOnDiscordIcon(n.sendOnDiscord);
+			}
+
+		});
+
+		updateSendOnDiscordIcon(n.sendOnDiscord);
+
+		menuBar.add(sendOnDiscord);
+
+		//
 
 		add(menuBar, BorderLayout.SOUTH);
 
@@ -191,6 +204,22 @@ public class CameraPanel extends JInternalFrame {
 		setVisible(true);
 
 		start();
+	}
+
+	private void updateSendOnDiscordIcon(boolean send) {
+		if (send) {
+			sendOnDiscord.setIcon(new ImageIcon(Constants.running));
+		} else {
+			sendOnDiscord.setIcon(new ImageIcon(Constants.stopped));
+		}
+	}
+
+	private void updateMotionDetectionIcon(boolean detection) {
+		if (detection) {
+			motionDetection.setIcon(new ImageIcon(Constants.running));
+		} else {
+			motionDetection.setIcon(new ImageIcon(Constants.stopped));
+		}
 	}
 
 	public void receivedFocus() {
@@ -287,8 +316,6 @@ public class CameraPanel extends JInternalFrame {
 		return rect_array;
 	}
 
-	private boolean alarm;
-
 	boolean save = false;
 
 	class CaptureThread extends Thread {
@@ -333,41 +360,37 @@ public class CameraPanel extends JInternalFrame {
 								Rect obj = it2.next();
 								Imgproc.rectangle(currentFrame, obj.br(), obj.tl(),
 										new Scalar(0, 255, 0), 1);
-
 							}
 						}
 						//*/
 
-						if (alarm) {
-							double sensibility = 15;
-							//log.info(sensibility);
-							double nonZeroPixels = Core.countNonZero(processedFrame);
-							//log.info("nonZeroPixels: " + nonZeroPixels);
+						double sensibility = 15;
+						//log.info(sensibility);
+						double nonZeroPixels = Core.countNonZero(processedFrame);
+						//log.info("nonZeroPixels: " + nonZeroPixels);
 
-							double nrows = processedFrame.rows();
-							double ncols = processedFrame.cols();
-							double total = nrows * ncols / 10;
+						double nrows = processedFrame.rows();
+						double ncols = processedFrame.cols();
+						double total = nrows * ncols / 10;
 
-							double detections = (nonZeroPixels / total) * 100;
-							//log.info(detections);
-							if (detections >= sensibility) {
-								//log.info("ALARM ENABLED!");
-								Imgproc.putText(currentFrame, "MOTION DETECTED",
-										new Point(5, currentFrame.cols() / 2), //currentFrame.rows()/2 currentFrame.cols()/2
-										Core.FONT_HERSHEY_TRIPLEX, 1d, new Scalar(0, 0, 255));
+						double detections = (nonZeroPixels / total) * 100;
+						//log.info(detections);
+						if (detections >= sensibility) {
+							//log.info("ALARM ENABLED!");
+							Imgproc.putText(currentFrame, "MOTION DETECTED",
+									new Point(5, currentFrame.cols() / 2), //currentFrame.rows()/2 currentFrame.cols()/2
+									Core.FONT_HERSHEY_TRIPLEX, 1d, new Scalar(0, 0, 255));
 
-								if (save) {
-									if (savedelay == 2) {
-										log.info("Saving results in: " + detectionsDir);
-										Imgcodecs.imwrite(detectionsDir, processedFrame);
-										savedelay = 0;
-									} else
-										savedelay = savedelay + 1;
-								}
-							} else {
-								savedelay = 0;
-
+							if (save) {
+								if (savedelay == 2) {
+									log.info("Saving results in: " + detectionsDir);
+									Imgcodecs.imwrite(detectionsDir, frame);
+									savedelay = 0;
+								} else
+									savedelay = savedelay + 1;
 							}
+						} else {
+							savedelay = 0;
 						}
 
 						//currentFrame.copyTo(processedFrame);
