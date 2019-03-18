@@ -87,45 +87,10 @@ public class UI extends UtilityJFrame {
 
 	public void addCamera(NetworkCamera n) {
 
-		CameraPanel panel = new CameraPanel(n);
+		InternalNetworkCameraFrame i = new InternalNetworkCameraFrame(n);
+		i.setVisible(true);
 
-		JInternalFrame cameraPanelFrame = new JInternalFrame(n.name, true, true, true, true);
-		cameraPanelFrame.setSize(n.width, n.height);
-		cameraPanelFrame.setLocation(n.x, n.y);
-
-		cameraPanelFrame.setResizable(true);
-		cameraPanelFrame.setLayout(new BorderLayout());
-
-		cameraPanelFrame.addInternalFrameListener(new InternalFrameAdapter(){
-			public void internalFrameClosing(InternalFrameEvent e) {
-				removeCamera(n);
-			}
-		});
-
-		cameraPanelFrame.addComponentListener(new ComponentAdapter() {
-			public void componentMoved(ComponentEvent e) {
-				super.componentMoved(e);
-
-				n.x = cameraPanelFrame.getX();
-				n.y = cameraPanelFrame.getY();
-			}
-
-			@Override
-			public void componentResized(ComponentEvent e) {
-				super.componentResized(e);
-
-				n.height = cameraPanelFrame.getHeight();
-				n.width = cameraPanelFrame.getWidth();
-			}
-		});
-
-		cameraPanelFrame.setFrameIcon(Constants.cameraIcon);
-
-		cameraPanelFrame.add(panel, BorderLayout.CENTER);
-
-		cameraPanelFrame.setVisible(true);
-
-		desktop.add(cameraPanelFrame);
+		desktop.add(i);
 
 	}
 
@@ -152,4 +117,61 @@ public class UI extends UtilityJFrame {
 		System.exit(0);
 	}
 
+	private class InternalNetworkCameraFrame extends JInternalFrame {
+		InternalNetworkCameraFrame(NetworkCamera n) {
+
+			super(n.name, true, true, true, true);
+
+			CameraPanel panel = new CameraPanel(n);
+
+			setSize(n.width, n.height);
+			setLocation(n.x, n.y);
+
+			setResizable(true);
+			setLayout(new BorderLayout());
+
+			addInternalFrameListener(new InternalFrameAdapter() {
+				@Override
+				public void internalFrameActivated(InternalFrameEvent e) {
+					super.internalFrameActivated(e);
+					panel.receivedFocus();
+				}
+
+				@Override
+				public void internalFrameDeactivated(InternalFrameEvent e) {
+					super.internalFrameDeactivated(e);
+					panel.lostFocus();
+				}
+			});
+
+			addInternalFrameListener(new InternalFrameAdapter() {
+				public void internalFrameClosing(InternalFrameEvent e) {
+					removeCamera(n);
+				}
+			});
+
+			addComponentListener(new ComponentAdapter() {
+				public void componentMoved(ComponentEvent e) {
+					super.componentMoved(e);
+
+					n.x = getX();
+					n.y = getY();
+				}
+
+				@Override
+				public void componentResized(ComponentEvent e) {
+					super.componentResized(e);
+
+					n.height = getHeight();
+					n.width = getWidth();
+				}
+			});
+
+			setFrameIcon(new ImageIcon(Constants.cameraIcon));
+
+			add(panel, BorderLayout.CENTER);
+
+		}
+
+	}
 }

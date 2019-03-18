@@ -6,6 +6,7 @@ import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 import org.opencv.videoio.VideoCapture;
 import org.opencv.videoio.Videoio;
+import test.Constants;
 import test.NetworkCamera;
 
 import javax.imageio.ImageIO;
@@ -48,6 +49,8 @@ public class CameraPanel extends JPanel {
 
 	CaptureThread thread;
 
+	JMenu settings;
+
 	public static void main(String[] args) {
 		new CameraPanel(new NetworkCamera("Test camera", "http://192.168.0.107:8080/video"));
 	}
@@ -60,6 +63,15 @@ public class CameraPanel extends JPanel {
 		setLayout(new BorderLayout());
 		add(image, BorderLayout.CENTER);
 
+		JMenuBar edit = new JMenuBar();
+
+		settings = new JMenu("Settings");
+		settings.setIcon(new ImageIcon(Constants.gearIcon));
+		edit.add(settings);
+		add(edit, BorderLayout.SOUTH);
+
+		settings.setVisible(false);
+
 		currentDir = Paths.get(".").toAbsolutePath().normalize().toString();
 		detectionsDir = currentDir + File.separator + detectionsDir;
 		System.out.println("Current dir: " + currentDir);
@@ -68,6 +80,14 @@ public class CameraPanel extends JPanel {
 		setVisible(true);
 
 		start();
+	}
+
+	public void receivedFocus() {
+		settings.setVisible(true);
+	}
+
+	public void lostFocus() {
+		settings.setVisible(false);
 	}
 
 	private void start() {
@@ -118,7 +138,6 @@ public class CameraPanel extends JPanel {
 			}
 			video.release();
 			begin = false;
-
 
 		}
 	}
@@ -287,7 +306,7 @@ class ImagePanel extends JPanel {
 		setMaximumSize(size);
 		setSize(size);
 		setLayout(null);
-		setBorder(BorderFactory.createLineBorder(Color.black));
+		//setBorder(BorderFactory.createLineBorder(Color.black));
 	}
 
 	public void updateImage(Image img) {

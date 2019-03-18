@@ -4,6 +4,8 @@ import java.io.Serializable;
 
 public class NetworkCamera implements Serializable {
 
+	static final long serialVersionUID = -7704013905756195820L;
+
 	public String name;
 	public String networkAddress;
 
@@ -28,4 +30,6 @@ public class NetworkCamera implements Serializable {
 				", name='" + name + '\'' +
 				'}';
 	}
+
+
 }
