@@ -1,7 +1,6 @@
 package test;
 
 import javax.imageio.ImageIO;
-import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -10,15 +9,28 @@ public class Constants {
 
 	public static final int MAX_THRESHOLD = 255;
 	public static final String SOFTWARE_NAME = "Final Security Suite";
+
+	public static final Color CAMERA_PANEL_BACKGROUND_COLOR = Color.BLACK;
+
 	public static BufferedImage softwareIcon;
+
 	public static BufferedImage gearIcon;
+	public static BufferedImage gearIconGrayScale;
+
 	public static BufferedImage cameraIcon;
+	public static BufferedImage cameraIconGrayScale;
 
 	static {
 		try {
-			cameraIcon = ImageIO.read(ClassLoader.getSystemResource("camera.png"));
-			gearIcon = ImageIO.read(ClassLoader.getSystemResource("gear.png"));
+
 			softwareIcon = ImageIO.read(ClassLoader.getSystemResource("softwareIcon.png"));
+
+			gearIcon = ImageIO.read(ClassLoader.getSystemResource("gear.png"));
+			gearIconGrayScale = ImageIO.read(ClassLoader.getSystemResource("gear_bw.png"));
+
+			cameraIcon = ImageIO.read(ClassLoader.getSystemResource("camera.png"));
+			cameraIconGrayScale = ImageIO.read(ClassLoader.getSystemResource("camera_bw.png"));
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

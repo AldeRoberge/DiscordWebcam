@@ -7,14 +7,18 @@ import org.opencv.imgproc.Imgproc;
 import org.opencv.videoio.VideoCapture;
 import org.opencv.videoio.Videoio;
 import test.Constants;
-import test.ui.EditCameraUI;
 import test.NetworkCamera;
+import test.ui.EditCameraUI;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.event.InternalFrameAdapter;
+import javax.swing.event.InternalFrameEvent;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 import java.awt.*;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -26,7 +30,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
-public class CameraPanel extends JPanel {
+public class CameraPanel extends JInternalFrame {
 	static {
 		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
 		System.loadLibrary("opencv_ffmpeg342_64"); //crucial to use IP Camera
@@ -52,38 +56,85 @@ public class CameraPanel extends JPanel {
 
 	CaptureThread thread;
 
-	JMenu settings;
+	JMenuBar menuBar;
 
 	public static void main(String[] args) {
-		new CameraPanel(new NetworkCamera("Test camera", "http://192.168.0.107:8080/video"));
+		new CameraPanel(new NetworkCamera("Test camera", "http://192.168.0.107:8080/video"
+		), () -> System.out.println("On close"));
 	}
 
-	public CameraPanel(NetworkCamera networkCamera) {
+	public CameraPanel(NetworkCamera n, Runnable onRemove) {
 
-		this.networkCamera = networkCamera;
+		super(n.name, true, true, true, true);
+
+		this.networkCamera = n;
+
+		setBackground(Constants.CAMERA_PANEL_BACKGROUND_COLOR);
+
+		setSize(n.width, n.height);
+		setLocation(n.x, n.y);
+
+		setResizable(true);
+		setLayout(new BorderLayout());
+
+		addInternalFrameListener(new InternalFrameAdapter() {
+			@Override
+			public void internalFrameActivated(InternalFrameEvent e) {
+				super.internalFrameActivated(e);
+				receivedFocus();
+			}
+
+			@Override
+			public void internalFrameDeactivated(InternalFrameEvent e) {
+				super.internalFrameDeactivated(e);
+				lostFocus();
+			}
+		});
+
+		addInternalFrameListener(new InternalFrameAdapter() {
+			public void internalFrameClosing(InternalFrameEvent e) {
+				onRemove.run();
+			}
+		});
+
+		addComponentListener(new ComponentAdapter() {
+			public void componentMoved(ComponentEvent e) {
+				super.componentMoved(e);
+
+				n.x = getX();
+				n.y = getY();
+			}
+
+			@Override
+			public void componentResized(ComponentEvent e) {
+				super.componentResized(e);
+
+				n.height = getHeight();
+				n.width = getWidth();
+			}
+		});
+
+		setFrameIcon(new ImageIcon(Constants.cameraIcon));
 
 		image = new ImagePanel(new ImageIcon("figs/320x240.gif").getImage());
 		setLayout(new BorderLayout());
 		add(image, BorderLayout.CENTER);
 
-		JMenuBar edit = new JMenuBar();
+		menuBar = new JMenuBar();
+		menuBar.setVisible(false);
 
-		settings = new JMenu("Settings");
+		JMenu settings = new JMenu("Settings");
 		settings.setIcon(new ImageIcon(Constants.gearIcon));
-		edit.add(settings);
-		add(edit, BorderLayout.SOUTH);
+		menuBar.add(settings);
 
 		settings.addMenuListener(new MenuListener() {
 			@Override
 			public void menuSelected(MenuEvent e) {
-				System.out.println("Adding");
-				new EditCameraUI(networkCamera, new Runnable() {
+				System.out.println("Opening settings");
+				new EditCameraUI(n, new Runnable() {
 					@Override
 					public void run() {
-
-						// Updates the name of the window
-						JInternalFrame parent = (JInternalFrame) getParent().getParent().getParent().getParent();
-						parent.setTitle(networkCamera.name);
+						setTitle(n.name);
 					}
 				});
 			}
@@ -97,7 +148,36 @@ public class CameraPanel extends JPanel {
 			}
 		});
 
-		settings.setVisible(false);
+		JMenu disable = new JMenu("Disable");
+
+		disable.addMenuListener(new MenuListener() {
+			@Override
+			public void menuSelected(MenuEvent e) {
+				n.toggleEnabled();
+
+				if (n.isEnabled) {
+					disable.setText("Disable");
+					setFrameIcon(new ImageIcon(Constants.cameraIcon));
+					settings.setIcon(new ImageIcon(Constants.gearIcon));
+				} else {
+					disable.setText("Enable");
+					setFrameIcon(new ImageIcon(Constants.cameraIconGrayScale));
+					settings.setIcon(new ImageIcon(Constants.gearIconGrayScale));
+				}
+			}
+
+			@Override
+			public void menuDeselected(MenuEvent e) {
+			}
+
+			@Override
+			public void menuCanceled(MenuEvent e) {
+			}
+		});
+
+		menuBar.add(disable);
+
+		add(menuBar, BorderLayout.SOUTH);
 
 		currentDir = Paths.get(".").toAbsolutePath().normalize().toString();
 		detectionsDir = currentDir + File.separator + detectionsDir;
@@ -110,11 +190,11 @@ public class CameraPanel extends JPanel {
 	}
 
 	public void receivedFocus() {
-		settings.setVisible(true);
+		menuBar.setVisible(true);
 	}
 
 	public void lostFocus() {
-		settings.setVisible(false);
+		menuBar.setVisible(false);
 	}
 
 	private void start() {

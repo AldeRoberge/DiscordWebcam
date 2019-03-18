@@ -39,4 +39,27 @@ public class NetworkCamera implements Serializable {
 				", publishOnDiscord=" + publishOnDiscord +
 				'}';
 	}
+
+
+	// Allows disabling a re-enabling
+
+
+	public boolean isEnabled = true;
+
+	private boolean cachedMotionDetection = false;
+	private boolean cachedPublishOnDiscord = false;
+
+	public void toggleEnabled() {
+		if (isEnabled) {
+			cachedMotionDetection = motionDetection;
+			cachedPublishOnDiscord = publishOnDiscord;
+
+			isEnabled = false;
+		} else {
+			motionDetection = cachedMotionDetection;
+			publishOnDiscord = cachedPublishOnDiscord;
+
+			isEnabled = true;
+		}
+	}
 }

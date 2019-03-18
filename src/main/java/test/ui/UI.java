@@ -162,11 +162,11 @@ public class UI extends UtilityJFrame {
 
 	boolean hasChanged = false;
 
-	ArrayList<InternalNetworkCameraFrame> cameraFrameList = new ArrayList<>();
+	ArrayList<CameraPanel> cameraFrameList = new ArrayList<>();
 
 	public void addCamera(NetworkCamera n) {
 
-		InternalNetworkCameraFrame i = new InternalNetworkCameraFrame(n);
+		CameraPanel i = new CameraPanel(n, () -> removeCamera(n));
 		i.setVisible(true);
 
 		cameraFrameList.add(i);
@@ -198,66 +198,5 @@ public class UI extends UtilityJFrame {
 		System.exit(0);
 	}
 
-	private class InternalNetworkCameraFrame extends JInternalFrame {
 
-		NetworkCamera n;
-
-		InternalNetworkCameraFrame(NetworkCamera n) {
-
-			super(n.name, true, true, true, true);
-
-			this.n = n;
-
-			CameraPanel panel = new CameraPanel(n);
-
-			setSize(n.width, n.height);
-			setLocation(n.x, n.y);
-
-			setResizable(true);
-			setLayout(new BorderLayout());
-
-			addInternalFrameListener(new InternalFrameAdapter() {
-				@Override
-				public void internalFrameActivated(InternalFrameEvent e) {
-					super.internalFrameActivated(e);
-					panel.receivedFocus();
-				}
-
-				@Override
-				public void internalFrameDeactivated(InternalFrameEvent e) {
-					super.internalFrameDeactivated(e);
-					panel.lostFocus();
-				}
-			});
-
-			addInternalFrameListener(new InternalFrameAdapter() {
-				public void internalFrameClosing(InternalFrameEvent e) {
-					removeCamera(n);
-				}
-			});
-
-			addComponentListener(new ComponentAdapter() {
-				public void componentMoved(ComponentEvent e) {
-					super.componentMoved(e);
-
-					n.x = getX();
-					n.y = getY();
-				}
-
-				@Override
-				public void componentResized(ComponentEvent e) {
-					super.componentResized(e);
-
-					n.height = getHeight();
-					n.width = getWidth();
-				}
-			});
-
-			setFrameIcon(new ImageIcon(Constants.cameraIcon));
-
-			add(panel, BorderLayout.CENTER);
-
-		}
-
-	}
 }
