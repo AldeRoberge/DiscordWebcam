@@ -46,6 +46,8 @@ public class CameraPanel extends JPanel {
 	String currentDir = "";
 	String detectionsDir = "detections";
 
+	CaptureThread thread;
+
 	public static void main(String[] args) {
 		new CameraPanel(new NetworkCamera("Test camera", "http://192.168.0.107:8080/video"));
 	}
@@ -89,7 +91,7 @@ public class CameraPanel extends JPanel {
 					e.printStackTrace();
 				}
 
-				CaptureThread thread = new CaptureThread();
+				thread = new CaptureThread();
 				thread.start();
 				begin = true;
 				firstFrame = true;
@@ -102,6 +104,12 @@ public class CameraPanel extends JPanel {
 	 */
 	private void end() {
 
+		try {
+			thread.join();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+
 		if (begin) {
 			try {
 				Thread.sleep(500);
@@ -109,6 +117,8 @@ public class CameraPanel extends JPanel {
 			}
 			video.release();
 			begin = false;
+
+
 		}
 	}
 

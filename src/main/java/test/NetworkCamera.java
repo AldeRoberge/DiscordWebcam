@@ -2,9 +2,13 @@ package test;
 
 import java.io.Serializable;
 
-public class NetworkCamera extends Camera implements Serializable {
+public class NetworkCamera implements Serializable {
 
+	public String name;
 	public String networkAddress;
+
+	public int x;
+	public int y;
 
 	public NetworkCamera(String name, String networkAddress) {
 		this.name = name;
@@ -18,10 +22,4 @@ public class NetworkCamera extends Camera implements Serializable {
 				", name='" + name + '\'' +
 				'}';
 	}
-}
-
-abstract class Camera {
-
-	public String name;
-
 }

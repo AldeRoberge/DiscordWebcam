@@ -1,20 +1,21 @@
 package test;
 
 import alde.commons.util.window.UtilityJFrame;
+import opencv.CameraPanel;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.util.function.Consumer;
+import java.awt.event.*;
 
 public class UI extends UtilityJFrame {
 
 	public static void main(String[] args) {
 		new UI();
 	}
+
+	JDesktopPane desktop;
+
+	CameraListSerializer cameraListSerializer = new CameraListSerializer();
 
 	public UI() {
 		super("Discord Webcam");
@@ -39,6 +40,8 @@ public class UI extends UtilityJFrame {
 			public void actionPerformed(ActionEvent e) {
 				new NewCamera(networkCamera -> {
 					System.out.println("Received network camera : " + networkCamera);
+					addCamera(networkCamera);
+					saveNewCamera(networkCamera);
 				});
 			}
 		});
@@ -52,32 +55,70 @@ public class UI extends UtilityJFrame {
 
 		// End menu bar
 
-		JDesktopPane desktop = new JDesktopPane();
+		desktop = new JDesktopPane();
 
-		JInternalFrame if1 = new JInternalFrame("Frame 1", true, true, true, true);
-		if1.setSize(200, 200);
-		desktop.add(if1);
+		int attempt = 0;
 
-		JInternalFrame if2 = new JInternalFrame("Frame 2", true, true, true, true);
-		if2.setSize(200, 200);
-		desktop.add(if2);
+		while (true) {
 
-		if1.setLocation(20, 20);
-		if1.setVisible(true);
-		if2.setLocation(40, 40);
-		if2.setVisible(true);
+			try {
+				System.out.println("Serialiser : " + cameraListSerializer.get().size());
+
+				for (NetworkCamera n : cameraListSerializer.get()) {
+					addCamera(n);
+				}
+
+				break;
+			} catch (Exception e) {
+				System.out.println("Error with serialization. Deleting the serialization file at " + cameraListSerializer.file + ". Answer : " + cameraListSerializer.file.delete());
+
+				attempt++;
+			}
+
+			if (attempt > 2) {
+				System.out.println("Could not get deserialization to work. Exiting.");
+
+				System.exit(-1);
+			}
+
+		}
 
 		add(desktop);
 		setLocationRelativeTo(null);
 		setVisible(true);
 	}
 
+	public void addCamera(NetworkCamera n) {
+
+		CameraPanel panel = new CameraPanel(n);
+
+		JInternalFrame if1 = new JInternalFrame(n.name, true, true, true, true);
+		if1.setSize(300, 300);
+		if1.setLocation(n.x, n.y);
+		if1.setVisible(true);
+
+		if1.addComponentListener(new ComponentAdapter() {
+			public void componentMoved(ComponentEvent e) {
+				n.x = if1.getX();
+				n.y = if1.getY();
+			}
+		});
+
+		if1.add(panel, BorderLayout.CENTER);
+
+		desktop.add(if1);
+
+	}
+
+	public void saveNewCamera(NetworkCamera n) {
+		cameraListSerializer.get().add(n);
+		cameraListSerializer.save();
+	}
+
 	private void saveConfig() {
 
 		System.out.println("Saving...");
-
-		//TODO implement
-
+		cameraListSerializer.save();
 		System.exit(0);
 	}
 

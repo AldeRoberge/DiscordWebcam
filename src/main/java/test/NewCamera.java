@@ -1,5 +1,8 @@
 package test;
 
+
+import alde.commons.util.jtextfield.UtilityJTextField;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
@@ -13,8 +16,8 @@ public class NewCamera extends JFrame {
 
 	private final Consumer<NetworkCamera> getNewCamera;
 	private JPanel contentPane;
-	private JTextField nameField;
-	private JTextField networkField;
+	private UtilityJTextField nameField;
+	private UtilityJTextField networkField;
 
 	/**
 	 * Launch the application.
@@ -50,7 +53,7 @@ public class NewCamera extends JFrame {
 
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
-				acceptCamera();
+				acceptCamera(null);
 			}
 		});
 
@@ -126,23 +129,25 @@ public class NewCamera extends JFrame {
 		JPanel namePanel = new JPanel();
 		textFieldPanel.add(namePanel);
 
-		nameField = new JTextField();
-		nameField.setHorizontalAlignment(SwingConstants.CENTER);
+		nameField = new UtilityJTextField();
+		nameField.setHint("Enter a camera name");
+		nameField.setToolTipText("Helps to identify between different cameras.");
 		namePanel.add(nameField);
-		nameField.setColumns(30);
+		nameField.setColumns(20);
 
 		JPanel networkAddressPanel = new JPanel();
 		textFieldPanel.add(networkAddressPanel);
 
-		networkField = new JTextField();
-		networkField.setHorizontalAlignment(SwingConstants.CENTER);
+		networkField = new UtilityJTextField();
+		networkField.setHint("Enter a camera address");
+		networkField.setToolTipText("Example : http://192.168.0.107:8080/video?x.mjpeg");
 		networkAddressPanel.add(networkField);
-		networkField.setColumns(30);
+		networkField.setColumns(20);
 
 		JButton button = new JButton("Okay");
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				acceptCamera();
+				acceptCamera(new NetworkCamera(nameField.getText(), networkField.getText()));
 			}
 		});
 		okayPanel.add(button);
@@ -151,8 +156,8 @@ public class NewCamera extends JFrame {
 
 	}
 
-	private void acceptCamera() {
-		getNewCamera.accept(new NetworkCamera(nameField.getText(), networkField.getText()));
+	private void acceptCamera(NetworkCamera camera) {
+		getNewCamera.accept(camera);
 		dispose();
 		setVisible(false);
 	}

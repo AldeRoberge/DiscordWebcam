@@ -68,12 +68,15 @@ public class Main {
 	}
 
 	private void run() {
-
+		UI u = new UI();
 	}
 
 	public void startDiscordBot() {
 		Discord d = new Discord(Properties.DISCORD_BOT_TOKEN.getValue());
 		d.start();
+
+
+
 
 	}
 
