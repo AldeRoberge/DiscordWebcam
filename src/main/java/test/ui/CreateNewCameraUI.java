@@ -1,11 +1,11 @@
-package test;
+package test.ui;
 
 
 import alde.commons.util.jtextfield.UtilityJTextField;
 import alde.commons.util.window.UtilityJFrame;
-import sun.text.normalizer.Utility;
+import test.Constants;
+import test.NetworkCamera;
 
-import javax.rmi.CORBA.Util;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
@@ -15,7 +15,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.function.Consumer;
 
-public class NewCamera extends UtilityJFrame {
+public class CreateNewCameraUI extends UtilityJFrame {
 
 	private final Consumer<NetworkCamera> getNewCamera;
 	private JPanel contentPane;
@@ -29,7 +29,7 @@ public class NewCamera extends UtilityJFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					NewCamera frame = new NewCamera(new Consumer<NetworkCamera>() {
+					CreateNewCameraUI frame = new CreateNewCameraUI(new Consumer<NetworkCamera>() {
 						public void accept(NetworkCamera c) {
 							System.out.println("Network camera : " + c);
 						}
@@ -45,7 +45,7 @@ public class NewCamera extends UtilityJFrame {
 	/**
 	 * Create the frame.
 	 */
-	public NewCamera(Consumer<NetworkCamera> getNewCamera) {
+	public CreateNewCameraUI(Consumer<NetworkCamera> getNewCamera) {
 
 		this.getNewCamera = getNewCamera;
 

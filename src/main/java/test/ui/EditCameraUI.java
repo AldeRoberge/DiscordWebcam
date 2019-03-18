@@ -1,6 +1,8 @@
-package test;
+package test.ui;
 
 import alde.commons.util.window.UtilityJFrame;
+import test.Constants;
+import test.NetworkCamera;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -14,7 +16,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-public class EditNetworkCamera extends UtilityJFrame {
+public class EditCameraUI extends UtilityJFrame {
 
 	private JPanel contentPane;
 
@@ -25,7 +27,7 @@ public class EditNetworkCamera extends UtilityJFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					EditNetworkCamera frame = new EditNetworkCamera(new NetworkCamera("ip", "adress"), null);
+					EditCameraUI frame = new EditCameraUI(new NetworkCamera("ip", "adress"), null);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -37,8 +39,14 @@ public class EditNetworkCamera extends UtilityJFrame {
 	/**
 	 * Create the frame.
 	 */
-	public EditNetworkCamera(final NetworkCamera n, final Runnable runOnClose) {
-		setTitle("Edit");
+	public EditCameraUI(final NetworkCamera n, final Runnable runOnClose) {
+	
+		if (n.name.equals("")) {
+			setTitle("Edit untitled camera");
+		} else {
+			setTitle("Edit camera '" + n.name + "'");
+		}
+		
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
 		addWindowListener(new WindowAdapter() {
@@ -47,8 +55,9 @@ public class EditNetworkCamera extends UtilityJFrame {
 			}
 		});
 
+		setIconImage(Constants.gearIcon);
 
-		setBounds(100, 100, 530, 246);
+		setBounds(100, 100, 530, 200);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
@@ -79,18 +88,23 @@ public class EditNetworkCamera extends UtilityJFrame {
 		cameraName.getDocument().addDocumentListener(new DocumentListener() {
 			@Override
 			public void insertUpdate(DocumentEvent e) {
-				n.name = cameraName.getText();
+				updateName();
 			}
 
 			@Override
 			public void removeUpdate(DocumentEvent e) {
-				n.name = cameraName.getText();
+				updateName();
 			}
 
 			@Override
 			public void changedUpdate(DocumentEvent e) {
+				updateName();
+			}
+
+			private void updateName() {
 				n.name = cameraName.getText();
 			}
+
 		});
 
 		labelPanel.add(new JLabel("Motion detection", JLabel.TRAILING));
@@ -149,23 +163,28 @@ public class EditNetworkCamera extends UtilityJFrame {
 
 		JButton btnClose = new JButton("Close");
 
+		btnClose.setSelected(true);
+
 		btnClose.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-
 				close(runOnClose);
-
 			}
 		});
 
 		contentPane.add(btnClose, BorderLayout.SOUTH);
 
+		setAlwaysOnTop(true);
 		setVisible(true);
 
 	}
 
 	private void close(Runnable runOnClose) {
-		runOnClose.run();
+		
+		if (runOnClose != null) {
+			runOnClose.run();
+		}
+		
 		dispose();
 	}
 

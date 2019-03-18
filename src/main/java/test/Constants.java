@@ -9,6 +9,7 @@ import java.io.IOException;
 public class Constants {
 
 	public static final int MAX_THRESHOLD = 255;
+	public static final String SOFTWARE_NAME = "Final Security Suite";
 	public static BufferedImage softwareIcon;
 	public static BufferedImage gearIcon;
 	public static BufferedImage cameraIcon;

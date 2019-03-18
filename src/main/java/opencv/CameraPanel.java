@@ -7,7 +7,7 @@ import org.opencv.imgproc.Imgproc;
 import org.opencv.videoio.VideoCapture;
 import org.opencv.videoio.Videoio;
 import test.Constants;
-import test.EditNetworkCamera;
+import test.ui.EditCameraUI;
 import test.NetworkCamera;
 
 import javax.imageio.ImageIO;
@@ -15,8 +15,6 @@ import javax.swing.*;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -75,12 +73,11 @@ public class CameraPanel extends JPanel {
 		edit.add(settings);
 		add(edit, BorderLayout.SOUTH);
 
-
 		settings.addMenuListener(new MenuListener() {
 			@Override
 			public void menuSelected(MenuEvent e) {
 				System.out.println("Adding");
-				new EditNetworkCamera(networkCamera, new Runnable() {
+				new EditCameraUI(networkCamera, new Runnable() {
 					@Override
 					public void run() {
 

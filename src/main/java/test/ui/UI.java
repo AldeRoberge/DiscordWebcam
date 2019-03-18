@@ -1,8 +1,14 @@
-package test;
+package test.ui;
 
 import alde.commons.util.window.UtilityJFrame;
+import discord.Discord;
 import opencv.CameraPanel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import properties.Properties;
+import test.CameraListSerializer;
+import test.Constants;
+import test.NetworkCamera;
 
 import javax.swing.*;
 import javax.swing.event.InternalFrameAdapter;
@@ -13,8 +19,72 @@ import java.util.ArrayList;
 
 public class UI extends UtilityJFrame {
 
+	static Logger log = LoggerFactory.getLogger(UI.class);
+
 	public static void main(String[] args) {
-		new UI();
+		try {
+			UIManager.setLookAndFeel(
+					UIManager.getSystemLookAndFeelClassName());
+		} catch (UnsupportedLookAndFeelException | ClassNotFoundException | InstantiationException | IllegalAccessException e) {
+			log.error("Could not set look and feel. ", e);
+		}
+
+		JFrame.setDefaultLookAndFeelDecorated(false);
+
+		if (Properties.IS_FIRST_LAUNCH.getBooleanValue()) {
+			showEditPropertiesPanel(true);
+		} else {
+			run();
+		}
+	}
+
+	// This function is shared with UI's Edit -> Edit properties. Thats why we use 'runOnClose' to differentiate
+	static void showEditPropertiesPanel(boolean runOnClose) {
+		UtilityJFrame f = new UtilityJFrame();
+
+		f.setIconImage(Constants.gearIcon);
+
+		f.setTitle("Set properties");
+		f.add(Properties.getPropertiesPanel(), BorderLayout.CENTER);
+		Button closeButton = new Button("Close");
+		closeButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				log.info("Close");
+				f.setVisible(false);
+
+				if (runOnClose) {
+					run();
+					Properties.IS_FIRST_LAUNCH.setValue(false);
+				}
+			}
+		});
+
+		f.add(closeButton, BorderLayout.SOUTH);
+		f.addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent e) {
+				if (runOnClose) {
+					run();
+				}
+				f.setVisible(false);
+			}
+		});
+
+		f.setPreferredSize(new Dimension(525, 250));
+
+		f.pack();
+
+		f.setVisible(true);
+	}
+
+	private static void run() {
+		UI u = new UI();
+	}
+
+	public void startDiscordBot() {
+		Discord d = new Discord(Properties.DISCORD_BOT_TOKEN.getValue());
+		d.start();
+
 	}
 
 	JDesktopPane desktop;
@@ -22,13 +92,19 @@ public class UI extends UtilityJFrame {
 	CameraListSerializer cameraListSerializer = new CameraListSerializer();
 
 	public UI() {
-		super("Discord Webcam");
+		super(Constants.SOFTWARE_NAME);
 
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
 				saveConfig();
+			}
+		});
+
+		addWindowStateListener(new WindowStateListener() {
+			public void windowStateChanged(WindowEvent arg0) {
+				System.out.println(arg0.getNewState());
 			}
 		});
 
@@ -44,7 +120,7 @@ public class UI extends UtilityJFrame {
 		addNewCamera.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				new NewCamera(networkCamera -> {
+				new CreateNewCameraUI(networkCamera -> {
 					System.out.println("Received network camera : " + networkCamera);
 					addCamera(networkCamera);
 					saveNewCamera(networkCamera);
@@ -59,7 +135,7 @@ public class UI extends UtilityJFrame {
 		editProperties.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Main.showEditPropertiesPanel(false);
+				showEditPropertiesPanel(false);
 			}
 		});
 		edit.add(editProperties);
@@ -78,33 +154,6 @@ public class UI extends UtilityJFrame {
 		} catch (Exception e) {
 			System.out.println("Error with serialization. Try deleting the serialization file at " + cameraListSerializer.file.getAbsolutePath() + ".");
 		}
-
-		desktop.addMouseListener(new MouseListener() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-
-			}
-
-			@Override
-			public void mousePressed(MouseEvent e) {
-
-			}
-
-			@Override
-			public void mouseReleased(MouseEvent e) {
-
-			}
-
-			@Override
-			public void mouseEntered(MouseEvent e) {
-
-			}
-
-			@Override
-			public void mouseExited(MouseEvent e) {
-
-			}
-		});
 
 		add(desktop);
 		setLocationRelativeTo(null);
