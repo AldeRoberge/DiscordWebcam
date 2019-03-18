@@ -20,6 +20,9 @@ public class Constants {
 	public static BufferedImage cameraIcon;
 	public static BufferedImage cameraIconGrayScale;
 
+
+	public static BufferedImage loggerIcon;
+
 	static {
 		try {
 
@@ -30,6 +33,8 @@ public class Constants {
 
 			cameraIcon = ImageIO.read(ClassLoader.getSystemResource("camera.png"));
 			cameraIconGrayScale = ImageIO.read(ClassLoader.getSystemResource("camera_bw.png"));
+
+			loggerIcon = ImageIO.read(ClassLoader.getSystemResource("logger.png"));
 
 		} catch (IOException e) {
 			e.printStackTrace();

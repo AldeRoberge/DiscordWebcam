@@ -11,8 +11,6 @@ import test.Constants;
 import test.NetworkCamera;
 
 import javax.swing.*;
-import javax.swing.event.InternalFrameAdapter;
-import javax.swing.event.InternalFrameEvent;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
@@ -139,6 +137,16 @@ public class UI extends UtilityJFrame {
 			}
 		});
 		edit.add(editProperties);
+
+		MenuItem showLogger = new MenuItem("Show logger");
+		showLogger.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				showLogger();
+			}
+		});
+		edit.add(showLogger);
+
 		menu.add(edit);
 
 		setMenuBar(menu);
@@ -158,6 +166,10 @@ public class UI extends UtilityJFrame {
 		add(desktop);
 		setLocationRelativeTo(null);
 		setVisible(true);
+	}
+
+	private void showLogger() {
+		desktop.add(new LoggerWrapper());
 	}
 
 	boolean hasChanged = false;
@@ -197,6 +209,5 @@ public class UI extends UtilityJFrame {
 
 		System.exit(0);
 	}
-
 
 }
