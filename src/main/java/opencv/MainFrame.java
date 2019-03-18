@@ -2,10 +2,10 @@ package opencv;
 
 import org.opencv.core.Point;
 import org.opencv.core.*;
-import org.opencv.highgui.Highgui;
-import org.opencv.highgui.VideoCapture;
+import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
-import org.opencv.video.BackgroundSubtractorMOG;
+import org.opencv.videoio.VideoCapture;
+import org.opencv.videoio.Videoio;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -24,6 +24,7 @@ import java.util.List;
 public class MainFrame extends JFrame {
 	static {
 		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+		System.loadLibrary("opencv_ffmpeg342_64");
 	}
 
 	private Boolean begin = false;
@@ -39,10 +40,13 @@ public class MainFrame extends JFrame {
 	private Mat currentFrame = new Mat(240, 320, CvType.CV_8UC3);
 	private Mat processedFrame = new Mat(240, 320, CvType.CV_8UC3);
 	private ImagePanel image;
-	private BackgroundSubtractorMOG bsMOG = new BackgroundSubtractorMOG();
 	private int savedelay = 0;
 	String currentDir = "";
 	String detectionsDir = "detections";
+
+	public static void main(String[] args) {
+		new MainFrame();
+	}
 
 	public MainFrame() {
 
@@ -53,6 +57,10 @@ public class MainFrame extends JFrame {
 		detectionsDir = currentDir + File.separator + detectionsDir;
 		System.out.println("Current dir: " + currentDir);
 		System.out.println("Detections dir: " + detectionsDir);
+
+		setVisible(true);
+
+		start();
 	}
 
 	private void start() {
@@ -62,18 +70,46 @@ public class MainFrame extends JFrame {
 			int sourcen = 1;
 			System.out.println("Opening source: " + sourcen);
 
-			video = new VideoCapture(sourcen);
+
+			//http://192.168.0.107:8080/video?x.mjpeg
+			video = new VideoCapture("http://192.168.0.107:8080/video");
+
+			double dWidth = video.get(Videoio.CV_CAP_PROP_FRAME_WIDTH); //get the width of frames of the video
+			double dHeight = video.get(Videoio.CV_CAP_PROP_FRAME_HEIGHT); //get the height of frames of the video
+
+			System.out.println("Got width : " + dWidth + ", height : " + dHeight);
 
 			if (video.isOpened()) {
+				System.out.println("Is opened");
+
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+
 				thread = new CaptureThread();
 				thread.start();
 				begin = true;
 				firstFrame = true;
 			}
 		}
+
+
+
 	}
 
-	private void stop() {
+
+
+
+
+
+
+
+	/**
+	 * Disposes of this object
+	 */
+	private void end() {
 		System.out.println("You clicked the stop button!");
 
 		if (begin) {
@@ -120,12 +156,11 @@ public class MainFrame extends JFrame {
 		return rect_array;
 	}
 
-	boolean motionDetection = false;
+	boolean motionDetection = true;
 
 	private boolean alarm;
 
-	boolean save = true;
-
+	boolean save = false;
 
 	class CaptureThread extends Thread {
 
@@ -133,8 +168,11 @@ public class MainFrame extends JFrame {
 		public void run() {
 			if (video.isOpened()) {
 				while (begin) {
-					//video.read(frameaux);
-					video.retrieve(frameaux);
+					video.read(frameaux);
+
+					//TODO why does read work, but not retrieve?
+
+					//video.retrieve(frameaux);
 					Imgproc.resize(frameaux, frame, frame.size());
 					frame.copyTo(currentFrame);
 
@@ -165,8 +203,9 @@ public class MainFrame extends JFrame {
 							Iterator<Rect> it2 = array.iterator();
 							while (it2.hasNext()) {
 								Rect obj = it2.next();
-								Core.rectangle(currentFrame, obj.br(), obj.tl(),
+								Imgproc.rectangle(currentFrame, obj.br(), obj.tl(),
 										new Scalar(0, 255, 0), 1);
+
 							}
 						}
 						//*/
@@ -185,15 +224,14 @@ public class MainFrame extends JFrame {
 							//System.out.println(detections);
 							if (detections >= sensibility) {
 								//System.out.println("ALARM ENABLED!");
-								Core.putText(currentFrame, "MOTION DETECTED",
+								Imgproc.putText(currentFrame, "MOTION DETECTED",
 										new Point(5, currentFrame.cols() / 2), //currentFrame.rows()/2 currentFrame.cols()/2
 										Core.FONT_HERSHEY_TRIPLEX, 1d, new Scalar(0, 0, 255));
-
 
 								if (save) {
 									if (savedelay == 2) {
 										System.out.println("Saving results in: " + detectionsDir);
-										Highgui.imwrite(detectionsDir, processedFrame);
+										Imgcodecs.imwrite(detectionsDir, processedFrame);
 										savedelay = 0;
 									} else
 										savedelay = savedelay + 1;
@@ -214,7 +252,7 @@ public class MainFrame extends JFrame {
 
 					currentFrame.copyTo(processedFrame);
 
-					Highgui.imencode(".jpg", processedFrame, matOfByte);
+					Imgcodecs.imencode(".jpg", processedFrame, matOfByte);
 					byte[] byteArray = matOfByte.toArray();
 
 					try {
