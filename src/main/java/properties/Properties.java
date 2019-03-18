@@ -1,5 +1,6 @@
 package properties;
 
+import alde.commons.properties.BooleanProperty;
 import alde.commons.properties.Property;
 import alde.commons.properties.PropertyFileManager;
 
@@ -14,6 +15,7 @@ import java.util.List;
  */
 public class Properties {
 
+
 	static {
 		propertyFile = new PropertyFileManager("discord-webcam.properties");
 	}
@@ -21,6 +23,7 @@ public class Properties {
 	private static PropertyFileManager propertyFile;
 
 	//@formatter:off
+	public static final BooleanProperty IS_FIRST_LAUNCH = new BooleanProperty("IS_FIRST_LAUNCH", "Displays the settings ui.", true, propertyFile) ;
 	public static final Property DISCORD_BOT_TOKEN = new Property("DISCORD_BOT_TOKEN", "Your discord bot token.", "your-token", propertyFile);
 	//@formatter:on
 
@@ -33,7 +36,7 @@ public class Properties {
 		List<Property> properties = new ArrayList<>();
 
 		for (Field f : Properties.class.getDeclaredFields()) {
-			if (f.getType().equals(Property.class)) {
+			if (f.getType().getSuperclass().equals(Property.class) || f.getType().equals(Property.class)) {
 				try {
 					properties.add((Property) f.get(Properties.class));
 				} catch (IllegalArgumentException | IllegalAccessException e) {
