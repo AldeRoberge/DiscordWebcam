@@ -6,17 +6,28 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.util.function.Consumer;
 
 public class UI extends UtilityJFrame {
 
 	public static void main(String[] args) {
 		new UI();
 	}
-	
+
 	public UI() {
 		super("Discord Webcam");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setSize(300, 300);
+
+		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+
+		addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent e) {
+				saveConfig();
+			}
+		});
+
+		setSize(500, 300);
 
 		// Menu
 
@@ -26,7 +37,9 @@ public class UI extends UtilityJFrame {
 		addNewCamera.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-
+				new NewCamera(networkCamera -> {
+					System.out.println("Received network camera : " + networkCamera);
+				});
 			}
 		});
 		file.add(addNewCamera);
@@ -58,5 +71,14 @@ public class UI extends UtilityJFrame {
 		setLocationRelativeTo(null);
 		setVisible(true);
 	}
-	
+
+	private void saveConfig() {
+
+		System.out.println("Saving...");
+
+		//TODO implement
+
+		System.exit(0);
+	}
+
 }

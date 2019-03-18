@@ -30,9 +30,7 @@ public class Main {
 
 		JFrame.setDefaultLookAndFeelDecorated(false);
 
-		if (true) {
-
-			//if (Properties.IS_FIRST_LAUNCH.getBooleanValue()) {
+		if (Properties.IS_FIRST_LAUNCH.getBooleanValue()) {
 
 			JFrame f = new JFrame();
 			f.setTitle("Set properties");

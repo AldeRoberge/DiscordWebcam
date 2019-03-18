@@ -2,13 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c94170a5-da28-4eca-8653-6fe0762b7cbe" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/test/Camera.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/test/NetworkCamera.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/test/UI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/opencv/ImagePanel.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/opencv/MainFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/opencv/CameraPanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/opencv/CameraPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/opencv/CameraPanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/test/Camera.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/test/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/test/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/test/NetworkCamera.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/test/NetworkCamera.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/test/UI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/test/UI.java" afterDir="false" />
       <change beforePath="$USER_HOME$/Documents/GitHub/AldeCommons/src/main/java/alde/commons/properties/BooleanProperty.java" beforeDir="false" afterPath="$USER_HOME$/Documents/GitHub/AldeCommons/src/main/java/alde/commons/properties/BooleanProperty.java" afterDir="false" />
       <change beforePath="$USER_HOME$/Documents/GitHub/AldeCommons/src/main/java/alde/commons/properties/Property.java" beforeDir="false" afterPath="$USER_HOME$/Documents/GitHub/AldeCommons/src/main/java/alde/commons/properties/Property.java" afterDir="false" />
     </list>
@@ -26,10 +26,12 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/test/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="391">
-              <caret line="30" column="41" selection-start-line="30" selection-start-column="41" selection-end-line="30" selection-end-column="41" />
+            <state relative-caret-position="20">
+              <caret line="45" selection-start-line="45" selection-end-line="45" />
               <folding>
                 <element signature="imports" expanded="true" />
+                <element signature="e#1325#1416#0" expanded="true" />
+                <element signature="e#1415#1416#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -38,22 +40,32 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/test/UI.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="425">
-              <caret line="31" column="31" lean-forward="true" selection-start-line="31" selection-start-column="31" selection-end-line="31" selection-end-column="31" />
+            <state relative-caret-position="375">
+              <caret line="39" column="23" lean-forward="true" selection-start-line="39" selection-start-column="23" selection-end-line="39" selection-end-column="23" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#259#260#0" expanded="true" />
                 <element signature="e#274#275#0" expanded="true" />
+                <element signature="e#466#553#0" expanded="true" />
+                <element signature="e#552#553#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/test/Camera.java">
+        <entry file="file://$PROJECT_DIR$/src/main/java/test/NewCamera.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="85">
-              <caret line="5" lean-forward="true" selection-start-line="5" selection-end-line="5" />
+            <state relative-caret-position="509">
+              <caret line="150" lean-forward="true" selection-start-line="150" selection-end-line="150" />
+              <folding>
+                <element signature="e#1010#1011#0" expanded="true" />
+                <element signature="e#1070#1071#0" expanded="true" />
+                <element signature="e#1407#1494#0" expanded="true" />
+                <element signature="e#1493#1494#0" expanded="true" />
+                <element signature="e#4263#4264#0" expanded="true" />
+                <element signature="e#4286#4287#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -61,12 +73,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/test/NetworkCamera.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state>
-              <caret column="13" selection-start-column="13" selection-end-column="13" />
-              <folding>
-                <element signature="e#143#144#0" expanded="true" />
-                <element signature="e#186#187#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="306">
+              <caret line="18" column="20" selection-start-line="18" selection-start-column="20" selection-end-line="18" selection-end-column="20" />
             </state>
           </provider>
         </entry>
@@ -74,12 +82,10 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/opencv/CameraPanel.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-199">
-              <caret line="148" column="20" selection-start-line="148" selection-start-column="20" selection-end-line="148" selection-end-column="20" />
+            <state relative-caret-position="-883">
+              <caret line="51" lean-forward="true" selection-start-line="51" selection-end-line="51" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#1440#1441#0" expanded="true" />
-                <element signature="e#1468#1469#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -129,12 +135,13 @@
         <option value="$PROJECT_DIR$/src/main/java/test/JInternalFrameExample.java" />
         <option value="$PROJECT_DIR$/src/main/java/test/CameraType.java" />
         <option value="$PROJECT_DIR$/src/main/java/test/AddCameraWindow.java" />
-        <option value="$PROJECT_DIR$/src/main/java/test/Camera.java" />
         <option value="$PROJECT_DIR$/src/main/java/opencv/MainFrame.java" />
         <option value="$PROJECT_DIR$/src/main/java/opencv/ImagePanel.java" />
+        <option value="$PROJECT_DIR$/src/main/java/test/Camera.java" />
+        <option value="$PROJECT_DIR$/src/main/java/test/Main.java" />
         <option value="$PROJECT_DIR$/src/main/java/opencv/CameraPanel.java" />
         <option value="$PROJECT_DIR$/src/main/java/test/UI.java" />
-        <option value="$PROJECT_DIR$/src/main/java/test/Main.java" />
+        <option value="$PROJECT_DIR$/src/main/java/test/NewCamera.java" />
         <option value="$PROJECT_DIR$/src/main/java/test/NetworkCamera.java" />
       </list>
     </option>
@@ -198,16 +205,7 @@
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="opencv" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="DiscordWebcam" type="b2602c69:ProjectViewProjectNode" />
-              <item name="DiscordWebcam" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="opencv" type="462c0819:PsiDirectoryNode" />
-              <item name="CameraPanel.java" type="529ef68f:ClassesTreeStructureProvider$PsiClassOwnerTreeNode" />
+              <item name="test" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="DiscordWebcam" type="b2602c69:ProjectViewProjectNode" />
@@ -216,6 +214,7 @@
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="test" type="462c0819:PsiDirectoryNode" />
+              <item name="NetworkCamera.java" type="529ef68f:ClassesTreeStructureProvider$PsiClassOwnerTreeNode" />
             </path>
           </expand>
           <select />
@@ -224,7 +223,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1552890623498" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1552892316137" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/lib" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
@@ -359,15 +358,15 @@
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" sideWeight="0.49840087" weight="0.18743229" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.66773677" weight="0.21006565" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.6673774" visible="true" weight="0.20910075" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Terminal" order="7" sideWeight="0.49946696" weight="0.3261105" />
-      <window_info anchor="bottom" id="Event Log" order="8" sideWeight="0.5042644" side_tool="true" visible="true" weight="0.3261105" />
+      <window_info anchor="bottom" id="Event Log" order="8" sideWeight="0.3326226" side_tool="true" visible="true" weight="0.20910075" />
       <window_info anchor="bottom" id="Version Control" order="9" />
-      <window_info anchor="bottom" id="Messages" order="10" sideWeight="0.49573562" visible="true" weight="0.3261105" />
+      <window_info anchor="bottom" id="Messages" order="10" sideWeight="0.4946695" weight="0.112676054" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -643,55 +642,68 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/opencv/CameraPanel.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/test/Camera.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-199">
-          <caret line="148" column="20" selection-start-line="148" selection-start-column="20" selection-end-line="148" selection-end-column="20" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#1440#1441#0" expanded="true" />
-            <element signature="e#1468#1469#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="34">
+          <caret line="2" column="6" selection-start-line="2" selection-start-column="6" selection-end-line="2" selection-end-column="6" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/test/UI.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/opencv/CameraPanel.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="425">
-          <caret line="31" column="31" lean-forward="true" selection-start-line="31" selection-start-column="31" selection-end-line="31" selection-end-column="31" />
+        <state relative-caret-position="-883">
+          <caret line="51" lean-forward="true" selection-start-line="51" selection-end-line="51" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#259#260#0" expanded="true" />
-            <element signature="e#274#275#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/test/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="391">
-          <caret line="30" column="41" selection-start-line="30" selection-start-column="41" selection-end-line="30" selection-end-column="41" />
+        <state relative-caret-position="20">
+          <caret line="45" selection-start-line="45" selection-end-line="45" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#1325#1416#0" expanded="true" />
+            <element signature="e#1415#1416#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/test/Camera.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/test/UI.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="5" lean-forward="true" selection-start-line="5" selection-end-line="5" />
+        <state relative-caret-position="375">
+          <caret line="39" column="23" lean-forward="true" selection-start-line="39" selection-start-column="23" selection-end-line="39" selection-end-column="23" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#259#260#0" expanded="true" />
+            <element signature="e#274#275#0" expanded="true" />
+            <element signature="e#466#553#0" expanded="true" />
+            <element signature="e#552#553#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/test/NewCamera.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="509">
+          <caret line="150" lean-forward="true" selection-start-line="150" selection-end-line="150" />
+          <folding>
+            <element signature="e#1010#1011#0" expanded="true" />
+            <element signature="e#1070#1071#0" expanded="true" />
+            <element signature="e#1407#1494#0" expanded="true" />
+            <element signature="e#1493#1494#0" expanded="true" />
+            <element signature="e#4263#4264#0" expanded="true" />
+            <element signature="e#4286#4287#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/test/NetworkCamera.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="13" selection-start-column="13" selection-end-column="13" />
-          <folding>
-            <element signature="e#143#144#0" expanded="true" />
-            <element signature="e#186#187#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="306">
+          <caret line="18" column="20" selection-start-line="18" selection-start-column="20" selection-end-line="18" selection-end-column="20" />
         </state>
       </provider>
     </entry>

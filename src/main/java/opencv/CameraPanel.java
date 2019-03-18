@@ -47,7 +47,7 @@ public class CameraPanel extends JPanel {
 	String detectionsDir = "detections";
 
 	public static void main(String[] args) {
-		new CameraPanel(new NetworkCamera("http://192.168.0.107:8080/video"));
+		new CameraPanel(new NetworkCamera("Test camera", "http://192.168.0.107:8080/video"));
 	}
 
 	public CameraPanel(NetworkCamera networkCamera) {
