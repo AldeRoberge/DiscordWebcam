@@ -94,11 +94,7 @@ public class UI extends UtilityJFrame {
 
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 
-		addWindowListener(new WindowAdapter() {
-			public void windowClosing(WindowEvent e) {
-				saveConfig();
-			}
-		});
+		registerSystemTray();
 
 		addWindowStateListener(new WindowStateListener() {
 			public void windowStateChanged(WindowEvent arg0) {
@@ -166,6 +162,81 @@ public class UI extends UtilityJFrame {
 		add(desktop);
 		setLocationRelativeTo(null);
 		setVisible(true);
+
+	}
+
+	private void registerSystemTray() {
+
+		if (SystemTray.isSupported()) {
+
+			Image image = Constants.softwareIcon;
+			ActionListener exitListener = new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					log.info("Exiting....");
+
+					saveConfig();
+
+					System.exit(0);
+				}
+			};
+			PopupMenu popup = new PopupMenu();
+			MenuItem defaultItem = new MenuItem("Exit");
+			defaultItem.addActionListener(exitListener);
+			popup.add(defaultItem);
+			defaultItem = new MenuItem("Open");
+			defaultItem.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					setVisible(true);
+					setExtendedState(JFrame.NORMAL);
+				}
+			});
+			popup.add(defaultItem);
+			TrayIcon trayIcon = new TrayIcon(image, Constants.SOFTWARE_NAME, popup);
+			trayIcon.setImageAutoSize(true);
+
+			addWindowStateListener(new WindowStateListener() {
+				public void windowStateChanged(WindowEvent e) {
+
+					SystemTray tray = SystemTray.getSystemTray();
+
+					if (e.getNewState() == ICONIFIED) {
+						try {
+							tray.add(trayIcon);
+							setVisible(false);
+							log.info("added to SystemTray");
+						} catch (AWTException ex) {
+							log.info("unable to add to tray");
+						}
+					}
+					if (e.getNewState() == 7) {
+						try {
+							tray.add(trayIcon);
+							setVisible(false);
+							log.info("added to SystemTray");
+						} catch (AWTException ex) {
+							log.info("unable to add to system tray");
+						}
+					}
+					if (e.getNewState() == MAXIMIZED_BOTH) {
+						tray.remove(trayIcon);
+						setVisible(true);
+						log.info("Tray icon removed");
+					}
+					if (e.getNewState() == NORMAL) {
+						tray.remove(trayIcon);
+						setVisible(true);
+						log.info("Tray icon removed");
+					}
+				}
+			});
+
+			setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+		} else {
+			log.info("system tray not supported");
+			return;
+		}
+
 	}
 
 	private void showLogger() {

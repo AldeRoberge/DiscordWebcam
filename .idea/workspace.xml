@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c94170a5-da28-4eca-8653-6fe0762b7cbe" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/src/main/java/opencv/CameraPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/opencv/CameraPanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cameras.serialized" beforeDir="false" afterPath="$PROJECT_DIR$/cameras.serialized" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/discord-webcam.properties" beforeDir="false" afterPath="$PROJECT_DIR$/discord-webcam.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/test/ui/UI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/test/ui/UI.java" afterDir="false" />
       <change beforePath="$USER_HOME$/Documents/GitHub/AldeCommons/src/main/java/alde/commons/ExampleConsole.java" beforeDir="false" afterPath="$USER_HOME$/Documents/GitHub/AldeCommons/src/main/java/alde/commons/ExampleConsole.java" afterDir="false" />
       <change beforePath="$USER_HOME$/Documents/GitHub/AldeCommons/src/main/java/alde/commons/console/Console.java" beforeDir="false" afterPath="$USER_HOME$/Documents/GitHub/AldeCommons/src/main/java/alde/commons/console/Console.java" afterDir="false" />
@@ -77,16 +79,16 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/test/ui/UI.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="289">
-              <caret line="103" column="54" selection-start-line="103" selection-start-column="43" selection-end-line="103" selection-end-column="54" />
+            <state relative-caret-position="255">
+              <caret line="193" column="75" selection-start-line="193" selection-start-column="75" selection-end-line="193" selection-end-column="75" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#2496#2497#0" expanded="true" />
-                <element signature="e#2535#2536#0" expanded="true" />
-                <element signature="e#3358#3359#0" expanded="true" />
-                <element signature="e#3399#3400#0" expanded="true" />
-                <element signature="e#3602#3603#0" expanded="true" />
-                <element signature="e#3625#3626#0" expanded="true" />
+                <element signature="e#2540#2541#0" expanded="true" />
+                <element signature="e#3363#3364#0" expanded="true" />
+                <element signature="e#3404#3405#0" expanded="true" />
+                <element signature="e#3607#3608#0" expanded="true" />
+                <element signature="e#3630#3631#0" expanded="true" />
                 <element signature="e#4100#4101#0" expanded="true" />
                 <element signature="e#4139#4140#0" expanded="true" />
               </folding>
@@ -291,6 +293,15 @@
               <item name="DiscordWebcam" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="462c0819:PsiDirectoryNode" />
+              <item name="ui" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="DiscordWebcam" type="b2602c69:ProjectViewProjectNode" />
+              <item name="DiscordWebcam" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="resources" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
@@ -300,7 +311,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1552937320545" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1552937887913" />
     <property name="last_opened_file_path" value="$USER_HOME$/Documents/GitHub/AldeCommons" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
@@ -437,15 +448,15 @@
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" sideWeight="0.4968017" weight="0.18743229" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.66151386" visible="true" weight="0.22751896" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.6609808" visible="true" weight="0.22751896" />
       <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.49840087" weight="0.19934994" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Terminal" order="7" sideWeight="0.49946696" weight="0.3261105" />
-      <window_info anchor="bottom" id="Event Log" order="8" sideWeight="0.33848614" side_tool="true" visible="true" weight="0.22751896" />
+      <window_info anchor="bottom" id="Event Log" order="8" sideWeight="0.33901918" side_tool="true" visible="true" weight="0.22751896" />
       <window_info anchor="bottom" id="Version Control" order="9" />
-      <window_info anchor="bottom" id="Messages" order="10" sideWeight="0.48773986" weight="0.29035753" />
+      <window_info anchor="bottom" id="Messages" order="10" sideWeight="0.48667377" weight="0.29035753" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -803,16 +814,16 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/test/ui/UI.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="289">
-          <caret line="103" column="54" selection-start-line="103" selection-start-column="43" selection-end-line="103" selection-end-column="54" />
+        <state relative-caret-position="255">
+          <caret line="193" column="75" selection-start-line="193" selection-start-column="75" selection-end-line="193" selection-end-column="75" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#2496#2497#0" expanded="true" />
-            <element signature="e#2535#2536#0" expanded="true" />
-            <element signature="e#3358#3359#0" expanded="true" />
-            <element signature="e#3399#3400#0" expanded="true" />
-            <element signature="e#3602#3603#0" expanded="true" />
-            <element signature="e#3625#3626#0" expanded="true" />
+            <element signature="e#2540#2541#0" expanded="true" />
+            <element signature="e#3363#3364#0" expanded="true" />
+            <element signature="e#3404#3405#0" expanded="true" />
+            <element signature="e#3607#3608#0" expanded="true" />
+            <element signature="e#3630#3631#0" expanded="true" />
             <element signature="e#4100#4101#0" expanded="true" />
             <element signature="e#4139#4140#0" expanded="true" />
           </folding>
