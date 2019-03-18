@@ -25,3 +25,4 @@ discord-webcam.properties
 discord-webcam.properties
 *.properties
 /target/
+cameras.serialized

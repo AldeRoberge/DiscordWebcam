@@ -49,10 +49,12 @@ public class CameraListSerializer {
 				} catch (IOException | ClassNotFoundException e) {
 					log.error(StackTraceToString.sTTS(e));
 					e.printStackTrace();
+
+					list = new ArrayList<>();
 				}
 			} else {
 				log.warn("File " + file.getAbsolutePath() + " is empty or does not exist!");
-				return new ArrayList<>();
+				list = new ArrayList<>();
 			}
 
 			return list;

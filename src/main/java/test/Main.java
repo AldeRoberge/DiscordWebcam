@@ -32,55 +32,61 @@ public class Main {
 		JFrame.setDefaultLookAndFeelDecorated(false);
 
 		if (Properties.IS_FIRST_LAUNCH.getBooleanValue()) {
-
-			UtilityJFrame f = new UtilityJFrame();
-			f.setTitle("Set properties");
-			f.add(Properties.getPropertiesPanel(), BorderLayout.CENTER);
-			Button closeButton = new Button("Close");
-			closeButton.addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					log.info("Next...");
-					f.setVisible(false);
-
-					Properties.IS_FIRST_LAUNCH.setValue(false);
-
-					run();
-				}
-
-			});
-
-			f.add(closeButton, BorderLayout.SOUTH);
-
-			f.addWindowListener(new WindowAdapter() {
-				public void windowClosing(WindowEvent e) {
-					run();
-				}
-			});
-
-
-
-
-			f.pack();
-
-			f.setVisible(true);
-
+			showEditPropertiesPanel(true);
 		} else {
 			run();
 		}
 
 	}
 
-	private void run() {
+	// This function is shared with UI's Edit -> Edit properties. Thats why we use 'runOnClose' to differentiate
+	static void showEditPropertiesPanel(boolean runOnClose) {
+		UtilityJFrame f = new UtilityJFrame();
+
+		f.setIconImage(Constants.gearIcon);
+
+		f.setTitle("Set properties");
+		f.add(Properties.getPropertiesPanel(), BorderLayout.CENTER);
+		Button closeButton = new Button("Close");
+		closeButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				log.info("Close");
+				f.setVisible(false);
+
+				if (runOnClose) {
+					run();
+					Properties.IS_FIRST_LAUNCH.setValue(false);
+				}
+
+			}
+
+		});
+
+		f.add(closeButton, BorderLayout.SOUTH);
+		f.addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent e) {
+				if (runOnClose) {
+					run();
+				}
+				f.setVisible(false);
+			}
+		});
+
+		f.setPreferredSize(new Dimension(525,250));
+
+		f.pack();
+
+		f.setVisible(true);
+	}
+
+	private static void run() {
 		UI u = new UI();
 	}
 
 	public void startDiscordBot() {
 		Discord d = new Discord(Properties.DISCORD_BOT_TOKEN.getValue());
 		d.start();
-
-
-
 
 	}
 

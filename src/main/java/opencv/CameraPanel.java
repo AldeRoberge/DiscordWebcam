@@ -57,6 +57,7 @@ public class CameraPanel extends JPanel {
 		this.networkCamera = networkCamera;
 
 		image = new ImagePanel(new ImageIcon("figs/320x240.gif").getImage());
+		setLayout(new BorderLayout());
 		add(image, BorderLayout.CENTER);
 
 		currentDir = Paths.get(".").toAbsolutePath().normalize().toString();
@@ -156,8 +157,6 @@ public class CameraPanel extends JPanel {
 		return rect_array;
 	}
 
-	boolean motionDetection = true;
-
 	private boolean alarm;
 
 	boolean save = false;
@@ -182,7 +181,7 @@ public class CameraPanel extends JPanel {
 						continue;
 					}
 
-					if (motionDetection) {
+					if (networkCamera.motionDetection) {
 						Imgproc.GaussianBlur(currentFrame, currentFrame, new Size(3, 3), 0);
 						Imgproc.GaussianBlur(lastFrame, lastFrame, new Size(3, 3), 0);
 
@@ -193,9 +192,8 @@ public class CameraPanel extends JPanel {
 						Imgproc.cvtColor(processedFrame, processedFrame, Imgproc.COLOR_RGB2GRAY);
 						//
 
-						int threshold = 15;
 						//Imgproc.adaptiveThreshold(processedFrame, processedFrame, 255, Imgproc.ADAPTIVE_THRESH_MEAN_C, Imgproc.THRESH_BINARY_INV, 5, 2);
-						Imgproc.threshold(processedFrame, processedFrame, threshold, 255, Imgproc.THRESH_BINARY);
+						Imgproc.threshold(processedFrame, processedFrame, networkCamera.threshold, 255, Imgproc.THRESH_BINARY);
 
 						ArrayList<Rect> array = detection_contours(currentFrame, processedFrame);
 						///*

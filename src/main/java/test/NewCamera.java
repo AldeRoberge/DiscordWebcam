@@ -54,6 +54,8 @@ public class NewCamera extends UtilityJFrame {
 
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 
+		setIconImage(Constants.gearIcon);
+
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
 				acceptCamera(null);

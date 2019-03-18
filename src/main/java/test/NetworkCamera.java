@@ -13,6 +13,9 @@ public class NetworkCamera implements Serializable {
 	public int height = 400;
 	public int width = 400;
 
+	public boolean motionDetection = false;
+	public double threshold = 15; //max = 255
+
 	public NetworkCamera(String name, String networkAddress) {
 		this.name = name;
 		this.networkAddress = networkAddress;

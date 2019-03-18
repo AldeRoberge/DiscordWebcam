@@ -33,6 +33,8 @@ public class UI extends UtilityJFrame {
 
 		setSize(Properties.WIDTH.getIntValue(), Properties.HEIGHT.getIntValue());
 
+		setIconImage(Constants.softwareIcon);
+
 		// Menu
 
 		MenuBar menu = new MenuBar();
@@ -52,6 +54,14 @@ public class UI extends UtilityJFrame {
 		menu.add(file);
 
 		Menu edit = new Menu("Edit");
+		MenuItem editProperties = new MenuItem("Edit properties");
+		editProperties.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Main.showEditPropertiesPanel(false);
+			}
+		});
+		edit.add(editProperties);
 		menu.add(edit);
 
 		setMenuBar(menu);
@@ -82,7 +92,9 @@ public class UI extends UtilityJFrame {
 		JInternalFrame cameraPanelFrame = new JInternalFrame(n.name, true, true, true, true);
 		cameraPanelFrame.setSize(n.width, n.height);
 		cameraPanelFrame.setLocation(n.x, n.y);
-		cameraPanelFrame.setVisible(true);
+
+		cameraPanelFrame.setResizable(true);
+		cameraPanelFrame.setLayout(new BorderLayout());
 
 		cameraPanelFrame.addInternalFrameListener(new InternalFrameAdapter(){
 			public void internalFrameClosing(InternalFrameEvent e) {
@@ -110,6 +122,8 @@ public class UI extends UtilityJFrame {
 		cameraPanelFrame.setFrameIcon(Constants.cameraIcon);
 
 		cameraPanelFrame.add(panel, BorderLayout.CENTER);
+
+		cameraPanelFrame.setVisible(true);
 
 		desktop.add(cameraPanelFrame);
 

@@ -23,7 +23,7 @@ public class Properties {
 	private static PropertyFileManager propertyFile;
 
 	//@formatter:off
-	public static final BooleanProperty IS_FIRST_LAUNCH = new BooleanProperty("IS_FIRST_LAUNCH", "Displays the settings ui", true, propertyFile);
+	public static final BooleanProperty IS_FIRST_LAUNCH = new BooleanProperty("IS_FIRST_LAUNCH", "Displays the 'edit properties' UI on launch", true, propertyFile);
 	public static final Property DISCORD_BOT_TOKEN = new Property("DISCORD_BOT_TOKEN", "Your discord bot token", "your-token", propertyFile);
 
 	public static final IntProperty WIDTH = new IntProperty("WIDTH", "The program's width", 800, propertyFile);
