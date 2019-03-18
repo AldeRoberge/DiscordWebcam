@@ -6,6 +6,8 @@ import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 import org.opencv.videoio.VideoCapture;
 import org.opencv.videoio.Videoio;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import test.Constants;
 import test.NetworkCamera;
 import test.ui.EditCameraUI;
@@ -36,6 +38,8 @@ public class CameraPanel extends JInternalFrame {
 		System.loadLibrary("opencv_ffmpeg342_64"); //crucial to use IP Camera
 	}
 
+	static Logger log = LoggerFactory.getLogger(CameraPanel.class);
+
 	private NetworkCamera networkCamera;
 
 	private Boolean begin = false;
@@ -60,7 +64,7 @@ public class CameraPanel extends JInternalFrame {
 
 	public static void main(String[] args) {
 		new CameraPanel(new NetworkCamera("Test camera", "http://192.168.0.107:8080/video"
-		), () -> System.out.println("On close"));
+		), () -> log.info("On close"));
 	}
 
 	public CameraPanel(NetworkCamera n, Runnable onRemove) {
@@ -130,7 +134,7 @@ public class CameraPanel extends JInternalFrame {
 		settings.addMenuListener(new MenuListener() {
 			@Override
 			public void menuSelected(MenuEvent e) {
-				System.out.println("Opening settings");
+				log.info("Opening settings");
 				new EditCameraUI(n, new Runnable() {
 					@Override
 					public void run() {
@@ -181,8 +185,8 @@ public class CameraPanel extends JInternalFrame {
 
 		currentDir = Paths.get(".").toAbsolutePath().normalize().toString();
 		detectionsDir = currentDir + File.separator + detectionsDir;
-		System.out.println("Current dir: " + currentDir);
-		System.out.println("Detections dir: " + detectionsDir);
+		log.info("Current dir: " + currentDir);
+		log.info("Detections dir: " + detectionsDir);
 
 		setVisible(true);
 
@@ -208,10 +212,10 @@ public class CameraPanel extends JInternalFrame {
 
 			setPreferredSize(new Dimension((int) dWidth, (int) dHeight));
 
-			System.out.println("Got width : " + dWidth + ", height : " + dHeight);
+			log.info("Got width : " + dWidth + ", height : " + dHeight);
 
 			if (video.isOpened()) {
-				System.out.println("Is opened");
+				log.info("Is opened");
 
 				try {
 					Thread.sleep(1000);
@@ -336,25 +340,25 @@ public class CameraPanel extends JInternalFrame {
 
 						if (alarm) {
 							double sensibility = 15;
-							//System.out.println(sensibility);
+							//log.info(sensibility);
 							double nonZeroPixels = Core.countNonZero(processedFrame);
-							//System.out.println("nonZeroPixels: " + nonZeroPixels);
+							//log.info("nonZeroPixels: " + nonZeroPixels);
 
 							double nrows = processedFrame.rows();
 							double ncols = processedFrame.cols();
 							double total = nrows * ncols / 10;
 
 							double detections = (nonZeroPixels / total) * 100;
-							//System.out.println(detections);
+							//log.info(detections);
 							if (detections >= sensibility) {
-								//System.out.println("ALARM ENABLED!");
+								//log.info("ALARM ENABLED!");
 								Imgproc.putText(currentFrame, "MOTION DETECTED",
 										new Point(5, currentFrame.cols() / 2), //currentFrame.rows()/2 currentFrame.cols()/2
 										Core.FONT_HERSHEY_TRIPLEX, 1d, new Scalar(0, 0, 255));
 
 								if (save) {
 									if (savedelay == 2) {
-										System.out.println("Saving results in: " + detectionsDir);
+										log.info("Saving results in: " + detectionsDir);
 										Imgcodecs.imwrite(detectionsDir, processedFrame);
 										savedelay = 0;
 									} else
@@ -362,7 +366,7 @@ public class CameraPanel extends JInternalFrame {
 								}
 							} else {
 								savedelay = 0;
-								//System.out.println("");
+
 							}
 						}
 

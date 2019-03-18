@@ -102,7 +102,7 @@ public class UI extends UtilityJFrame {
 
 		addWindowStateListener(new WindowStateListener() {
 			public void windowStateChanged(WindowEvent arg0) {
-				System.out.println(arg0.getNewState());
+				log.info(arg0.getNewState() + "");
 			}
 		});
 
@@ -119,7 +119,7 @@ public class UI extends UtilityJFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				new CreateNewCameraUI(networkCamera -> {
-					System.out.println("Received network camera : " + networkCamera);
+					log.info("Received network camera : " + networkCamera);
 					addCamera(networkCamera);
 					saveNewCamera(networkCamera);
 				});
@@ -160,7 +160,7 @@ public class UI extends UtilityJFrame {
 				addCamera(n);
 			}
 		} catch (Exception e) {
-			System.out.println("Error with serialization. Try deleting the serialization file at " + cameraListSerializer.file.getAbsolutePath() + ".");
+			log.info("Error with serialization. Try deleting the serialization file at " + cameraListSerializer.file.getAbsolutePath() + ".");
 		}
 
 		add(desktop);
@@ -199,7 +199,7 @@ public class UI extends UtilityJFrame {
 
 	private void saveConfig() {
 
-		System.out.println("Saving...");
+		log.info("Saving...");
 		cameraListSerializer.save();
 
 		Properties.X.setIntValue(getX());
