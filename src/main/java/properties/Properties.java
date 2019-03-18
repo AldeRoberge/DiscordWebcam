@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * Example of a Properties class
  */
-public abstract class Properties {
+public class Properties {
 
 	static {
 		propertyFile = new PropertyFileManager("discord-webcam.properties");
@@ -21,8 +21,7 @@ public abstract class Properties {
 	private static PropertyFileManager propertyFile;
 
 	//@formatter:off
-	public static final Property DISCORD_BOT_CLIENT_ID = new Property("DISCORD_BOT_CLIENT_ID", "Your discord bot client id.", "your-client-id", propertyFile);
-	public static final Property DISCORD_BOT_CLIENT_SECRET = new Property("DISCORD_BOT_CLIENT_SECRET", "Your discord client secret.", "your-discord-secret", propertyFile);
+	public static final Property DISCORD_BOT_TOKEN = new Property("DISCORD_BOT_TOKEN", "Your discord bot token.", "your-token", propertyFile);
 	//@formatter:on
 
 	/**
@@ -45,7 +44,7 @@ public abstract class Properties {
 		return properties;
 	}
 
-	public JPanel getPropertiesPanel(List<Property> properties) {
+	public static JPanel getPropertiesPanel() {
 
 		JPanel jPanel = new JPanel();
 
@@ -59,7 +58,7 @@ public abstract class Properties {
 
 		propertyPanel.setLayout(new BoxLayout(propertyPanel, BoxLayout.Y_AXIS));
 
-		for (Property p : properties) {
+		for (Property p : getProperties()) {
 			propertyPanel.add(p.getEditPropertyPanel());
 		}
 
