@@ -14,7 +14,7 @@ public class Main {
 		d.start();
 
 
-		
+
 
 
 		JFrame f = new JFrame();
