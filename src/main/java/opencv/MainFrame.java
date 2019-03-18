@@ -21,7 +21,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
-public class MainFrame extends JFrame {
+public class MainFrame extends JPanel {
 	static {
 		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
 		System.loadLibrary("opencv_ffmpeg342_64");
@@ -70,8 +70,6 @@ public class MainFrame extends JFrame {
 			int sourcen = 1;
 			System.out.println("Opening source: " + sourcen);
 
-
-			//http://192.168.0.107:8080/video?x.mjpeg
 			video = new VideoCapture("http://192.168.0.107:8080/video");
 
 			double dWidth = video.get(Videoio.CV_CAP_PROP_FRAME_WIDTH); //get the width of frames of the video
@@ -94,15 +92,7 @@ public class MainFrame extends JFrame {
 				firstFrame = true;
 			}
 		}
-
-
-
 	}
-
-
-
-
-
 
 
 
