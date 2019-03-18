@@ -58,7 +58,7 @@ public class CreateNewCameraUI extends UtilityJFrame {
 
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
-				acceptCamera(null);
+				acceptCamera();
 			}
 		});
 
@@ -152,7 +152,7 @@ public class CreateNewCameraUI extends UtilityJFrame {
 		JButton button = new JButton("Okay");
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				acceptCamera(new NetworkCamera(nameField.getText(), networkField.getText()));
+				acceptCamera();
 			}
 		});
 		okayPanel.add(button);
@@ -161,8 +161,8 @@ public class CreateNewCameraUI extends UtilityJFrame {
 
 	}
 
-	private void acceptCamera(NetworkCamera camera) {
-		getNewCamera.accept(camera);
+	private void acceptCamera() {
+		getNewCamera.accept(new NetworkCamera(nameField.getText(), networkField.getText()));
 		dispose();
 		setVisible(false);
 	}
