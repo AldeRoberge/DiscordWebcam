@@ -6,6 +6,7 @@ import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 import org.opencv.videoio.VideoCapture;
 import org.opencv.videoio.Videoio;
+import test.NetworkCamera;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -21,16 +22,17 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
-public class MainFrame extends JPanel {
+public class CameraPanel extends JPanel {
 	static {
 		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
-		System.loadLibrary("opencv_ffmpeg342_64");
+		System.loadLibrary("opencv_ffmpeg342_64"); //crucial to use IP Camera
 	}
+
+	private NetworkCamera networkCamera;
 
 	private Boolean begin = false;
 	private Boolean firstFrame = true;
 	private VideoCapture video = null;
-	private CaptureThread thread = null;
 	private MatOfByte matOfByte = new MatOfByte();
 	private BufferedImage bufImage = null;
 	private InputStream in;
@@ -45,10 +47,12 @@ public class MainFrame extends JPanel {
 	String detectionsDir = "detections";
 
 	public static void main(String[] args) {
-		new MainFrame();
+		new CameraPanel(new NetworkCamera("http://192.168.0.107:8080/video"));
 	}
 
-	public MainFrame() {
+	public CameraPanel(NetworkCamera networkCamera) {
+
+		this.networkCamera = networkCamera;
 
 		image = new ImagePanel(new ImageIcon("figs/320x240.gif").getImage());
 		add(image, BorderLayout.CENTER);
@@ -64,16 +68,15 @@ public class MainFrame extends JPanel {
 	}
 
 	private void start() {
-		System.out.println("You clicked the start button!");
 
 		if (!begin) {
-			int sourcen = 1;
-			System.out.println("Opening source: " + sourcen);
 
-			video = new VideoCapture("http://192.168.0.107:8080/video");
+			video = new VideoCapture(networkCamera.networkAddress);
 
 			double dWidth = video.get(Videoio.CV_CAP_PROP_FRAME_WIDTH); //get the width of frames of the video
 			double dHeight = video.get(Videoio.CV_CAP_PROP_FRAME_HEIGHT); //get the height of frames of the video
+
+			setPreferredSize(new Dimension((int) dWidth, (int) dHeight));
 
 			System.out.println("Got width : " + dWidth + ", height : " + dHeight);
 
@@ -86,7 +89,7 @@ public class MainFrame extends JPanel {
 					e.printStackTrace();
 				}
 
-				thread = new CaptureThread();
+				CaptureThread thread = new CaptureThread();
 				thread.start();
 				begin = true;
 				firstFrame = true;
@@ -94,13 +97,10 @@ public class MainFrame extends JPanel {
 		}
 	}
 
-
-
 	/**
 	 * Disposes of this object
 	 */
 	private void end() {
-		System.out.println("You clicked the stop button!");
 
 		if (begin) {
 			try {
@@ -266,4 +266,30 @@ public class MainFrame extends JPanel {
 		}
 	}
 
+}
+
+class ImagePanel extends JPanel {
+	private Image img;
+
+	public ImagePanel(Image img) {
+		this.img = img;
+		Dimension size = new Dimension(img.getWidth(null), img.getHeight(null));
+		setPreferredSize(size);
+		setMinimumSize(size);
+		setMaximumSize(size);
+		setSize(size);
+		setLayout(null);
+		setBorder(BorderFactory.createLineBorder(Color.black));
+	}
+
+	public void updateImage(Image img) {
+		this.img = img;
+		validate();
+		repaint();
+	}
+
+	@Override
+	public void paintComponent(Graphics g) {
+		g.drawImage(img, 0, 0, null);
+	}
 }
