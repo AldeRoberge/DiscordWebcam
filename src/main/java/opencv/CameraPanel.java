@@ -7,11 +7,16 @@ import org.opencv.imgproc.Imgproc;
 import org.opencv.videoio.VideoCapture;
 import org.opencv.videoio.Videoio;
 import test.Constants;
+import test.EditNetworkCamera;
 import test.NetworkCamera;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.event.MenuEvent;
+import javax.swing.event.MenuListener;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -69,6 +74,31 @@ public class CameraPanel extends JPanel {
 		settings.setIcon(new ImageIcon(Constants.gearIcon));
 		edit.add(settings);
 		add(edit, BorderLayout.SOUTH);
+
+
+		settings.addMenuListener(new MenuListener() {
+			@Override
+			public void menuSelected(MenuEvent e) {
+				System.out.println("Adding");
+				new EditNetworkCamera(networkCamera, new Runnable() {
+					@Override
+					public void run() {
+
+						// Updates the name of the window
+						JInternalFrame parent = (JInternalFrame) getParent().getParent().getParent().getParent();
+						parent.setTitle(networkCamera.name);
+					}
+				});
+			}
+
+			@Override
+			public void menuDeselected(MenuEvent e) {
+			}
+
+			@Override
+			public void menuCanceled(MenuEvent e) {
+			}
+		});
 
 		settings.setVisible(false);
 

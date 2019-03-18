@@ -9,6 +9,7 @@ import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
 
 public class UI extends UtilityJFrame {
 
@@ -78,6 +79,33 @@ public class UI extends UtilityJFrame {
 			System.out.println("Error with serialization. Try deleting the serialization file at " + cameraListSerializer.file.getAbsolutePath() + ".");
 		}
 
+		desktop.addMouseListener(new MouseListener() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+
+			}
+
+			@Override
+			public void mousePressed(MouseEvent e) {
+
+			}
+
+			@Override
+			public void mouseReleased(MouseEvent e) {
+
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent e) {
+
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+
+			}
+		});
+
 		add(desktop);
 		setLocationRelativeTo(null);
 		setVisible(true);
@@ -85,10 +113,14 @@ public class UI extends UtilityJFrame {
 
 	boolean hasChanged = false;
 
+	ArrayList<InternalNetworkCameraFrame> cameraFrameList = new ArrayList<>();
+
 	public void addCamera(NetworkCamera n) {
 
 		InternalNetworkCameraFrame i = new InternalNetworkCameraFrame(n);
 		i.setVisible(true);
+
+		cameraFrameList.add(i);
 
 		desktop.add(i);
 
@@ -118,9 +150,14 @@ public class UI extends UtilityJFrame {
 	}
 
 	private class InternalNetworkCameraFrame extends JInternalFrame {
+
+		NetworkCamera n;
+
 		InternalNetworkCameraFrame(NetworkCamera n) {
 
 			super(n.name, true, true, true, true);
+
+			this.n = n;
 
 			CameraPanel panel = new CameraPanel(n);
 

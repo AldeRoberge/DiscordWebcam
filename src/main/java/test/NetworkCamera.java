@@ -16,7 +16,9 @@ public class NetworkCamera implements Serializable {
 	public int width = 400;
 
 	public boolean motionDetection = false;
-	public double threshold = 15; //max = 255
+	public int threshold = 15; //max = 255
+
+	public boolean publishOnDiscord;
 
 	public NetworkCamera(String name, String networkAddress) {
 		this.name = name;
@@ -26,10 +28,15 @@ public class NetworkCamera implements Serializable {
 	@Override
 	public String toString() {
 		return "NetworkCamera{" +
-				"networkAddress='" + networkAddress + '\'' +
-				", name='" + name + '\'' +
+				"name='" + name + '\'' +
+				", networkAddress='" + networkAddress + '\'' +
+				", x=" + x +
+				", y=" + y +
+				", height=" + height +
+				", width=" + width +
+				", motionDetection=" + motionDetection +
+				", threshold=" + threshold +
+				", publishOnDiscord=" + publishOnDiscord +
 				'}';
 	}
-
-
 }
