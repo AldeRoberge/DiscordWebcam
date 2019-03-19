@@ -2,7 +2,7 @@ package test.ui;
 
 import alde.commons.util.window.UtilityJFrame;
 import test.Constants;
-import test.NetworkCamera;
+import test.camera.SerializedCamera;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -27,7 +27,7 @@ public class EditCameraUI extends UtilityJFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					EditCameraUI frame = new EditCameraUI(new NetworkCamera("ip", "adress"), null);
+					EditCameraUI frame = new EditCameraUI(new SerializedCamera("ip", "adress"), null);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -39,7 +39,7 @@ public class EditCameraUI extends UtilityJFrame {
 	/**
 	 * Create the frame.
 	 */
-	public EditCameraUI(final NetworkCamera n, final Runnable runOnClose) {
+	public EditCameraUI(final SerializedCamera n, final Runnable runOnClose) {
 	
 		if (n.name.equals("")) {
 			setTitle("Edit untitled camera");

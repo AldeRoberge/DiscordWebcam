@@ -4,7 +4,7 @@ package test.ui;
 import alde.commons.util.jtextfield.UtilityJTextField;
 import alde.commons.util.window.UtilityJFrame;
 import test.Constants;
-import test.NetworkCamera;
+import test.camera.SerializedCamera;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -17,7 +17,7 @@ import java.util.function.Consumer;
 
 public class CreateNewCameraUI extends UtilityJFrame {
 
-	private final Consumer<NetworkCamera> getNewCamera;
+	private final Consumer<SerializedCamera> getNewCamera;
 	private JPanel contentPane;
 	private UtilityJTextField nameField;
 	private UtilityJTextField networkField;
@@ -29,8 +29,8 @@ public class CreateNewCameraUI extends UtilityJFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					CreateNewCameraUI frame = new CreateNewCameraUI(new Consumer<NetworkCamera>() {
-						public void accept(NetworkCamera c) {
+					CreateNewCameraUI frame = new CreateNewCameraUI(new Consumer<SerializedCamera>() {
+						public void accept(SerializedCamera c) {
 							System.out.println("Network camera : " + c);
 						}
 					});
@@ -45,7 +45,7 @@ public class CreateNewCameraUI extends UtilityJFrame {
 	/**
 	 * Create the frame.
 	 */
-	public CreateNewCameraUI(Consumer<NetworkCamera> getNewCamera) {
+	public CreateNewCameraUI(Consumer<SerializedCamera> getNewCamera) {
 
 		this.getNewCamera = getNewCamera;
 
@@ -134,7 +134,7 @@ public class CreateNewCameraUI extends UtilityJFrame {
 		JPanel namePanel = new JPanel();
 		textFieldPanel.add(namePanel);
 
-		nameField = new UtilityJTextField();
+		nameField = new UtilityJTextField("Unnamed camera");
 		nameField.setHint("Enter a camera name");
 		nameField.setToolTipText("Helps to identify between different cameras.");
 		namePanel.add(nameField);
@@ -143,9 +143,9 @@ public class CreateNewCameraUI extends UtilityJFrame {
 		JPanel networkAddressPanel = new JPanel();
 		textFieldPanel.add(networkAddressPanel);
 
-		networkField = new UtilityJTextField();
+		networkField = new UtilityJTextField("http://192.168.0.107:8080/video?x.mjpeg");
 		networkField.setHint("Enter a camera address");
-		networkField.setToolTipText("Example : http://192.168.0.107:8080/video?x.mjpeg");
+		networkField.setToolTipText("A mjpeg video feed address.");
 		networkAddressPanel.add(networkField);
 		networkField.setColumns(20);
 
@@ -162,7 +162,7 @@ public class CreateNewCameraUI extends UtilityJFrame {
 	}
 
 	private void acceptCamera() {
-		getNewCamera.accept(new NetworkCamera(nameField.getText(), networkField.getText()));
+		getNewCamera.accept(new SerializedCamera(nameField.getText(), networkField.getText()));
 		dispose();
 		setVisible(false);
 	}

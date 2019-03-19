@@ -11,7 +11,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import properties.Properties;
 import test.Constants;
-import test.NetworkCamera;
+import test.camera.CameraType;
+import test.camera.SerializedCamera;
 import test.detection.MotionDetectionEvent;
 import test.ui.EditCameraUI;
 
@@ -35,14 +36,18 @@ import java.util.Iterator;
 import java.util.List;
 
 public class CameraPanel extends JInternalFrame {
-	static {
-		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
-		System.loadLibrary("opencv_ffmpeg342_64"); //crucial to use IP Camera
+
+	@Override
+	public void paint(Graphics g) {
+		g.setColor(Color.BLACK);
+		g.fillRect(0, 0, getWidth(), getHeight());
+
+		super.paint(g);
 	}
 
 	static Logger log = LoggerFactory.getLogger(CameraPanel.class);
 
-	private NetworkCamera networkCamera;
+	private SerializedCamera serializedCamera;
 
 	private Boolean begin = false;
 	private Boolean firstFrame = true;
@@ -61,18 +66,18 @@ public class CameraPanel extends JInternalFrame {
 	JMenuBar menuBar;
 
 	public static void main(String[] args) {
-		new CameraPanel(new NetworkCamera("Test camera", "http://192.168.0.107:8080/video"
+		new CameraPanel(new SerializedCamera("Test camera", "http://192.168.0.107:8080/video"
 		), () -> log.info("On close"));
 	}
 
 	JMenuItem sendOnDiscord;
 	JMenuItem motionDetection;
 
-	public CameraPanel(NetworkCamera n, Runnable onRemove) {
+	public CameraPanel(SerializedCamera n, Runnable onRemove) {
 
 		super(n.name, true, true, true, true);
 
-		this.networkCamera = n;
+		this.serializedCamera = n;
 
 		setBackground(Constants.CAMERA_PANEL_BACKGROUND_COLOR);
 
@@ -227,7 +232,11 @@ public class CameraPanel extends JInternalFrame {
 
 		if (!begin) {
 
-			video = new VideoCapture(networkCamera.networkAddress);
+			if (serializedCamera.type == CameraType.LOCAL) {
+				video = new VideoCapture(serializedCamera.ID);
+			} else if (serializedCamera.type == CameraType.NETWORK) {
+				video = new VideoCapture(serializedCamera.networkAddress);
+			}
 
 			double dWidth = video.get(Videoio.CV_CAP_PROP_FRAME_WIDTH); //get the width of frames of the video
 			double dHeight = video.get(Videoio.CV_CAP_PROP_FRAME_HEIGHT); //get the height of frames of the video
@@ -329,7 +338,7 @@ public class CameraPanel extends JInternalFrame {
 						continue;
 					}
 
-					if (networkCamera.motionDetection) {
+					if (serializedCamera.motionDetection) {
 						Imgproc.GaussianBlur(currentFrame, currentFrame, new Size(3, 3), 0);
 						Imgproc.GaussianBlur(lastFrame, lastFrame, new Size(3, 3), 0);
 
@@ -341,7 +350,7 @@ public class CameraPanel extends JInternalFrame {
 						//
 
 						//Imgproc.adaptiveThreshold(processedFrame, processedFrame, 255, Imgproc.ADAPTIVE_THRESH_MEAN_C, Imgproc.THRESH_BINARY_INV, 5, 2);
-						Imgproc.threshold(processedFrame, processedFrame, networkCamera.threshold, 255, Imgproc.THRESH_BINARY);
+						Imgproc.threshold(processedFrame, processedFrame, serializedCamera.threshold, 255, Imgproc.THRESH_BINARY);
 
 						ArrayList<Rect> array = detection_contours(currentFrame, processedFrame);
 						///*
@@ -372,7 +381,7 @@ public class CameraPanel extends JInternalFrame {
 									new Point(5, currentFrame.cols() / 2), //currentFrame.rows()/2 currentFrame.cols()/2
 									Core.FONT_HERSHEY_TRIPLEX, 1d, new Scalar(0, 0, 255));
 
-							if (networkCamera.sendOnDiscord) {
+							if (serializedCamera.sendOnDiscord) {
 								if (savedelay == 2) {
 									savedelay = 0;
 
@@ -396,10 +405,9 @@ public class CameraPanel extends JInternalFrame {
 										File outputfile = new File(newFilePath);
 										ImageIO.write(buf, "png", outputfile);
 
-										MotionDetectionEvent e = new MotionDetectionEvent(outputfile, new Date(), networkCamera.name);
+										MotionDetectionEvent e = new MotionDetectionEvent(outputfile, new Date(), serializedCamera.name);
 
 										Discord.notifyDetection(e);
-
 
 									} catch (Exception ex) {
 

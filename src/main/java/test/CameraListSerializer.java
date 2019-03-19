@@ -3,6 +3,7 @@ package test;
 import alde.commons.util.file.FileEditor;
 import alde.commons.util.text.StackTraceToString;
 import org.slf4j.LoggerFactory;
+import test.camera.SerializedCamera;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -13,7 +14,7 @@ public class CameraListSerializer {
 
 	public final File file = new File(new File(".") + File.separator + "cameras.serialized");
 
-	ArrayList<NetworkCamera> list;
+	ArrayList<SerializedCamera> list;
 
 	public CameraListSerializer() {
 		list = get();
@@ -32,7 +33,7 @@ public class CameraListSerializer {
 		}
 	}
 
-	public ArrayList<NetworkCamera> get() {
+	public ArrayList<SerializedCamera> get() {
 
 		if (list != null) {
 			return list;
@@ -42,7 +43,7 @@ public class CameraListSerializer {
 					FileInputStream fis = new FileInputStream(file);
 
 					ObjectInputStream ois = new ObjectInputStream(fis);
-					list = (ArrayList<NetworkCamera>) ois.readObject();
+					list = (ArrayList<SerializedCamera>) ois.readObject();
 					ois.close();
 					fis.close();
 

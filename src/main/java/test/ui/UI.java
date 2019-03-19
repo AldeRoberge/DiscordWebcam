@@ -2,12 +2,14 @@ package test.ui;
 
 import alde.commons.util.window.UtilityJFrame;
 import opencv.CameraPanel;
+import org.opencv.core.Core;
+import org.opencv.videoio.VideoCapture;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import properties.Properties;
 import test.CameraListSerializer;
 import test.Constants;
-import test.NetworkCamera;
+import test.camera.SerializedCamera;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,6 +17,11 @@ import java.awt.event.*;
 import java.util.ArrayList;
 
 public class UI extends UtilityJFrame {
+
+	static {
+		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+		System.loadLibrary("opencv_ffmpeg342_64"); //crucial to use IP Camera
+	}
 
 	static Logger log = LoggerFactory.getLogger(UI.class);
 
@@ -89,11 +96,7 @@ public class UI extends UtilityJFrame {
 
 		registerSystemTray();
 
-		addWindowStateListener(new WindowStateListener() {
-			public void windowStateChanged(WindowEvent arg0) {
-				log.info(arg0.getNewState() + "");
-			}
-		});
+		addWindowStateListener(arg0 -> log.info(arg0.getNewState() + ""));
 
 		setSize(Properties.WIDTH.getIntValue(), Properties.HEIGHT.getIntValue());
 
@@ -104,36 +107,61 @@ public class UI extends UtilityJFrame {
 		MenuBar menu = new MenuBar();
 		Menu file = new Menu("File");
 		MenuItem addNewCamera = new MenuItem("Add new camera");
-		addNewCamera.addActionListener(new ActionListener() {
+		addNewCamera.addActionListener(e -> new CreateNewCameraUI(camera -> {
+			log.info("Received network camera : " + camera);
+			addCamera(camera);
+			saveNewCamera(camera);
+		}));
+		file.add(addNewCamera);
+
+		MenuItem detectLocalCameras = new MenuItem("Detect local cameras");
+		detectLocalCameras.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				new CreateNewCameraUI(networkCamera -> {
-					log.info("Received network camera : " + networkCamera);
-					addCamera(networkCamera);
-					saveNewCamera(networkCamera);
-				});
+
+				ArrayList<Integer> validLocalCameras = new ArrayList<>();
+
+				for (int i = 0; i < 10; i++) {
+
+					VideoCapture video = new VideoCapture(i);
+
+					if (video.isOpened()) {
+						log.info("Camera " + i + " is valid.");
+						validLocalCameras.add(i);
+
+					} else {
+						log.info("Camera " + i + " is not valid.");
+					}
+
+					video.release();
+
+				}
+
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e1) {
+					e1.printStackTrace();
+				}
+
+				log.info("Found " + validLocalCameras.size() + " valid cameras.");
+
+				for (Integer i : validLocalCameras) {
+					addCamera(new SerializedCamera("Local Camera " + i, i));
+				}
+
 			}
 		});
-		file.add(addNewCamera);
+		file.add(detectLocalCameras);
+
 		menu.add(file);
 
 		Menu edit = new Menu("Edit");
 		MenuItem editProperties = new MenuItem("Edit properties");
-		editProperties.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				showEditPropertiesPanel(false);
-			}
-		});
+		editProperties.addActionListener(e -> showEditPropertiesPanel(false));
 		edit.add(editProperties);
 
 		MenuItem showLogger = new MenuItem("Show logger");
-		showLogger.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				showLogger();
-			}
-		});
+		showLogger.addActionListener(e -> showLogger());
 		edit.add(showLogger);
 
 		menu.add(edit);
@@ -145,7 +173,7 @@ public class UI extends UtilityJFrame {
 		desktop = new JDesktopPane();
 
 		try {
-			for (NetworkCamera n : cameraListSerializer.get()) {
+			for (SerializedCamera n : cameraListSerializer.get()) {
 				addCamera(n);
 			}
 		} catch (Exception e) {
@@ -240,7 +268,7 @@ public class UI extends UtilityJFrame {
 
 	ArrayList<CameraPanel> cameraFrameList = new ArrayList<>();
 
-	public void addCamera(NetworkCamera n) {
+	public void addCamera(SerializedCamera n) {
 
 		CameraPanel i = new CameraPanel(n, () -> removeCamera(n));
 		i.setVisible(true);
@@ -251,12 +279,12 @@ public class UI extends UtilityJFrame {
 
 	}
 
-	private void removeCamera(NetworkCamera n) {
+	private void removeCamera(SerializedCamera n) {
 		cameraListSerializer.get().remove(n);
 		cameraListSerializer.save();
 	}
 
-	public void saveNewCamera(NetworkCamera n) {
+	public void saveNewCamera(SerializedCamera n) {
 		cameraListSerializer.get().add(n);
 		cameraListSerializer.save();
 	}
