@@ -1,5 +1,6 @@
 package opencv;
 
+import discord.Discord;
 import org.opencv.core.Point;
 import org.opencv.core.*;
 import org.opencv.imgcodecs.Imgcodecs;
@@ -8,8 +9,10 @@ import org.opencv.videoio.VideoCapture;
 import org.opencv.videoio.Videoio;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import properties.Properties;
 import test.Constants;
 import test.NetworkCamera;
+import test.detection.MotionDetectionEvent;
 import test.ui.EditCameraUI;
 
 import javax.imageio.ImageIO;
@@ -25,7 +28,6 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.InputStream;
-import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -46,8 +48,6 @@ public class CameraPanel extends JInternalFrame {
 	private Boolean firstFrame = true;
 	private VideoCapture video = null;
 	private MatOfByte matOfByte = new MatOfByte();
-	private BufferedImage bufImage = null;
-	private InputStream in;
 	private Mat frameaux = new Mat();
 	private Mat frame = new Mat(240, 320, CvType.CV_8UC3);
 	private Mat lastFrame = new Mat(240, 320, CvType.CV_8UC3);
@@ -55,8 +55,6 @@ public class CameraPanel extends JInternalFrame {
 	private Mat processedFrame = new Mat(240, 320, CvType.CV_8UC3);
 	private ImagePanel image;
 	private int savedelay = 0;
-	String currentDir = "";
-	String detectionsDir = "detections";
 
 	CaptureThread thread;
 
@@ -196,11 +194,6 @@ public class CameraPanel extends JInternalFrame {
 
 		add(menuBar, BorderLayout.SOUTH);
 
-		currentDir = Paths.get(".").toAbsolutePath().normalize().toString();
-		detectionsDir = currentDir + File.separator + detectionsDir;
-		log.info("Current dir: " + currentDir);
-		log.info("Detections dir: " + detectionsDir);
-
 		setVisible(true);
 
 		start();
@@ -283,7 +276,7 @@ public class CameraPanel extends JInternalFrame {
 	}
 
 	public static String getCurrentTimeStamp() {
-		SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");//dd/MM/yyyy
+		SimpleDateFormat sdfDate = new SimpleDateFormat("dd-MM-yyyy_HH-mm-ss-SSS");//dd/MM/yyyy
 		Date now = new Date();
 		String strDate = sdfDate.format(now);
 		return strDate;
@@ -315,8 +308,6 @@ public class CameraPanel extends JInternalFrame {
 		v.release();
 		return rect_array;
 	}
-
-	boolean save = false;
 
 	class CaptureThread extends Thread {
 
@@ -381,11 +372,42 @@ public class CameraPanel extends JInternalFrame {
 									new Point(5, currentFrame.cols() / 2), //currentFrame.rows()/2 currentFrame.cols()/2
 									Core.FONT_HERSHEY_TRIPLEX, 1d, new Scalar(0, 0, 255));
 
-							if (save) {
+							if (networkCamera.sendOnDiscord) {
 								if (savedelay == 2) {
-									log.info("Saving results in: " + detectionsDir);
-									Imgcodecs.imwrite(detectionsDir, frame);
 									savedelay = 0;
+
+									if (!(new File(Properties.SAVE_IMAGES_FOLDER.getValue()).exists())) {
+										log.info("Attempting to create folder '" + Properties.SAVE_IMAGES_FOLDER.getValue() + "'. Result : '" + new File(Properties.SAVE_IMAGES_FOLDER.getValue()).mkdir() + "'.");
+									}
+
+									String newFilePath = Properties.SAVE_IMAGES_FOLDER.getValue()
+											+ File.separator + getCurrentTimeStamp() + ".png";
+
+									Imgcodecs.imencode(".jpg", frame, matOfByte);
+									byte[] byteArray = matOfByte.toArray();
+
+									BufferedImage buf;
+									InputStream in;
+
+									try {
+										in = new ByteArrayInputStream(byteArray);
+										buf = ImageIO.read(in);
+
+										File outputfile = new File(newFilePath);
+										ImageIO.write(buf, "png", outputfile);
+
+										MotionDetectionEvent e = new MotionDetectionEvent(outputfile, new Date(), networkCamera.name);
+
+										Discord.notifyDetection(e);
+
+
+									} catch (Exception ex) {
+
+										log.error("Something went wrong with saving the detection image file '" + newFilePath + "'. Make sure folder '" + Properties.SAVE_IMAGES_FOLDER.getValue() + "' exists and there is enough empty storage space to save the image.");
+
+										ex.printStackTrace();
+									}
+
 								} else
 									savedelay = savedelay + 1;
 							}
@@ -406,15 +428,19 @@ public class CameraPanel extends JInternalFrame {
 					Imgcodecs.imencode(".jpg", processedFrame, matOfByte);
 					byte[] byteArray = matOfByte.toArray();
 
+					InputStream in;
+
+					BufferedImage bufImage = null;
+
 					try {
 						in = new ByteArrayInputStream(byteArray);
 						bufImage = ImageIO.read(in);
+
+						//image.updateImage(new ImageIcon("figs/lena.png").getImage());
+						image.updateImage(bufImage);
 					} catch (Exception ex) {
 						ex.printStackTrace();
 					}
-
-					//image.updateImage(new ImageIcon("figs/lena.png").getImage());
-					image.updateImage(bufImage);
 
 					frame.copyTo(lastFrame);
 
@@ -422,6 +448,7 @@ public class CameraPanel extends JInternalFrame {
 						Thread.sleep(1);
 					} catch (Exception ex) {
 					}
+
 				}
 			}
 		}

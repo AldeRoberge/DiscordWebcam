@@ -1,7 +1,6 @@
 package test.ui;
 
 import alde.commons.util.window.UtilityJFrame;
-import discord.Discord;
 import opencv.CameraPanel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,7 +31,7 @@ public class UI extends UtilityJFrame {
 		if (Properties.IS_FIRST_LAUNCH.getBooleanValue()) {
 			showEditPropertiesPanel(true);
 		} else {
-			run();
+			showUI();
 		}
 	}
 
@@ -52,7 +51,7 @@ public class UI extends UtilityJFrame {
 				f.setVisible(false);
 
 				if (runOnClose) {
-					run();
+					showUI();
 					Properties.IS_FIRST_LAUNCH.setValue(false);
 				}
 			}
@@ -62,7 +61,7 @@ public class UI extends UtilityJFrame {
 		f.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
 				if (runOnClose) {
-					run();
+					showUI();
 				}
 				f.setVisible(false);
 			}
@@ -75,14 +74,8 @@ public class UI extends UtilityJFrame {
 		f.setVisible(true);
 	}
 
-	private static void run() {
-		UI u = new UI();
-	}
-
-	public void startDiscordBot() {
-		Discord d = new Discord(Properties.DISCORD_BOT_TOKEN.getValue());
-		d.start();
-
+	private static void showUI() {
+		new UI();
 	}
 
 	JDesktopPane desktop;
