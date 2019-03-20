@@ -1,5 +1,6 @@
 package test.ui;
 
+import alde.commons.util.file.FileSizeToString;
 import alde.commons.util.window.UtilityJFrame;
 import opencv.CameraPanel;
 import org.opencv.core.Core;
@@ -14,7 +15,9 @@ import test.camera.SerializedCamera;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.File;
 import java.util.ArrayList;
+import java.util.TimerTask;
 
 public class UI extends UtilityJFrame {
 
@@ -171,6 +174,28 @@ public class UI extends UtilityJFrame {
 
 		// End menu bar
 
+		// STATUS BAR
+
+		JPanel statusPanel = new JPanel();
+		//statusPanel.setBorder(new BevelBorder(BevelBorder.LOWERED));
+		add(statusPanel, BorderLayout.SOUTH);
+		statusPanel.setPreferredSize(new Dimension(getWidth(), 16));
+		statusPanel.setLayout(new BoxLayout(statusPanel, BoxLayout.X_AXIS));
+
+		JLabel statusLabel = new JLabel();
+		statusLabel.setHorizontalAlignment(SwingConstants.LEFT);
+		statusPanel.add(statusLabel);
+
+		java.util.Timer t = new java.util.Timer();
+		t.schedule(new TimerTask() {
+			@Override
+			public void run() {
+				statusLabel.setText(" Disk space : " + FileSizeToString.getByteSizeAsString(new File(".").getUsableSpace()));
+			}
+		}, 0, 5000);
+
+		// End
+
 		desktop = new JDesktopPane();
 
 		try {
@@ -178,7 +203,7 @@ public class UI extends UtilityJFrame {
 				addCamera(n);
 			}
 		} catch (Exception e) {
-			log.info("Error with serialization. Try deleting the serialization file at " + cameraListSerializer.file.getAbsolutePath() + ".");
+			log.info("Error with deserialization. Try deleting the file at " + cameraListSerializer.file.getAbsolutePath() + ".");
 		}
 
 		add(desktop);
@@ -299,11 +324,9 @@ public class UI extends UtilityJFrame {
 
 	private void saveConfig() {
 
-
-		for (CameraPanel c : cameraFrameList ) {
+		for (CameraPanel c : cameraFrameList) {
 			c.dispose();
 		}
-
 
 		log.info("Saving...");
 		cameraListSerializer.save();

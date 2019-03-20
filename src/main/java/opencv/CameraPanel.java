@@ -1,5 +1,6 @@
 package opencv;
 
+import com.sun.management.OperatingSystemMXBean;
 import discord.Discord;
 import org.opencv.core.Point;
 import org.opencv.core.*;
@@ -17,6 +18,7 @@ import test.detection.MotionDetectionEvent;
 import test.ui.EditCameraUI;
 
 import javax.imageio.ImageIO;
+import javax.management.MBeanServerConnection;
 import javax.swing.*;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
@@ -28,7 +30,9 @@ import java.awt.event.ComponentEvent;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
+import java.lang.management.ManagementFactory;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -155,6 +159,12 @@ public class CameraPanel extends JInternalFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
+				try {
+					printUsage();
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+
 				if (n.sendOnDiscord) {
 					n.sendOnDiscord = false;
 				} else {
@@ -175,6 +185,29 @@ public class CameraPanel extends JInternalFrame {
 		add(menuBar, BorderLayout.SOUTH);
 
 		start();
+	}
+
+	private void printUsage() throws IOException {
+		MBeanServerConnection mbsc = ManagementFactory.getPlatformMBeanServer();
+
+		OperatingSystemMXBean osMBean = ManagementFactory.newPlatformMXBeanProxy(
+				mbsc, ManagementFactory.OPERATING_SYSTEM_MXBEAN_NAME, OperatingSystemMXBean.class);
+
+		long nanoBefore = System.nanoTime();
+		long cpuBefore = osMBean.getProcessCpuTime();
+
+		// Call an expensive task, or sleep if you are monitoring a remote process
+
+		long cpuAfter = osMBean.getProcessCpuTime();
+		long nanoAfter = System.nanoTime();
+
+		long percent;
+		if (nanoAfter > nanoBefore)
+			percent = ((cpuAfter - cpuBefore) * 100L) /
+					(nanoAfter - nanoBefore);
+		else percent = 0;
+
+		System.out.println("Cpu usage: " + percent + "%");
 	}
 
 	private void updateSendOnDiscordIcon(boolean send) {
