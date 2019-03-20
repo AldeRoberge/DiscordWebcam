@@ -73,24 +73,8 @@ public class CameraPanel extends JInternalFrame {
 
 		setBackground(Constants.CAMERA_PANEL_BACKGROUND_COLOR);
 
-		setLocation(n.x, n.y);
-
 		setResizable(true);
 		setLayout(new BorderLayout());
-
-		addInternalFrameListener(new InternalFrameAdapter() {
-			@Override
-			public void internalFrameActivated(InternalFrameEvent e) {
-				super.internalFrameActivated(e);
-				receivedFocus();
-			}
-
-			@Override
-			public void internalFrameDeactivated(InternalFrameEvent e) {
-				super.internalFrameDeactivated(e);
-				lostFocus();
-			}
-		});
 
 		addInternalFrameListener(new InternalFrameAdapter() {
 			public void internalFrameClosing(InternalFrameEvent e) {
@@ -110,8 +94,8 @@ public class CameraPanel extends JInternalFrame {
 			public void componentResized(ComponentEvent e) {
 				super.componentResized(e);
 
-				/*n.height = getHeight();
-				n.width = getWidth();*/
+				n.height = getHeight();
+				n.width = getWidth();
 			}
 		});
 
@@ -122,7 +106,7 @@ public class CameraPanel extends JInternalFrame {
 		add(image, BorderLayout.CENTER);
 
 		menuBar = new JMenuBar();
-		menuBar.setVisible(false);
+		menuBar.setVisible(true);
 
 		JMenuItem settings = new JMenuItem("Settings");
 		settings.setIcon(new ImageIcon(Constants.gearIcon));
@@ -209,14 +193,6 @@ public class CameraPanel extends JInternalFrame {
 		}
 	}
 
-	public void receivedFocus() {
-		menuBar.setVisible(true);
-	}
-
-	public void lostFocus() {
-		menuBar.setVisible(false);
-	}
-
 	private void start() {
 
 		if (!begin) {
@@ -236,7 +212,6 @@ public class CameraPanel extends JInternalFrame {
 			setPreferredSize(new Dimension((int) serializedCamera.width, (int) serializedCamera.height));
 			setSize(getPreferredSize());
 			setVisible(true);
-
 
 			if (video.isOpened()) {
 				log.info("Is opened");
@@ -258,6 +233,13 @@ public class CameraPanel extends JInternalFrame {
 		}
 	}
 
+	@Override
+	public void dispose() {
+		super.dispose();
+
+		end();
+	}
+
 	/**
 	 * Disposes of this object
 	 */
@@ -270,13 +252,14 @@ public class CameraPanel extends JInternalFrame {
 		}
 
 		if (begin) {
+			log.info("Shutting down camera '" + serializedCamera.name + "'...");
+
 			try {
 				Thread.sleep(500);
 			} catch (Exception ex) {
 			}
 			video.release();
 			begin = false;
-
 		}
 	}
 

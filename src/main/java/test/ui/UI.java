@@ -299,6 +299,12 @@ public class UI extends UtilityJFrame {
 
 	private void saveConfig() {
 
+
+		for (CameraPanel c : cameraFrameList ) {
+			c.dispose();
+		}
+
+
 		log.info("Saving...");
 		cameraListSerializer.save();
 
