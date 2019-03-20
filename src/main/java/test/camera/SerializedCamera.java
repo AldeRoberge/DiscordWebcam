@@ -16,8 +16,8 @@ public class SerializedCamera implements Serializable {
 	public int x = 20;
 	public int y = 20;
 
-	public int height = 400;
-	public int width = 400;
+	public double height = 400;
+	public double width = 400;
 
 	public boolean motionDetection = false;
 	public int threshold = 15; //max = 255

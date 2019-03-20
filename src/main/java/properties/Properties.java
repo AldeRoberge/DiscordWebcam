@@ -26,7 +26,7 @@ public class Properties {
 	public static final BooleanProperty IS_FIRST_LAUNCH = new BooleanProperty("IS_FIRST_LAUNCH", "Displays the 'edit properties' UI on launch", true, propertyFile);
 	public static final Property DISCORD_BOT_TOKEN = new Property("DISCORD_BOT_TOKEN", "Your discord bot token", "your-token", propertyFile);
 
-	public static final Property DISCORD_CHANNEL_ID = new Property("DISCORD_CHANNEL_ID", "Your discord bot token", "discord-channel-id", propertyFile);
+	public static final Property DISCORD_CHANNEL_ID = new Property("DISCORD_CHANNEL_ID", "Discord channel ID", "discord-channel-id", propertyFile);
 
 	public static final IntProperty WIDTH = new IntProperty("WIDTH", "The program's width", 800, propertyFile);
 	public static final IntProperty HEIGHT = new IntProperty("HEIGHT", "The program height", 600, propertyFile);

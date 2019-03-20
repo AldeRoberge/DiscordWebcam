@@ -143,13 +143,14 @@ public class UI extends UtilityJFrame {
 					e1.printStackTrace();
 				}
 
-				log.info("Found " + validLocalCameras.size() + " valid cameras.");
+				showDialog("Found " + validLocalCameras.size() + " valid camera(s).");
 
 				for (Integer i : validLocalCameras) {
-					addCamera(new SerializedCamera("Local Camera " + i, i));
+					addCamera(new SerializedCamera("Camera " + i, i));
 				}
 
 			}
+
 		});
 		file.add(detectLocalCameras);
 
@@ -183,6 +184,13 @@ public class UI extends UtilityJFrame {
 		add(desktop);
 		setLocationRelativeTo(null);
 		setVisible(true);
+
+	}
+
+	private void showDialog(String s) {
+
+		log.info(s);
+		JOptionPane.showMessageDialog(null, s);
 
 	}
 

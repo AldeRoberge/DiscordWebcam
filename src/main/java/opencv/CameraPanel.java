@@ -37,14 +37,6 @@ import java.util.List;
 
 public class CameraPanel extends JInternalFrame {
 
-	@Override
-	public void paint(Graphics g) {
-		g.setColor(Color.BLACK);
-		g.fillRect(0, 0, getWidth(), getHeight());
-
-		super.paint(g);
-	}
-
 	static Logger log = LoggerFactory.getLogger(CameraPanel.class);
 
 	private SerializedCamera serializedCamera;
@@ -81,7 +73,6 @@ public class CameraPanel extends JInternalFrame {
 
 		setBackground(Constants.CAMERA_PANEL_BACKGROUND_COLOR);
 
-		setSize(n.width, n.height);
 		setLocation(n.x, n.y);
 
 		setResizable(true);
@@ -119,8 +110,8 @@ public class CameraPanel extends JInternalFrame {
 			public void componentResized(ComponentEvent e) {
 				super.componentResized(e);
 
-				n.height = getHeight();
-				n.width = getWidth();
+				/*n.height = getHeight();
+				n.width = getWidth();*/
 			}
 		});
 
@@ -199,8 +190,6 @@ public class CameraPanel extends JInternalFrame {
 
 		add(menuBar, BorderLayout.SOUTH);
 
-		setVisible(true);
-
 		start();
 	}
 
@@ -241,9 +230,13 @@ public class CameraPanel extends JInternalFrame {
 			double dWidth = video.get(Videoio.CV_CAP_PROP_FRAME_WIDTH); //get the width of frames of the video
 			double dHeight = video.get(Videoio.CV_CAP_PROP_FRAME_HEIGHT); //get the height of frames of the video
 
-			setPreferredSize(new Dimension((int) dWidth, (int) dHeight));
+			serializedCamera.width = dWidth;
+			serializedCamera.height = dHeight;
 
-			log.info("Got width : " + dWidth + ", height : " + dHeight);
+			setPreferredSize(new Dimension((int) serializedCamera.width, (int) serializedCamera.height));
+			setSize(getPreferredSize());
+			setVisible(true);
+
 
 			if (video.isOpened()) {
 				log.info("Is opened");
@@ -258,7 +251,10 @@ public class CameraPanel extends JInternalFrame {
 				thread.start();
 				begin = true;
 				firstFrame = true;
+			} else {
+				log.error("Could not start camera " + serializedCamera);
 			}
+
 		}
 	}
 
@@ -433,7 +429,7 @@ public class CameraPanel extends JInternalFrame {
 
 					currentFrame.copyTo(processedFrame);
 
-					Imgcodecs.imencode(".jpg", processedFrame, matOfByte);
+					Imgcodecs.imencode(".jpg", frameaux, matOfByte);
 					byte[] byteArray = matOfByte.toArray();
 
 					InputStream in;
@@ -469,13 +465,6 @@ class ImagePanel extends JPanel {
 
 	public ImagePanel(Image img) {
 		this.img = img;
-		Dimension size = new Dimension(img.getWidth(null), img.getHeight(null));
-		setPreferredSize(size);
-		setMinimumSize(size);
-		setMaximumSize(size);
-		setSize(size);
-		setLayout(null);
-		//setBorder(BorderFactory.createLineBorder(Color.black));
 	}
 
 	public void updateImage(Image img) {
@@ -486,6 +475,6 @@ class ImagePanel extends JPanel {
 
 	@Override
 	public void paintComponent(Graphics g) {
-		g.drawImage(img, 0, 0, null);
+		g.drawImage(img, 0, 0, getWidth(), getHeight(), null);
 	}
 }
