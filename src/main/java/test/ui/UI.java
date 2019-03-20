@@ -179,10 +179,13 @@ public class UI extends UtilityJFrame {
 		JPanel statusPanel = new JPanel();
 		//statusPanel.setBorder(new BevelBorder(BevelBorder.LOWERED));
 		add(statusPanel, BorderLayout.SOUTH);
+		statusPanel.setBackground(new Color(240, 240, 240));
+
 		statusPanel.setPreferredSize(new Dimension(getWidth(), 16));
 		statusPanel.setLayout(new BoxLayout(statusPanel, BoxLayout.X_AXIS));
 
 		JLabel statusLabel = new JLabel();
+		statusPanel.setForeground(Color.WHITE);
 		statusLabel.setHorizontalAlignment(SwingConstants.LEFT);
 		statusPanel.add(statusLabel);
 
@@ -191,12 +194,18 @@ public class UI extends UtilityJFrame {
 			@Override
 			public void run() {
 				statusLabel.setText(" Disk space : " + FileSizeToString.getByteSizeAsString(new File(".").getUsableSpace()));
+
+				if (Properties.REFRESH_DISK_SPACE_EVERY.getIntValue() == 0) {
+					cancel();
+				}
+
 			}
-		}, 0, 5000);
+		}, 0, Properties.REFRESH_DISK_SPACE_EVERY.getIntValue());
 
 		// End
 
 		desktop = new JDesktopPane();
+		desktop.setBackground(Color.BLACK);
 
 		try {
 			for (SerializedCamera n : cameraListSerializer.get()) {

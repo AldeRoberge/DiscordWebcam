@@ -16,6 +16,8 @@ import java.util.List;
  */
 public class Properties {
 
+
+
 	static {
 		propertyFile = new PropertyFileManager("discord-webcam.properties");
 	}
@@ -35,6 +37,8 @@ public class Properties {
 	public static final IntProperty Y = new IntProperty("Y", "The program's y location on screen", 20, propertyFile);
 
 	public static final Property SAVE_IMAGES_FOLDER = new Property("SAVE_IMAGES_FOLDER", "The folder to save images to", "C:\\Users\\rotmg\\Desktop", propertyFile);
+
+	public static final IntProperty REFRESH_DISK_SPACE_EVERY = new IntProperty("REFRESH_DISK_SPACE_EVERY", "Time (in ms) between refreshes of free disk space. Set to 0 to not refresh.", 5000, propertyFile);
 
 	//@formatter:on
 
