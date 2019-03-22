@@ -1,6 +1,10 @@
 package discordwebcam.detection;
 
+import discordwebcam.Constants;
 import discordwebcam.camera.SerializedCamera;
+import discordwebcam.discord.DiscordBot;
+import discordwebcam.properties.Properties;
+import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.slf4j.LoggerFactory;
 
 import javax.imageio.ImageIO;
@@ -8,6 +12,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.*;
 
@@ -46,7 +51,6 @@ public class MotionDetectionEvent {
 
 				if (imageBuffer.size() > 0) {
 					buildMosaicAndSendToDiscord(imageBuffer);
-					imageBuffer.clear();
 				}
 
 			}
@@ -61,7 +65,6 @@ public class MotionDetectionEvent {
 
 		if (imageBuffer.size() > MAX_AMOUNT_OF_IMAGES) {
 			buildMosaicAndSendToDiscord(imageBuffer);
-			imageBuffer.clear();
 		}
 
 	}
@@ -105,6 +108,8 @@ public class MotionDetectionEvent {
 			currentX += b.getWidth();
 		}
 
+		imageBuffer.clear();
+
 		try {
 
 			File fileToSaveTo = buildFileName();
@@ -113,8 +118,25 @@ public class MotionDetectionEvent {
 
 			if (success) {
 
+				EmbedBuilder e = new EmbedBuilder()
+						.setTitle("Camera " + serializedCamera.name + " detected motion.")
+						.setDescription(getPrettierTimeStamp())
+						.setAuthor(Constants.SOFTWARE_NAME)
+						//.addField("A field", "Some text inside the field")
+						//.addInlineField("An inline field", "More text")
+						//.addInlineField("Another inline field", "Even more text")
+						.setColor(Color.RED)
+						//.setFooter("Footer", "https://cdn.discordapp.com/embed/avatars/1.png")
+						.setImage(fileToSaveTo);
+
+				DiscordBot.sendMessage(e);
+
 			} else {
-				log.error("Fatal error : Could not save detection image '" + fileToSaveTo.getAbsolutePath() + "'.");
+				log.error("Something went wrong with saving the detection image file '"
+						+ fileToSaveTo + "'. Make sure folder '"
+						+ Properties.SAVE_IMAGES_FOLDER.getValue()
+						+ "' exists and there is enough empty storage space to save the image. Defaulting to location : " + fileToSaveTo.getAbsolutePath());
+
 			}
 
 		} catch (IOException e) {
@@ -123,8 +145,41 @@ public class MotionDetectionEvent {
 
 	}
 
+	/*
+	Used by save to file
+	 */
+	public static String getCurrentTimeStamp() {
+		SimpleDateFormat sdfDate = new SimpleDateFormat("dd-MM-yyyy_HH-mm-ss-SSS");// dd/MM/yyyy
+		Date now = new Date();
+		return sdfDate.format(now);
+	}
+
+	/*
+	Used by Discord
+	 */
+	public static String getPrettierTimeStamp() {
+		return new Date().toLocaleString();
+	}
+
 	private File buildFileName() {
-		return new File("./test/" + System.currentTimeMillis() + ".png");
+
+		makeSureFolderExists();
+
+		String newFilePath = Properties.SAVE_IMAGES_FOLDER.getValue() + File.separator
+				+ getCurrentTimeStamp() + ".png";
+
+		return new File(newFilePath);
+
+	}
+
+	private void makeSureFolderExists() {
+		if (!(new File(Properties.SAVE_IMAGES_FOLDER.getValue()).exists())) {
+			log.info("Attempting to create folder '"
+					+ Properties.SAVE_IMAGES_FOLDER.getValue() + "'. Result : '"
+					+ new File(Properties.SAVE_IMAGES_FOLDER.getValue()).mkdir()
+					+ "'.");
+		}
+
 	}
 
 	private boolean saveToFile(BufferedImage image, File outputfile) throws IOException {

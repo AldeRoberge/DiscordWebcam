@@ -5,7 +5,6 @@ import discordwebcam.camera.CameraType;
 import discordwebcam.camera.SerializedCamera;
 import discordwebcam.detection.MotionDetectionEvent;
 import discordwebcam.logger.StaticDialog;
-import discordwebcam.properties.Properties;
 import discordwebcam.ui.EditCameraUI;
 import org.opencv.core.Point;
 import org.opencv.core.*;
@@ -25,11 +24,8 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
-import java.io.File;
 import java.io.InputStream;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -252,12 +248,6 @@ public class CameraPanel extends JInternalFrame {
 		}
 	}
 
-	public static String getCurrentTimeStamp() {
-		SimpleDateFormat sdfDate = new SimpleDateFormat("dd-MM-yyyy_HH-mm-ss-SSS");// dd/MM/yyyy
-		Date now = new Date();
-		return sdfDate.format(now);
-	}
-
 	public ArrayList<Rect> detection_contours(Mat frame, Mat outmat) {
 		Mat v = new Mat();
 		Mat vv = outmat.clone();
@@ -341,7 +331,7 @@ public class CameraPanel extends JInternalFrame {
 								}
 							}
 
-							double sensibility = serializedCamera.sensitivity;
+							double sensibility = serializedCamera.motionDetectionSensitivity;
 							// log.info(sensibility);
 							double nonZeroPixels = Core.countNonZero(processedFrame);
 							// log.info("nonZeroPixels: " + nonZeroPixels);
@@ -362,18 +352,11 @@ public class CameraPanel extends JInternalFrame {
 										Core.FONT_HERSHEY_TRIPLEX, 1d, new Scalar(0, 0, 255));
 
 								if (serializedCamera.sendOnDiscord) {
+
+									System.out.println("Motions : " + detections + ", " + sensibility);
+
 									if (savedelay == 2) {
 										savedelay = 0;
-
-										if (!(new File(Properties.SAVE_IMAGES_FOLDER.getValue()).exists())) {
-											log.info("Attempting to create folder '"
-													+ Properties.SAVE_IMAGES_FOLDER.getValue() + "'. Result : '"
-													+ new File(Properties.SAVE_IMAGES_FOLDER.getValue()).mkdir()
-													+ "'.");
-										}
-
-										String newFilePath = Properties.SAVE_IMAGES_FOLDER.getValue() + File.separator
-												+ getCurrentTimeStamp() + ".png";
 
 										Imgcodecs.imencode(".jpg", frame, matOfByte);
 										byte[] byteArray = matOfByte.toArray();
@@ -381,21 +364,10 @@ public class CameraPanel extends JInternalFrame {
 										BufferedImage buf;
 										InputStream in;
 
-										try {
-											in = new ByteArrayInputStream(byteArray);
-											buf = ImageIO.read(in);
+										in = new ByteArrayInputStream(byteArray);
+										buf = ImageIO.read(in);
 
-											motionDetectionEvent.motionDetected(buf, serializedCamera);
-
-										} catch (Exception ex) {
-
-											log.error("Something went wrong with saving the detection image file '"
-													+ newFilePath + "'. Make sure folder '"
-													+ Properties.SAVE_IMAGES_FOLDER.getValue()
-													+ "' exists and there is enough empty storage space to save the image.");
-
-											ex.printStackTrace();
-										}
+										motionDetectionEvent.motionDetected(buf);
 
 									} else
 										savedelay = savedelay + 1;

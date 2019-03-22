@@ -16,6 +16,7 @@ import java.util.List;
  */
 public class Properties {
 
+
 	static {
 		propertyFile = new PropertyFileManager("discordwebcam.properties");
 	}
@@ -26,6 +27,8 @@ public class Properties {
 	public static final BooleanProperty IS_FIRST_LAUNCH = new BooleanProperty("IS_FIRST_LAUNCH", "Displays the 'edit properties' UI on launch", true, propertyFile);
 
 	public static final BooleanProperty SHOW_LOGGER_ON_STARTUP = new BooleanProperty("SHOW_LOGGER_ON_STARTUP", "Shows the logger on startup", true, propertyFile);
+
+	public static final BooleanProperty GET_LOCAL_CAMERAS_ON_STARTUP =  new BooleanProperty("GET_LOCAL_CAMERAS_ON_STARTUP", "Gets the local cameras on startup if no cameras are saved.", true, propertyFile);
 
 	public static final IntProperty UI_WIDTH = new IntProperty("UI_WIDTH", "The program's width", 800, propertyFile);
 	public static final IntProperty UI_HEIGHT = new IntProperty("UI_HEIGHT", "The program height", 600, propertyFile);
@@ -41,6 +44,8 @@ public class Properties {
 	public static final Property SAVE_IMAGES_FOLDER = new Property("SAVE_IMAGES_FOLDER", "The folder to save images to", "C:\\Users\\rotmg\\Desktop", propertyFile);
 
 	public static final IntProperty MAX_LOCAL_CAMERA_ID_CHECK = new IntProperty("MAX_LOCAL_CAMERA_ID_CHECK", "Increase this if you have trouble finding a local (USB) camera.", 5, propertyFile);
+
+
 
 	//@formatter:on
 

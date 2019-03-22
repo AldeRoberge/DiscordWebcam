@@ -11,6 +11,7 @@ public class Constants {
 	public static final String SOFTWARE_NAME = "Final Security Suite";
 
 	public static final Color CAMERA_PANEL_BACKGROUND_COLOR = Color.BLACK;
+	public static final int MAX_SENSITIVITY = 1000;
 
 	public static BufferedImage softwareIcon;
 

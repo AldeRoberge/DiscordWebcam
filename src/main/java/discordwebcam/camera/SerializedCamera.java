@@ -53,7 +53,7 @@ public class SerializedCamera implements Serializable {
 	public int timeBetweenPreviewRepaint = 10;
 
 	public int rotateDeg = 0;
-	public double sensitivity;
+	public int motionDetectionSensitivity = 15;
 
 	public SerializedCamera(String name, String networkAddress) {
 		this.type = CameraType.NETWORK;

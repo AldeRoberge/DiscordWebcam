@@ -76,7 +76,7 @@ public class EditCameraUI extends UtilityJFrame {
 
 		setIconImage(Constants.gearIcon);
 
-		setBounds(100, 100, 693, 324);
+		setBounds(100, 100, 715, 351);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
@@ -93,23 +93,21 @@ public class EditCameraUI extends UtilityJFrame {
 		JPanel labelPanel = new JPanel(new GridLayout(0, 1, 2, 2));
 		mainPanel.add(labelPanel, BorderLayout.WEST);
 
+		// Add labels here
+
 		labelPanel.add(new JLabel("Camera", JLabel.TRAILING));
 
 		labelPanel.add(new JLabel("Motion", JLabel.TRAILING));
 
+		labelPanel.add(new JLabel("Sensitivity", JLabel.TRAILING));
+
 		labelPanel.add(new JLabel("DiscordBot", JLabel.TRAILING));
 
-		JLabel label = new JLabel("Preview");
-		label.setHorizontalAlignment(SwingConstants.RIGHT);
-		labelPanel.add(label);
+		labelPanel.add(new JLabel("Preview", JLabel.TRAILING));
 
-		JLabel lblQuality = new JLabel("Quality");
-		lblQuality.setHorizontalAlignment(SwingConstants.RIGHT);
-		labelPanel.add(lblQuality);
+		labelPanel.add(new JLabel("Quality", JLabel.TRAILING));
 
-		JLabel label_1 = new JLabel("Rotate");
-		label_1.setHorizontalAlignment(SwingConstants.RIGHT);
-		labelPanel.add(label_1);
+		labelPanel.add(new JLabel("Rotate", JLabel.TRAILING));
 
 		JPanel listPanel = new JPanel(new GridLayout(0, 1, 2, 2));
 		mainPanel.add(listPanel, BorderLayout.CENTER);
@@ -160,7 +158,14 @@ public class EditCameraUI extends UtilityJFrame {
 				.addActionListener(e -> n.showMotionDetectionInPreview = chckbxShowMotionDetection.isSelected());
 		motionDetectionPanel.add(chckbxShowMotionDetection);
 
+		JPanel sensitivityPanel = new JPanel();
+		listPanel.add(sensitivityPanel);
+
+		JLabel lblThreshold = new JLabel("Threshold : ");
+		sensitivityPanel.add(lblThreshold);
+
 		JSlider detectionThresholdSlider = new JSlider();
+		sensitivityPanel.add(detectionThresholdSlider);
 		detectionThresholdSlider.setPaintTicks(true);
 		detectionThresholdSlider.setMajorTickSpacing(51);
 		detectionThresholdSlider.setMinorTickSpacing(17);
@@ -168,10 +173,24 @@ public class EditCameraUI extends UtilityJFrame {
 		detectionThresholdSlider.setSnapToTicks(true);
 		detectionThresholdSlider.setValue(n.motionDetectionThreshold);
 		detectionThresholdSlider.setMaximum(Constants.MAX_THRESHOLD);
-		motionDetectionPanel.add(detectionThresholdSlider);
 
 		detectionThresholdSlider
 				.addChangeListener(e -> n.motionDetectionThreshold = detectionThresholdSlider.getValue());
+
+		JLabel lblSensitivity = new JLabel("Sensitivity : ");
+		sensitivityPanel.add(lblSensitivity);
+
+		JSlider sensitivitySlider = new JSlider();
+		sensitivityPanel.add(sensitivitySlider);
+		sensitivitySlider.setPaintTicks(true);
+		sensitivitySlider.setMajorTickSpacing(51);
+		sensitivitySlider.setMinorTickSpacing(17);
+		sensitivitySlider.setPaintLabels(true);
+		sensitivitySlider.setSnapToTicks(true);
+		sensitivitySlider.setValue(n.motionDetectionSensitivity);
+		sensitivitySlider.setMaximum(Constants.MAX_SENSITIVITY);
+
+		sensitivitySlider.addChangeListener(e -> n.motionDetectionSensitivity = sensitivitySlider.getValue());
 
 		JPanel discordPanel = new JPanel();
 		listPanel.add(discordPanel);

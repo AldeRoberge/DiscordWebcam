@@ -47,8 +47,6 @@ public class UI extends UtilityJFrame {
 			showUI();
 		}
 
-
-
 	}
 
 	// This function is shared with UI's Edit -> Edit properties. Thats why we use 'runOnClose' to differentiate
@@ -86,7 +84,6 @@ public class UI extends UtilityJFrame {
 
 		f.setVisible(true);
 
-
 	}
 
 	private static void showUI() {
@@ -123,37 +120,7 @@ public class UI extends UtilityJFrame {
 		MenuItem detectLocalCameras = new MenuItem("Detect local cameras");
 		detectLocalCameras.addActionListener(e -> {
 
-			ArrayList<Integer> validLocalCameras = new ArrayList<>();
-
-			log.debug("Looking local cameras from 0 to " + Properties.MAX_LOCAL_CAMERA_ID_CHECK.getIntValue() + " cameras.");
-
-			for (int i = 0; i < 10; i++) {
-
-				VideoCapture video = new VideoCapture(i);
-
-				if (video.isOpened()) {
-					log.info("Found camera with id " + i + ".");
-					validLocalCameras.add(i);
-				}
-
-				video.release();
-
-			}
-
-			/*try {
-				Thread.sleep(2000);
-			} catch (InterruptedException e1) {
-				e1.printStackTrace();
-			}*/
-
-			if (validLocalCameras.size() == 0) {
-				StaticDialog.display("Warning", "No camera found.");
-			} else {
-
-				for (Integer i : validLocalCameras) {
-					addCamera(new SerializedCamera("Camera " + i, i));
-				}
-			}
+			detectLocalCamerasS();
 
 		});
 		file.add(detectLocalCameras);
@@ -221,10 +188,52 @@ public class UI extends UtilityJFrame {
 		setLocationRelativeTo(null);
 		setVisible(true);
 
+		performStartup();
+
+	}
+
+	private void performStartup() {
 		if (Properties.SHOW_LOGGER_ON_STARTUP.getBooleanValue()) {
 			showLogger();
 		}
 
+		if (cameraFrameList.size() == 0 && Properties.GET_LOCAL_CAMERAS_ON_STARTUP.getBooleanValue()) {
+			detectLocalCamerasS();
+		}
+	}
+
+	private void detectLocalCamerasS() {
+		ArrayList<Integer> validLocalCameras = new ArrayList<>();
+
+		log.debug("Looking local cameras from 0 to " + Properties.MAX_LOCAL_CAMERA_ID_CHECK.getIntValue() + " cameras.");
+
+		for (int i = 0; i < 10; i++) {
+
+			VideoCapture video = new VideoCapture(i);
+
+			if (video.isOpened()) {
+				log.info("Found camera with id " + i + ".");
+				validLocalCameras.add(i);
+			}
+
+			video.release();
+
+		}
+
+			/*try {
+				Thread.sleep(2000);
+			} catch (InterruptedException e1) {
+				e1.printStackTrace();
+			}*/
+
+		if (validLocalCameras.size() == 0) {
+			StaticDialog.display("Warning", "No camera found.");
+		} else {
+
+			for (Integer i : validLocalCameras) {
+				addCamera(new SerializedCamera("Camera " + i, i));
+			}
+		}
 	}
 
 	private void registerSystemTray() {
