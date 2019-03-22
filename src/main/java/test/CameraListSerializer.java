@@ -14,7 +14,7 @@ public class CameraListSerializer {
 
 	public final File file = new File(new File(".") + File.separator + "cameras.serialized");
 
-	ArrayList<SerializedCamera> list;
+	private ArrayList<SerializedCamera> list;
 
 	public CameraListSerializer() {
 		list = get();
