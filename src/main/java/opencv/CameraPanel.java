@@ -61,11 +61,6 @@ public class CameraPanel extends JInternalFrame {
 
 	JMenuBar menuBar;
 
-	public static void main(String[] args) {
-		new CameraPanel(new SerializedCamera("Test camera", "http://192.168.0.107:8080/video"
-		), () -> log.info("On close"));
-	}
-
 	JMenuItem sendOnDiscord;
 	JMenuItem motionDetection;
 
@@ -116,36 +111,21 @@ public class CameraPanel extends JInternalFrame {
 		settings.setIcon(new ImageIcon(Constants.gearIcon));
 		menuBar.add(settings);
 
-		settings.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				log.info("Opening settings");
-				new EditCameraUI(n, new Runnable() {
-					@Override
-					public void run() {
-						setTitle(n.name);
-						updateMotionDetectionIcon(n.motionDetection);
-						updateSendOnDiscordIcon(n.sendOnDiscord);
-					}
-				});
-			}
+		settings.addActionListener(e -> {
+			log.info("Opening settings");
+			new EditCameraUI(n, () -> {
+				setTitle(n.name);
+				updateMotionDetectionIcon(n.motionDetection);
+				updateSendOnDiscordIcon(n.sendOnDiscord);
+			});
 		});
 
 		// BEGIN MOTION DETECTION TOGGLE //
 
 		motionDetection = new JMenuItem("Detection");
-		motionDetection.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if (n.motionDetection) {
-					n.motionDetection = false;
-				} else {
-					n.motionDetection = true;
-				}
-
-				updateMotionDetectionIcon(n.motionDetection);
-			}
-
+		motionDetection.addActionListener(e -> {
+			n.motionDetection = !n.motionDetection;
+			updateMotionDetectionIcon(n.motionDetection);
 		});
 
 		updateMotionDetectionIcon(n.motionDetection);
@@ -155,25 +135,9 @@ public class CameraPanel extends JInternalFrame {
 		// BEGIN DISCORD //
 
 		sendOnDiscord = new JMenuItem("Discord");
-		sendOnDiscord.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-
-				try {
-					printUsage();
-				} catch (IOException e1) {
-					e1.printStackTrace();
-				}
-
-				if (n.sendOnDiscord) {
-					n.sendOnDiscord = false;
-				} else {
-					n.sendOnDiscord = true;
-				}
-
-				updateSendOnDiscordIcon(n.sendOnDiscord);
-			}
-
+		sendOnDiscord.addActionListener(e -> {
+			n.sendOnDiscord = !n.sendOnDiscord;
+			updateSendOnDiscordIcon(n.sendOnDiscord);
 		});
 
 		updateSendOnDiscordIcon(n.sendOnDiscord);
@@ -185,29 +149,6 @@ public class CameraPanel extends JInternalFrame {
 		add(menuBar, BorderLayout.SOUTH);
 
 		start();
-	}
-
-	private void printUsage() throws IOException {
-		MBeanServerConnection mbsc = ManagementFactory.getPlatformMBeanServer();
-
-		OperatingSystemMXBean osMBean = ManagementFactory.newPlatformMXBeanProxy(
-				mbsc, ManagementFactory.OPERATING_SYSTEM_MXBEAN_NAME, OperatingSystemMXBean.class);
-
-		long nanoBefore = System.nanoTime();
-		long cpuBefore = osMBean.getProcessCpuTime();
-
-		// Call an expensive task, or sleep if you are monitoring a remote process
-
-		long cpuAfter = osMBean.getProcessCpuTime();
-		long nanoAfter = System.nanoTime();
-
-		long percent;
-		if (nanoAfter > nanoBefore)
-			percent = ((cpuAfter - cpuBefore) * 100L) /
-					(nanoAfter - nanoBefore);
-		else percent = 0;
-
-		System.out.println("Cpu usage: " + percent + "%");
 	}
 
 	private void updateSendOnDiscordIcon(boolean send) {
@@ -299,8 +240,7 @@ public class CameraPanel extends JInternalFrame {
 	public static String getCurrentTimeStamp() {
 		SimpleDateFormat sdfDate = new SimpleDateFormat("dd-MM-yyyy_HH-mm-ss-SSS");//dd/MM/yyyy
 		Date now = new Date();
-		String strDate = sdfDate.format(now);
-		return strDate;
+		return sdfDate.format(now);
 	}
 
 	public ArrayList<Rect> detection_contours(Mat frame, Mat outmat) {

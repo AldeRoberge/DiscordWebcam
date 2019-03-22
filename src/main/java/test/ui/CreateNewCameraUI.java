@@ -26,18 +26,12 @@ public class CreateNewCameraUI extends UtilityJFrame {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					CreateNewCameraUI frame = new CreateNewCameraUI(new Consumer<SerializedCamera>() {
-						public void accept(SerializedCamera c) {
-							System.out.println("Network camera : " + c);
-						}
-					});
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
+		EventQueue.invokeLater(() -> {
+			try {
+				CreateNewCameraUI frame = new CreateNewCameraUI(c -> System.out.println("Network camera : " + c));
+				frame.setVisible(true);
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
 		});
 	}
@@ -150,11 +144,7 @@ public class CreateNewCameraUI extends UtilityJFrame {
 		networkField.setColumns(20);
 
 		JButton button = new JButton("Okay");
-		button.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				acceptCamera();
-			}
-		});
+		button.addActionListener(arg0 -> acceptCamera());
 		okayPanel.add(button);
 
 		setVisible(true);

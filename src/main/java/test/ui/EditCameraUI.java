@@ -24,14 +24,12 @@ public class EditCameraUI extends UtilityJFrame {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					EditCameraUI frame = new EditCameraUI(new SerializedCamera("ip", "adress"), null);
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
+		EventQueue.invokeLater(() -> {
+			try {
+				EditCameraUI frame = new EditCameraUI(new SerializedCamera("ip", "adress"), null);
+				frame.setVisible(true);
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
 		});
 	}
@@ -117,12 +115,7 @@ public class EditCameraUI extends UtilityJFrame {
 		chckbxMotionDetection.setSelected(n.motionDetection);
 		allowMotionDetectionPanel.add(chckbxMotionDetection);
 
-		chckbxMotionDetection.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				n.motionDetection = chckbxMotionDetection.isSelected();
-			}
-		});
+		chckbxMotionDetection.addActionListener(e -> n.motionDetection = chckbxMotionDetection.isSelected());
 
 		JSlider thresholdSlider = new JSlider();
 		thresholdSlider.setPaintTicks(true);
@@ -134,12 +127,7 @@ public class EditCameraUI extends UtilityJFrame {
 		thresholdSlider.setMaximum(Constants.MAX_THRESHOLD);
 		allowMotionDetectionPanel.add(thresholdSlider);
 
-		thresholdSlider.addChangeListener(new ChangeListener() {
-			@Override
-			public void stateChanged(ChangeEvent e) {
-				n.threshold = thresholdSlider.getValue();
-			}
-		});
+		thresholdSlider.addChangeListener(e -> n.threshold = thresholdSlider.getValue());
 
 		JPanel publishOnDiscordPanel = new JPanel();
 		listPanel.add(publishOnDiscordPanel);
@@ -150,12 +138,7 @@ public class EditCameraUI extends UtilityJFrame {
 		chckbxPublishOnDiscord.setHorizontalAlignment(SwingConstants.CENTER);
 		publishOnDiscordPanel.add(chckbxPublishOnDiscord);
 
-		chckbxPublishOnDiscord.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				n.sendOnDiscord = chckbxPublishOnDiscord.isSelected();
-			}
-		});
+		chckbxPublishOnDiscord.addActionListener(e -> n.sendOnDiscord = chckbxPublishOnDiscord.isSelected());
 
 		labelPanel.add(new JLabel("Discord", JLabel.TRAILING));
 
@@ -165,12 +148,7 @@ public class EditCameraUI extends UtilityJFrame {
 
 		btnClose.setSelected(true);
 
-		btnClose.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				close(runOnClose);
-			}
-		});
+		btnClose.addActionListener(e -> close(runOnClose));
 
 		contentPane.add(btnClose, BorderLayout.SOUTH);
 

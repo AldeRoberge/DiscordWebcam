@@ -54,16 +54,13 @@ public class UI extends UtilityJFrame {
 		f.setTitle("Set properties");
 		f.add(Properties.getPropertiesPanel(), BorderLayout.CENTER);
 		Button closeButton = new Button("Close");
-		closeButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				log.info("Close");
-				f.setVisible(false);
+		closeButton.addActionListener(e -> {
+			log.info("Close");
+			f.setVisible(false);
 
-				if (runOnClose) {
-					showUI();
-					Properties.IS_FIRST_LAUNCH.setValue(false);
-				}
+			if (runOnClose) {
+				showUI();
+				Properties.IS_FIRST_LAUNCH.setValue(false);
 			}
 		});
 
@@ -118,40 +115,36 @@ public class UI extends UtilityJFrame {
 		file.add(addNewCamera);
 
 		MenuItem detectLocalCameras = new MenuItem("Detect local cameras");
-		detectLocalCameras.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
+		detectLocalCameras.addActionListener(e -> {
 
-				ArrayList<Integer> validLocalCameras = new ArrayList<>();
+			ArrayList<Integer> validLocalCameras = new ArrayList<>();
 
-				for (int i = 0; i < 10; i++) {
+			for (int i = 0; i < 10; i++) {
 
-					VideoCapture video = new VideoCapture(i);
+				VideoCapture video = new VideoCapture(i);
 
-					if (video.isOpened()) {
-						log.info("Camera " + i + " is valid.");
-						validLocalCameras.add(i);
+				if (video.isOpened()) {
+					log.info("Camera " + i + " is valid.");
+					validLocalCameras.add(i);
 
-					} else {
-						log.info("Camera " + i + " is not valid.");
-					}
-
-					video.release();
-
+				} else {
+					log.info("Camera " + i + " is not valid.");
 				}
 
-				try {
-					Thread.sleep(1000);
-				} catch (InterruptedException e1) {
-					e1.printStackTrace();
-				}
+				video.release();
 
-				showDialog("Found " + validLocalCameras.size() + " valid camera(s).");
+			}
 
-				for (Integer i : validLocalCameras) {
-					addCamera(new SerializedCamera("Camera " + i, i));
-				}
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e1) {
+				e1.printStackTrace();
+			}
 
+			showDialog("Found " + validLocalCameras.size() + " valid camera(s).");
+
+			for (Integer i : validLocalCameras) {
+				addCamera(new SerializedCamera("Camera " + i, i));
 			}
 
 		});
@@ -233,71 +226,58 @@ public class UI extends UtilityJFrame {
 		if (SystemTray.isSupported()) {
 
 			Image image = Constants.softwareIcon;
-			ActionListener exitListener = new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					log.info("Exiting....");
-
-					saveConfig();
-
-					System.exit(0);
-				}
-			};
 			PopupMenu popup = new PopupMenu();
 			MenuItem defaultItem = new MenuItem("Exit");
-			defaultItem.addActionListener(exitListener);
+			defaultItem.addActionListener(e -> {
+				log.info("Exiting....");
+				saveConfig();
+				System.exit(0);
+			});
 			popup.add(defaultItem);
 			defaultItem = new MenuItem("Open");
-			defaultItem.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					setVisible(true);
-					setExtendedState(JFrame.NORMAL);
-				}
+			defaultItem.addActionListener(e -> {
+				setVisible(true);
+				setExtendedState(JFrame.NORMAL);
 			});
 			popup.add(defaultItem);
 			TrayIcon trayIcon = new TrayIcon(image, Constants.SOFTWARE_NAME, popup);
 			trayIcon.setImageAutoSize(true);
 
-			addWindowStateListener(new WindowStateListener() {
-				public void windowStateChanged(WindowEvent e) {
+			addWindowStateListener(e -> {
 
-					SystemTray tray = SystemTray.getSystemTray();
+				SystemTray tray = SystemTray.getSystemTray();
 
-					if (e.getNewState() == ICONIFIED) {
-						try {
-							tray.add(trayIcon);
-							setVisible(false);
-							log.info("added to SystemTray");
-						} catch (AWTException ex) {
-							log.info("unable to add to tray");
-						}
+				if (e.getNewState() == ICONIFIED) {
+					try {
+						tray.add(trayIcon);
+						setVisible(false);
+						log.info("Added to SystemTray.");
+					} catch (AWTException ex) {
+						log.info("Unable to add to tray.");
 					}
-					if (e.getNewState() == 7) {
-						try {
-							tray.add(trayIcon);
-							setVisible(false);
-							log.info("added to SystemTray");
-						} catch (AWTException ex) {
-							log.info("unable to add to system tray");
-						}
+				} else if (e.getNewState() == 7) {
+					try {
+						tray.add(trayIcon);
+						setVisible(false);
+						log.info("Added to SystemTray.");
+					} catch (AWTException ex) {
+						log.info("Unable to add to system tray.");
 					}
-					if (e.getNewState() == MAXIMIZED_BOTH) {
-						tray.remove(trayIcon);
-						setVisible(true);
-						log.info("Tray icon removed");
-					}
-					if (e.getNewState() == NORMAL) {
-						tray.remove(trayIcon);
-						setVisible(true);
-						log.info("Tray icon removed");
-					}
+				} else if (e.getNewState() == MAXIMIZED_BOTH) {
+					tray.remove(trayIcon);
+					setVisible(true);
+					log.info("Tray icon removed.");
+				} else if (e.getNewState() == NORMAL) {
+					tray.remove(trayIcon);
+					setVisible(true);
+					log.info("Tray icon removed.");
 				}
 			});
 
 			setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		} else {
-			log.info("system tray not supported");
-			return;
+			log.info("System tray is not supported.");
 		}
 
 	}
@@ -305,8 +285,6 @@ public class UI extends UtilityJFrame {
 	private void showLogger() {
 		desktop.add(new LoggerWrapper());
 	}
-
-	boolean hasChanged = false;
 
 	ArrayList<CameraPanel> cameraFrameList = new ArrayList<>();
 
