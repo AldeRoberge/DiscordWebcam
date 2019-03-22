@@ -1,4 +1,4 @@
-package test;
+package discordwebcam;
 
 import javax.imageio.ImageIO;
 import java.awt.*;

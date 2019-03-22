@@ -1,8 +1,8 @@
-package test.ui;
+package discordwebcam.ui;
 
 import alde.commons.console.Console;
 import alde.commons.logger.LoggerPanel;
-import test.Constants;
+import discordwebcam.Constants;
 
 import javax.swing.*;
 import java.awt.*;

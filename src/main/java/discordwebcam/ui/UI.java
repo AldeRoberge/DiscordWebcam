@@ -1,16 +1,16 @@
-package test.ui;
+package discordwebcam.ui;
 
 import alde.commons.util.file.FileSizeToString;
 import alde.commons.util.window.UtilityJFrame;
-import opencv.CameraPanel;
+import discordwebcam.CameraListSerializer;
+import discordwebcam.Constants;
+import discordwebcam.opencv.CameraPanel;
 import org.opencv.core.Core;
 import org.opencv.videoio.VideoCapture;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import properties.Properties;
-import test.CameraListSerializer;
-import test.Constants;
-import test.camera.SerializedCamera;
+import discordwebcam.properties.Properties;
+import discordwebcam.camera.SerializedCamera;
 
 import javax.swing.*;
 import java.awt.*;
@@ -98,7 +98,7 @@ public class UI extends UtilityJFrame {
 
 		addWindowStateListener(arg0 -> log.info(arg0.getNewState() + ""));
 
-		setSize(Properties.WIDTH.getIntValue(), Properties.HEIGHT.getIntValue());
+		setSize(Properties.UI_WIDTH.getIntValue(), Properties.UI_HEIGHT.getIntValue());
 
 		setIconImage(Constants.softwareIcon);
 
@@ -188,12 +188,12 @@ public class UI extends UtilityJFrame {
 			public void run() {
 				statusLabel.setText(" Disk space : " + FileSizeToString.getByteSizeAsString(new File(".").getUsableSpace()));
 
-				if (Properties.REFRESH_DISK_SPACE_EVERY.getIntValue() == 0) {
+				if (Properties.UI_REFRESH_DISK_SPACE_EVERY.getIntValue() == 0) {
 					cancel();
 				}
 
 			}
-		}, 0, Properties.REFRESH_DISK_SPACE_EVERY.getIntValue());
+		}, 0, Properties.UI_REFRESH_DISK_SPACE_EVERY.getIntValue());
 
 		// End
 
@@ -318,10 +318,10 @@ public class UI extends UtilityJFrame {
 		log.info("Saving...");
 		cameraListSerializer.save();
 
-		Properties.X.setIntValue(getX());
-		Properties.Y.setIntValue(getY());
-		Properties.WIDTH.setIntValue(getWidth());
-		Properties.HEIGHT.setIntValue(getHeight());
+		Properties.UI_X.setIntValue(getX());
+		Properties.UI_Y.setIntValue(getY());
+		Properties.UI_WIDTH.setIntValue(getWidth());
+		Properties.UI_HEIGHT.setIntValue(getHeight());
 
 		System.exit(0);
 	}

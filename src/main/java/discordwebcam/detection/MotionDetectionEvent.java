@@ -1,4 +1,4 @@
-package test.detection;
+package discordwebcam.detection;
 
 import java.io.File;
 import java.util.Date;

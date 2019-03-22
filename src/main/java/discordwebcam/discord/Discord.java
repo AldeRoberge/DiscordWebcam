@@ -1,14 +1,13 @@
-package discord;
+package discordwebcam.discord;
 
 import org.javacord.api.DiscordApi;
 import org.javacord.api.DiscordApiBuilder;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
-import properties.Properties;
-import test.Constants;
-import test.detection.MotionDetectionEvent;
+import discordwebcam.properties.Properties;
+import discordwebcam.Constants;
+import discordwebcam.detection.MotionDetectionEvent;
 
 import java.awt.*;
-import java.text.DateFormat;
 
 public class Discord {
 

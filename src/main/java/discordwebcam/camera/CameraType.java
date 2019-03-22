@@ -1,4 +1,4 @@
-package test.camera;
+package discordwebcam.camera;
 
 import java.io.Serializable;
 
