@@ -108,7 +108,7 @@ public class UI extends UtilityJFrame {
 
 		MenuBar menu = new MenuBar();
 		Menu file = new Menu("File");
-		MenuItem addNewCamera = new MenuItem("Add new camera");
+		MenuItem addNewCamera = new MenuItem("Add a network camera");
 		addNewCamera.addActionListener(e -> new CreateNewCameraUI(camera -> {
 			log.info("Received network camera : " + camera);
 			addCamera(camera);
@@ -121,30 +121,29 @@ public class UI extends UtilityJFrame {
 
 			ArrayList<Integer> validLocalCameras = new ArrayList<>();
 
+			log.debug("Looking local cameras from 0 to " + Properties.MAX_LOCAL_CAMERA_ID_CHECK.getIntValue() + " cameras.");
+
 			for (int i = 0; i < 10; i++) {
 
 				VideoCapture video = new VideoCapture(i);
 
 				if (video.isOpened()) {
-					log.info("Camera " + i + " is valid.");
+					log.info("Found camera with id " + i + ".");
 					validLocalCameras.add(i);
-
-				} else {
-					log.info("Camera " + i + " is not valid.");
 				}
 
 				video.release();
 
 			}
 
-			try {
-				Thread.sleep(1000);
+			/*try {
+				Thread.sleep(2000);
 			} catch (InterruptedException e1) {
 				e1.printStackTrace();
-			}
+			}*/
 
 			if (validLocalCameras.size() == 0) {
-				StaticDialog.display("Warning", "No local camera found.");
+				StaticDialog.display("Warning", "No camera found.");
 			} else {
 
 				for (Integer i : validLocalCameras) {
@@ -164,6 +163,7 @@ public class UI extends UtilityJFrame {
 
 		MenuItem showLogger = new MenuItem("Show logger");
 		showLogger.addActionListener(e -> showLogger());
+
 		edit.add(showLogger);
 
 		menu.add(edit);
@@ -216,6 +216,10 @@ public class UI extends UtilityJFrame {
 		add(desktop);
 		setLocationRelativeTo(null);
 		setVisible(true);
+
+		if (Properties.SHOW_LOGGER_ON_STARTUP.getBooleanValue()) {
+			showLogger();
+		}
 
 	}
 

@@ -1,6 +1,7 @@
 package discordwebcam.ui;
 
 import alde.commons.console.Console;
+import alde.commons.console.ConsoleAction;
 import alde.commons.logger.LoggerPanel;
 import discordwebcam.Constants;
 
@@ -8,6 +9,9 @@ import javax.swing.*;
 import java.awt.*;
 
 public class LoggerWrapper extends JInternalFrame {
+
+	private static LoggerPanel l = new LoggerPanel();
+	private static Console c = new Console();
 
 	public LoggerWrapper() {
 
@@ -19,13 +23,32 @@ public class LoggerWrapper extends JInternalFrame {
 		setFrameIcon(new ImageIcon(Constants.loggerIcon));
 
 		JPanel mainPanel = new JPanel(new BorderLayout());
-		mainPanel.add(new LoggerPanel(), BorderLayout.CENTER);
-		mainPanel.add(new Console(), BorderLayout.SOUTH);
+		mainPanel.add(l, BorderLayout.CENTER);
+		mainPanel.add(c, BorderLayout.SOUTH);
 
 		this.getContentPane().add(mainPanel);
 
 		setVisible(true);
 
+	}
+
+	public static void addAction(String keyword, Runnable action) {
+		c.addAction(new ConsoleAction() {
+			@Override
+			public void accept(String command) {
+				action.run();
+			}
+
+			@Override
+			protected String getDescription() {
+				return null;
+			}
+
+			@Override
+			public String[] getKeywords() {
+				return new String[]{keyword};
+			}
+		});
 	}
 
 }

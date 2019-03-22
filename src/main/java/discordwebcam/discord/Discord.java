@@ -21,7 +21,7 @@ public class Discord {
 		try {
 			api = new DiscordApiBuilder().setToken(Properties.DISCORD_BOT_TOKEN.getValue()).login().join();
 		} catch (Exception e) {
-			StaticDialog.display("Error with Discord Bot", "Error connecting Discord bot. \n Try changing the Discord Bot Token in '" + Properties.getPropertiesFilePath() + "'.");
+			StaticDialog.display("Error with Discord Bot", "Error connecting Discord bot. \n Try changing the Discord Bot Token in '" + Properties.getPropertiesFilePath() + "'.", e);
 		}
 	}
 
