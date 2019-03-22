@@ -11,11 +11,7 @@
   <component name="ChangeListManager">
     <list default="true" id="c94170a5-da28-4eca-8653-6fe0762b7cbe" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cameras.serialized" beforeDir="false" afterPath="$PROJECT_DIR$/cameras.serialized" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/discordwebcam/camera/SerializedCamera.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/discordwebcam/camera/SerializedCamera.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/discordwebcam/opencv/CameraPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/discordwebcam/opencv/CameraPanel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/discordwebcam/ui/CreateNewCameraUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/discordwebcam/ui/CreateNewCameraUI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/discordwebcam/ui/EditCameraUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/discordwebcam/ui/EditCameraUI.java" afterDir="false" />
       <change beforePath="$USER_HOME$/Documents/GitHub/AldeCommons/src/main/java/META-INF/MANIFEST.MF" beforeDir="false" afterPath="$USER_HOME$/Documents/GitHub/AldeCommons/src/main/java/META-INF/MANIFEST.MF" afterDir="false" />
       <change beforePath="$USER_HOME$/Documents/GitHub/AldeCommons/src/main/java/alde/commons/console/Console.java" beforeDir="false" afterPath="$USER_HOME$/Documents/GitHub/AldeCommons/src/main/java/alde/commons/console/Console.java" afterDir="false" />
       <change beforePath="$USER_HOME$/Documents/GitHub/AldeCommons/src/main/java/alde/commons/properties/BooleanProperty.java" beforeDir="false" afterPath="$USER_HOME$/Documents/GitHub/AldeCommons/src/main/java/alde/commons/properties/BooleanProperty.java" afterDir="false" />
@@ -44,7 +40,7 @@
         <entry file="file://$PROJECT_DIR$/src/main/java/discordwebcam/ui/UI.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="1198">
-              <caret line="173" lean-forward="true" selection-start-line="173" selection-end-line="173" />
+              <caret line="173" selection-start-line="173" selection-end-line="173" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -55,8 +51,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/discordwebcam/opencv/CameraPanel.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="347">
-              <caret line="149" column="43" selection-start-line="149" selection-start-column="43" selection-end-line="149" selection-end-column="43" />
+            <state relative-caret-position="279">
+              <caret line="371" column="8" selection-start-line="371" selection-start-column="8" selection-end-line="371" selection-end-column="8" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#2158#2275#0" expanded="true" />
@@ -120,19 +116,10 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/discordwebcam/ui/EditCameraUI.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-26">
-              <caret line="187" lean-forward="true" selection-start-line="187" selection-end-line="187" />
+            <state relative-caret-position="93">
+              <caret line="190" selection-start-line="190" selection-end-line="190" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#3832#3833#0" expanded="true" />
-                <element signature="e#3855#3856#0" expanded="true" />
-                <element signature="e#3916#3917#0" expanded="true" />
-                <element signature="e#3939#3940#0" expanded="true" />
-                <element signature="e#4001#4002#0" expanded="true" />
-                <element signature="e#4024#4025#0" expanded="true" />
-                <element signature="e#4056#4057#0" expanded="true" />
-                <element signature="e#4096#4097#0" expanded="true" />
-                <element signature="e#7668#7676#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -149,7 +136,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>exitListener</find>
       <find>test.properties</find>
       <find>test.</find>
       <find>discordwebcam.pr</find>
@@ -179,6 +165,7 @@
       <find>detectionsSquares</find>
       <find>threshol</find>
       <find>BorderLayout.NORTH</find>
+      <find>lowerQuality</find>
     </findStrings>
     <replaceStrings>
       <replace>new ArrayList&lt;&gt;();</replace>
@@ -373,7 +360,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1553283463581" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1553284349316" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/lib/rasp/opencv-3.0.0-1.0.jar!/" />
     <property name="project.structure.last.edited" value="Libraries" />
     <property name="project.structure.proportion" value="0.15231092" />
@@ -883,19 +870,10 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/discordwebcam/ui/EditCameraUI.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-26">
-          <caret line="187" lean-forward="true" selection-start-line="187" selection-end-line="187" />
+        <state relative-caret-position="93">
+          <caret line="190" selection-start-line="190" selection-end-line="190" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#3832#3833#0" expanded="true" />
-            <element signature="e#3855#3856#0" expanded="true" />
-            <element signature="e#3916#3917#0" expanded="true" />
-            <element signature="e#3939#3940#0" expanded="true" />
-            <element signature="e#4001#4002#0" expanded="true" />
-            <element signature="e#4024#4025#0" expanded="true" />
-            <element signature="e#4056#4057#0" expanded="true" />
-            <element signature="e#4096#4097#0" expanded="true" />
-            <element signature="e#7668#7676#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -923,7 +901,7 @@
     <entry file="file://$PROJECT_DIR$/src/main/java/discordwebcam/ui/UI.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1198">
-          <caret line="173" lean-forward="true" selection-start-line="173" selection-end-line="173" />
+          <caret line="173" selection-start-line="173" selection-end-line="173" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -953,8 +931,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/discordwebcam/opencv/CameraPanel.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="347">
-          <caret line="149" column="43" selection-start-line="149" selection-start-column="43" selection-end-line="149" selection-end-column="43" />
+        <state relative-caret-position="279">
+          <caret line="371" column="8" selection-start-line="371" selection-start-column="8" selection-end-line="371" selection-end-column="8" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#2158#2275#0" expanded="true" />

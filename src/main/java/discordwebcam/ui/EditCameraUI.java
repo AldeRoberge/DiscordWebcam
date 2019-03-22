@@ -27,6 +27,8 @@ public class EditCameraUI extends UtilityJFrame {
 
 	private JPanel contentPane;
 
+	JButton btnRotateButton;
+
 	/**
 	 * Launch the application.
 	 */
@@ -150,10 +152,10 @@ public class EditCameraUI extends UtilityJFrame {
 		JCheckBox chckbxMotionDetection = new JCheckBox("Allow motion detection");
 		chckbxMotionDetection.setSelected(n.motionDetection);
 		motionDetectionPanel.add(chckbxMotionDetection);
-
 		chckbxMotionDetection.addActionListener(e -> n.motionDetection = chckbxMotionDetection.isSelected());
 
 		JCheckBox chckbxShowMotionDetection = new JCheckBox("Show motion detection boxes");
+		chckbxShowMotionDetection.setSelected(n.showMotionDetectionInPreview);
 		chckbxShowMotionDetection
 				.addActionListener(e -> n.showMotionDetectionInPreview = chckbxShowMotionDetection.isSelected());
 		motionDetectionPanel.add(chckbxShowMotionDetection);
@@ -168,7 +170,8 @@ public class EditCameraUI extends UtilityJFrame {
 		detectionThresholdSlider.setMaximum(Constants.MAX_THRESHOLD);
 		motionDetectionPanel.add(detectionThresholdSlider);
 
-		detectionThresholdSlider.addChangeListener(e -> n.motionDetectionThreshold = detectionThresholdSlider.getValue());
+		detectionThresholdSlider
+				.addChangeListener(e -> n.motionDetectionThreshold = detectionThresholdSlider.getValue());
 
 		JPanel discordPanel = new JPanel();
 		listPanel.add(discordPanel);
@@ -194,17 +197,19 @@ public class EditCameraUI extends UtilityJFrame {
 		listPanel.add(previewPanel);
 		previewPanel.setLayout(new BorderLayout(0, 0));
 
-		JSlider slider = new JSlider();
-		slider.setMinimum(1);
-		slider.setMinorTickSpacing(100);
-		slider.setSnapToTicks(true);
-		slider.setPaintTicks(true);
-		slider.setMajorTickSpacing(500);
-		slider.setMaximum(5000);
-		slider.addChangeListener(e -> n.timeBetweenPreviewRepaint = slider.getValue());
-		previewPanel.add(slider);
+		JSlider timeBetweenRepaint = new JSlider();
+		timeBetweenRepaint.setMinimum(1);
+		timeBetweenRepaint.setMinorTickSpacing(100);
+		timeBetweenRepaint.setSnapToTicks(true);
+		timeBetweenRepaint.setPaintTicks(true);
+		timeBetweenRepaint.setMajorTickSpacing(500);
+		timeBetweenRepaint.setMaximum(5000);
+		timeBetweenRepaint.setValue(n.timeBetweenPreviewRepaint);
+		timeBetweenRepaint.addChangeListener(e -> n.timeBetweenPreviewRepaint = timeBetweenRepaint.getValue());
+		previewPanel.add(timeBetweenRepaint);
 
 		JCheckBox chckbxNewCheckBox = new JCheckBox("Don't repaint when window is not focused");
+		chckbxNewCheckBox.setSelected(n.repaintPreviewWhenOutOfFocus);
 		chckbxNewCheckBox.addActionListener(e -> n.repaintPreviewWhenOutOfFocus = chckbxNewCheckBox.isSelected());
 		previewPanel.add(chckbxNewCheckBox, BorderLayout.WEST);
 
@@ -214,39 +219,41 @@ public class EditCameraUI extends UtilityJFrame {
 		listPanel.add(qualityPanel);
 
 		JCheckBox chckbxDownscaleQuality = new JCheckBox("Downscale quality");
+		chckbxDownscaleQuality.setSelected(n.downscaleQuality);
 		chckbxDownscaleQuality.addActionListener(e -> n.downscaleQuality = chckbxDownscaleQuality.isSelected());
 		chckbxDownscaleQuality.setHorizontalAlignment(SwingConstants.LEFT);
 		qualityPanel.add(chckbxDownscaleQuality);
 
 		JCheckBox chckbxDownscaleInPreview = new JCheckBox("Downscale in preview");
+		chckbxDownscaleInPreview.setSelected(n.downscalePreviewQuality);
 		chckbxDownscaleInPreview
 				.addActionListener(e -> n.downscalePreviewQuality = chckbxDownscaleInPreview.isSelected());
 		qualityPanel.add(chckbxDownscaleInPreview);
 
 		JSlider downscaleAmount = new JSlider();
-		downscaleAmount.setValue(1);
+		downscaleAmount.setValue(n.downScaleAmount);
 		downscaleAmount.setMinimum(1);
 		downscaleAmount.setMaximum(100);
 		downscaleAmount.addChangeListener(e -> n.downScaleAmount = downscaleAmount.getValue());
 
 		qualityPanel.add(downscaleAmount);
 
-		JComboBox<String> interpolationType = new JComboBox<String>();
+		JComboBox<String> interpolationType = new JComboBox<>();
 		interpolationType.setMaximumRowCount(10);
 
 		for (String s : interpolationTypes.keySet()) {
 			interpolationType.addItem(s);
 		}
 
+		interpolationType.setSelectedItem(n.interpolationType);
 		interpolationType.addActionListener(
 				e -> n.interpolationType = interpolationTypes.get(interpolationType.getSelectedItem()));
-
 		qualityPanel.add(interpolationType);
 
 		JPanel rotatePanel = new JPanel();
 		listPanel.add(rotatePanel);
 
-		JButton btnRotateButton = new JButton("Rotate");
+		btnRotateButton = new JButton("Rotate");
 		btnRotateButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
@@ -262,9 +269,14 @@ public class EditCameraUI extends UtilityJFrame {
 					runOnRotate.run();
 				}
 
+				updateRotateIcon(n.rotateDeg);
+
 			}
+
 		});
-		btnRotateButton.setIcon(new ImageIcon(Constants.rotateIcon));
+
+		updateRotateIcon(n.rotateDeg);
+
 		rotatePanel.add(btnRotateButton);
 
 		chckbxPublishOnDiscord.addActionListener(e -> n.sendOnDiscord = chckbxPublishOnDiscord.isSelected());
@@ -274,7 +286,6 @@ public class EditCameraUI extends UtilityJFrame {
 		JButton btnClose = new JButton("Close");
 
 		btnClose.setSelected(true);
-
 		btnClose.addActionListener(e -> close(runOnClose));
 
 		contentPane.add(btnClose, BorderLayout.SOUTH);
@@ -282,6 +293,18 @@ public class EditCameraUI extends UtilityJFrame {
 		setAlwaysOnTop(true);
 		setVisible(true);
 
+	}
+
+	private void updateRotateIcon(int rotateDeg) {
+		if (rotateDeg == 90) {
+			btnRotateButton.setIcon(new ImageIcon(Constants.arrowRotate1Icon));
+		} else if (rotateDeg == 180) {
+			btnRotateButton.setIcon(new ImageIcon(Constants.arrowRotate2Icon));
+		} else if (rotateDeg == 270) {
+			btnRotateButton.setIcon(new ImageIcon(Constants.arrowRotate3Icon));
+		} else if (rotateDeg == 360) {
+			btnRotateButton.setIcon(new ImageIcon(Constants.arrowRotate4Icon));
+		}
 	}
 
 	private void close(Runnable runOnClose) {

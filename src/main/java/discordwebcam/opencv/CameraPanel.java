@@ -372,11 +372,6 @@ public class CameraPanel extends JInternalFrame {
 										String newFilePath = Properties.SAVE_IMAGES_FOLDER.getValue() + File.separator
 												+ getCurrentTimeStamp() + ".png";
 
-										if (!serializedCamera.downscalePreviewQuality) { // Has not already been
-											// downscaled
-											lowerQuality();
-										}
-
 										Imgcodecs.imencode(".jpg", frame, matOfByte);
 										byte[] byteArray = matOfByte.toArray();
 

@@ -29,7 +29,10 @@ public class Constants {
 	public static BufferedImage waitingIcon;
 	public static BufferedImage stoppedIcon;
 
-	public static BufferedImage rotateIcon;
+	public static BufferedImage arrowRotate1Icon;
+	public static BufferedImage arrowRotate2Icon;
+	public static BufferedImage arrowRotate3Icon;
+	public static BufferedImage arrowRotate4Icon;
 
 	public static BufferedImage cameraUnavailable;
 
@@ -49,7 +52,10 @@ public class Constants {
 			informationIcon = read("information.png", 16);
 			errorIcon = read("error.png", 16);
 
-			rotateIcon = read("rotate.png", 16);
+			arrowRotate1Icon = read("arrow_rotate1.png", 16);
+			arrowRotate2Icon = read("arrow_rotate2.png", 16);
+			arrowRotate3Icon = read("arrow_rotate3.png", 16);
+			arrowRotate4Icon = read("arrow_rotate4.png", 16);
 
 			runningIcon = read("status_running.png", 16);
 			waitingIcon = read("status_waiting.png", 16);
