@@ -25,9 +25,11 @@ public class Constants {
 	public static BufferedImage informationIcon;
 	public static BufferedImage errorIcon;
 
-	public static BufferedImage running;
-	public static BufferedImage waiting;
-	public static BufferedImage stopped;
+	public static BufferedImage runningIcon;
+	public static BufferedImage waitingIcon;
+	public static BufferedImage stoppedIcon;
+
+	public static BufferedImage rotateIcon;
 
 	public static BufferedImage cameraUnavailable;
 
@@ -47,9 +49,11 @@ public class Constants {
 			informationIcon = read("information.png", 16);
 			errorIcon = read("error.png", 16);
 
-			running = read("status_running.png", 16);
-			waiting = read("status_waiting.png", 16);
-			stopped = read("status_stopped.png", 16);
+			rotateIcon = read("rotate.png", 16);
+
+			runningIcon = read("status_running.png", 16);
+			waitingIcon = read("status_waiting.png", 16);
+			stoppedIcon = read("status_stopped.png", 16);
 
 			cameraUnavailable = read("cameraUnavailable.png");
 

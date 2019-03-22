@@ -51,7 +51,7 @@ public class StaticDialog extends JFrame {
 
 		JScrollPane errorPanel = new JScrollPane();
 		contentPane.add(errorPanel, BorderLayout.SOUTH);
-		
+
 		JTextArea textArea = new JTextArea();
 
 		errorPanel.setViewportView(textArea);

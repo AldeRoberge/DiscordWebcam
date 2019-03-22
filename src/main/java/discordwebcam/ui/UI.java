@@ -23,12 +23,15 @@ import java.util.TimerTask;
 
 public class UI extends UtilityJFrame {
 
+	/*
+	 * Loads the native drivers for OpenCV
+	 */
 	static {
 		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
 		System.loadLibrary("opencv_ffmpeg342_64"); //crucial to use IP Camera
 	}
 
-	static Logger log = LoggerFactory.getLogger(UI.class);
+	private static Logger log = LoggerFactory.getLogger(UI.class);
 
 	public static void main(String[] args) {
 		try {
@@ -38,13 +41,14 @@ public class UI extends UtilityJFrame {
 			log.error("Could not set look and feel. ", e);
 		}
 
-		JFrame.setDefaultLookAndFeelDecorated(false);
-
 		if (Properties.IS_FIRST_LAUNCH.getBooleanValue()) {
 			showEditPropertiesPanel(true);
 		} else {
 			showUI();
 		}
+
+
+
 	}
 
 	// This function is shared with UI's Edit -> Edit properties. Thats why we use 'runOnClose' to differentiate
@@ -81,6 +85,8 @@ public class UI extends UtilityJFrame {
 		f.pack();
 
 		f.setVisible(true);
+
+
 	}
 
 	private static void showUI() {

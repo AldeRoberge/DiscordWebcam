@@ -1,5 +1,6 @@
 package discordwebcam.camera;
 
+import com.sun.istack.internal.NotNull;
 import org.opencv.core.Size;
 
 import java.io.Serializable;
@@ -31,6 +32,8 @@ public class SerializedCamera implements Serializable {
 	
 	public boolean downscalePreviewQuality = false;
 	public Integer interpolationType = 0;
+
+	public int rotateDeg;
 
 	public SerializedCamera(String name, String networkAddress) {
 		this.type = CameraType.NETWORK;

@@ -110,7 +110,8 @@ public class CameraPanel extends JInternalFrame {
 				setTitle(n.name);
 				updateMotionDetectionIcon(n.motionDetection);
 				updateSendOnDiscordIcon(n.sendOnDiscord);
-			});
+
+			}, () -> setSizeChanged());
 		});
 
 		// BEGIN MOTION DETECTION TOGGLE //
@@ -146,19 +147,22 @@ public class CameraPanel extends JInternalFrame {
 
 	private void updateSendOnDiscordIcon(boolean send) {
 		if (send) {
-			sendOnDiscord.setIcon(new ImageIcon(Constants.running));
+			sendOnDiscord.setIcon(new ImageIcon(Constants.runningIcon));
 		} else {
-			sendOnDiscord.setIcon(new ImageIcon(Constants.stopped));
+			sendOnDiscord.setIcon(new ImageIcon(Constants.stoppedIcon));
 		}
 	}
 
 	private void updateMotionDetectionIcon(boolean detection) {
 		if (detection) {
-			motionDetection.setIcon(new ImageIcon(Constants.running));
+			motionDetection.setIcon(new ImageIcon(Constants.runningIcon));
 		} else {
-			motionDetection.setIcon(new ImageIcon(Constants.stopped));
+			motionDetection.setIcon(new ImageIcon(Constants.stoppedIcon));
 		}
 	}
+
+	private double cameraWidth = 0;
+	private double cameraHeight = 0;
 
 	private void start() {
 
@@ -170,14 +174,11 @@ public class CameraPanel extends JInternalFrame {
 				video = new VideoCapture(serializedCamera.networkAddress);
 			}
 
-			double dWidth = video.get(Videoio.CV_CAP_PROP_FRAME_WIDTH); //get the width of frames of the video
-			double dHeight = video.get(Videoio.CV_CAP_PROP_FRAME_HEIGHT); //get the height of frames of the video
+			cameraWidth = video.get(Videoio.CV_CAP_PROP_FRAME_WIDTH); //get the width of frames of the video
+			cameraHeight = video.get(Videoio.CV_CAP_PROP_FRAME_HEIGHT); //get the height of frames of the video
 
-			serializedCamera.width = dWidth;
-			serializedCamera.height = dHeight;
+			setSizeChanged();
 
-			setPreferredSize(new Dimension((int) serializedCamera.width, (int) serializedCamera.height));
-			setSize(getPreferredSize());
 			setVisible(true);
 
 			if (video.isOpened()) {
@@ -197,7 +198,27 @@ public class CameraPanel extends JInternalFrame {
 				log.error("Could not start camera " + serializedCamera);
 			}
 
+		} else {
+			log.error("Camera '" + serializedCamera.name + "' is already running!");
 		}
+	}
+
+	private void setSizeChanged() {
+		double actualWidth = cameraWidth;
+		double actualHeight = cameraHeight;
+
+		// Is flipped
+		if (90 == serializedCamera.rotateDeg || 270 == serializedCamera.rotateDeg) {
+			actualWidth = cameraHeight;
+			actualHeight = cameraWidth;
+		}
+
+		serializedCamera.width = actualWidth;
+		serializedCamera.height = actualHeight;
+
+		setPreferredSize(new Dimension((int) actualWidth, (int) actualHeight));
+		setSize(getPreferredSize());
+
 	}
 
 	/**
@@ -268,15 +289,21 @@ public class CameraPanel extends JInternalFrame {
 						Imgproc.resize(frameaux, frame, frame.size());
 						frame.copyTo(currentFrame);
 
+
+
 						if (firstFrame) {
 							frame.copyTo(lastFrame);
 							firstFrame = false;
 							continue;
 						}
 
+						flip(frame, frameaux, serializedCamera.rotateDeg);
+
 						if (serializedCamera.downscalePreviewQuality) {
 							lowerQuality();
 						}
+
+
 
 						if (serializedCamera.motionDetection) {
 							Imgproc.GaussianBlur(currentFrame, currentFrame, new Size(3, 3), 0);
@@ -404,7 +431,7 @@ public class CameraPanel extends JInternalFrame {
 					} catch (Exception e) {
 						log.error("Error : ", e);
 
-						StaticDialog.display("Error with camera " + serializedCamera.name, "Error with camera. Make sure there is no process already using it." ,e);
+						StaticDialog.display("Error with camera " + serializedCamera.name, "Error with camera. Make sure there is no process already using it.", e);
 
 						running = false;
 
@@ -432,6 +459,24 @@ public class CameraPanel extends JInternalFrame {
 				System.out.println("New quality : " + frameaux.size());
 			}
 
+		}
+	}
+
+	private void flip(Mat src, Mat dst, int deg) {
+
+		log.info("Flipping deg " + deg);
+
+		if (deg == 270 || deg == -90) {
+			// Rotate clockwise 270 degrees
+			Core.transpose(src, dst);
+			Core.flip(dst, dst, 0);
+		} else if (deg == 180 || deg == -180) {
+			// Rotate clockwise 180 degrees
+			Core.flip(src, dst, -1);
+		} else if (deg == 90 || deg == -270) {
+			// Rotate clockwise 90 degrees
+			Core.transpose(src, dst);
+			Core.flip(dst, dst, 1);
 		}
 	}
 

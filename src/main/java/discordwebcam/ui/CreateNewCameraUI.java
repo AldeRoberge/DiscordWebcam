@@ -54,7 +54,7 @@ public class CreateNewCameraUI extends UtilityJFrame {
 			}
 		});
 
-		setBounds(100, 100, 386, 172);
+		setBounds(100, 100, 400, 200);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));

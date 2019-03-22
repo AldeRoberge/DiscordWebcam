@@ -1,10 +1,10 @@
 package discordwebcam.ui;
 
 import alde.commons.util.window.UtilityJFrame;
+import com.sun.istack.internal.Nullable;
 import discordwebcam.Constants;
 import discordwebcam.camera.SerializedCamera;
 import discordwebcam.discord.Discord;
-
 import org.opencv.imgproc.Imgproc;
 
 import javax.swing.*;
@@ -12,12 +12,12 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.Date;
 import java.util.HashMap;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 
 public class EditCameraUI extends UtilityJFrame {
 
@@ -29,7 +29,7 @@ public class EditCameraUI extends UtilityJFrame {
 	public static void main(String[] args) {
 		EventQueue.invokeLater(() -> {
 			try {
-				EditCameraUI frame = new EditCameraUI(new SerializedCamera("ip", "adress"), null);
+				EditCameraUI frame = new EditCameraUI(new SerializedCamera("ip", "adress"), null, null);
 				frame.setVisible(true);
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -51,7 +51,7 @@ public class EditCameraUI extends UtilityJFrame {
 	/**
 	 * Create the frame.
 	 */
-	public EditCameraUI(final SerializedCamera n, final Runnable runOnClose) {
+	public EditCameraUI(final SerializedCamera n, @Nullable final Runnable runOnClose, @Nullable final Runnable runOnRotate) {
 
 		if (n.name.equals("")) {
 			setTitle("Edit untitled camera");
@@ -194,12 +194,36 @@ public class EditCameraUI extends UtilityJFrame {
 
 		panel_1.add(interpolationType);
 
+		JPanel panel_2 = new JPanel();
+		listPanel.add(panel_2);
+
+		JButton btnRotateButton = new JButton("Rotate button");
+		btnRotateButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (n.rotateDeg == 360) {
+					n.rotateDeg = 0;
+				}
+
+				n.rotateDeg += 90;
+
+				if (runOnRotate != null) {
+					runOnRotate.run();
+				}
+
+			}
+		});
+		btnRotateButton.setIcon(new ImageIcon(Constants.rotateIcon));
+		panel_2.add(btnRotateButton);
+
 		chckbxPublishOnDiscord.addActionListener(e -> n.sendOnDiscord = chckbxPublishOnDiscord.isSelected());
 
 		labelPanel.add(new JLabel("Discord", JLabel.TRAILING));
 
 		JLabel lblNewLabel = new JLabel("Downscale quality");
 		labelPanel.add(lblNewLabel);
+
+		JLabel lblRotate = new JLabel("Rotate");
+		labelPanel.add(lblRotate);
 
 		panel.add(mainPanel, BorderLayout.CENTER);
 
