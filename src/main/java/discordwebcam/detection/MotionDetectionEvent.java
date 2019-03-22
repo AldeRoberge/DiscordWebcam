@@ -17,8 +17,8 @@ import java.util.List;
 import java.util.*;
 
 /**
- * Contains information to a motion detection event
- * The date, image file location, and serializedCamera name.
+ * Contains information to a motion detection event The date, image file
+ * location, and serializedCamera name.
  * <p>
  * Used to send a notification message on DiscordBot
  */
@@ -26,8 +26,12 @@ public class MotionDetectionEvent {
 
 	private static org.slf4j.Logger log = LoggerFactory.getLogger(MotionDetectionEvent.class);
 
-	private static final int MAX_AMOUNT_OF_IMAGES = 5;
 	static Timer t = new Timer();
+
+	public static final int ROWS = 3;
+	public static final int COLUMNS = 2;
+
+	private static final int MAX_AMOUNT_OF_IMAGES = ROWS * COLUMNS;
 
 	SerializedCamera serializedCamera;
 
@@ -73,9 +77,15 @@ public class MotionDetectionEvent {
 
 		int totalWidth = 0;
 		int highestHeight = 0;
+		int totalHeight = 0;
 
-		for (BufferedImage b : bufferedImages) {
-			totalWidth += b.getWidth();
+		for (int i = 0; i < bufferedImages.size(); i++) {
+
+			BufferedImage b = bufferedImages.get(i);
+
+			if (i < ROWS) {
+				totalWidth += b.getWidth();
+			}
 
 			if (b.getHeight() > highestHeight) {
 				highestHeight = b.getHeight();
@@ -83,29 +93,48 @@ public class MotionDetectionEvent {
 
 		}
 
-		BufferedImage mosaic = new BufferedImage(totalWidth, highestHeight, BufferedImage.TYPE_INT_RGB);
+		totalHeight = COLUMNS * highestHeight;
+
+		BufferedImage mosaic = new BufferedImage(totalWidth, totalHeight, BufferedImage.TYPE_INT_RGB);
 
 		int currentX = 0;
+		int currentY = 0;
 
-		for (BufferedImage b : bufferedImages) {
+		Graphics2D g = mosaic.createGraphics();
 
-			Graphics2D g = mosaic.createGraphics();
+		for (int column = 0; column < COLUMNS; column++) {
 
-			g.drawImage(b, currentX, 0, null);
+			for (int row = 0; row < ROWS; row++) {
 
-			// DEBUG STRING
+				int index = (column + 1) + row;
 
-			String debugString = "Motion detected by " + serializedCamera.name + " at " + new Date().toLocaleString() + ".";
+				if (bufferedImages.size() > index) {
 
-			g.setColor(Color.BLACK);
-			g.drawString(debugString, 10, 10);
+					BufferedImage b = bufferedImages.get(index);
 
-			g.setColor(Color.WHITE);
-			g.drawString(debugString, 10, 12);
+					g.drawImage(b, currentX, currentY, null);
 
-			// END DEBUG STRING
+					// DEBUG STRING
 
-			currentX += b.getWidth();
+					String debugString = "Motion detected by " + serializedCamera.name + " at "
+							+ new Date().toLocaleString() + ".";
+
+					g.setColor(Color.BLACK);
+					g.drawString(debugString, 10, 10);
+
+					g.setColor(Color.WHITE);
+					g.drawString(debugString, 10, 12);
+
+					// END DEBUG STRING
+
+					currentX += b.getWidth();
+				}
+
+			}
+
+			currentX = 0;
+			currentY += highestHeight;
+
 		}
 
 		imageBuffer.clear();
@@ -118,24 +147,22 @@ public class MotionDetectionEvent {
 
 			if (success) {
 
-				EmbedBuilder e = new EmbedBuilder()
-						.setTitle("Camera " + serializedCamera.name + " detected motion.")
-						.setDescription(getPrettierTimeStamp())
-						.setAuthor(Constants.SOFTWARE_NAME)
-						//.addField("A field", "Some text inside the field")
-						//.addInlineField("An inline field", "More text")
-						//.addInlineField("Another inline field", "Even more text")
+				EmbedBuilder e = new EmbedBuilder().setTitle("Camera " + serializedCamera.name + " detected motion.")
+						.setDescription(getPrettierTimeStamp()).setAuthor(Constants.SOFTWARE_NAME)
+						// .addField("A field", "Some text inside the field")
+						// .addInlineField("An inline field", "More text")
+						// .addInlineField("Another inline field", "Even more text")
 						.setColor(Color.RED)
-						//.setFooter("Footer", "https://cdn.discordapp.com/embed/avatars/1.png")
+						// .setFooter("Footer", "https://cdn.discordapp.com/embed/avatars/1.png")
 						.setImage(fileToSaveTo);
 
 				DiscordBot.sendMessage(e);
 
 			} else {
-				log.error("Something went wrong with saving the detection image file '"
-						+ fileToSaveTo + "'. Make sure folder '"
-						+ Properties.SAVE_IMAGES_FOLDER.getValue()
-						+ "' exists and there is enough empty storage space to save the image. Defaulting to location : " + fileToSaveTo.getAbsolutePath());
+				log.error("Something went wrong with saving the detection image file '" + fileToSaveTo
+						+ "'. Make sure folder '" + Properties.SAVE_IMAGES_FOLDER.getValue()
+						+ "' exists and there is enough empty storage space to save the image. Defaulting to location : "
+						+ fileToSaveTo.getAbsolutePath());
 
 			}
 
@@ -146,7 +173,7 @@ public class MotionDetectionEvent {
 	}
 
 	/*
-	Used by save to file
+	 * Used by save to file
 	 */
 	public static String getCurrentTimeStamp() {
 		SimpleDateFormat sdfDate = new SimpleDateFormat("dd-MM-yyyy_HH-mm-ss-SSS");// dd/MM/yyyy
@@ -155,7 +182,7 @@ public class MotionDetectionEvent {
 	}
 
 	/*
-	Used by Discord
+	 * Used by Discord
 	 */
 	public static String getPrettierTimeStamp() {
 		return new Date().toLocaleString();
@@ -165,8 +192,7 @@ public class MotionDetectionEvent {
 
 		makeSureFolderExists();
 
-		String newFilePath = Properties.SAVE_IMAGES_FOLDER.getValue() + File.separator
-				+ getCurrentTimeStamp() + ".png";
+		String newFilePath = Properties.SAVE_IMAGES_FOLDER.getValue() + File.separator + getCurrentTimeStamp() + ".png";
 
 		return new File(newFilePath);
 
@@ -174,10 +200,8 @@ public class MotionDetectionEvent {
 
 	private void makeSureFolderExists() {
 		if (!(new File(Properties.SAVE_IMAGES_FOLDER.getValue()).exists())) {
-			log.info("Attempting to create folder '"
-					+ Properties.SAVE_IMAGES_FOLDER.getValue() + "'. Result : '"
-					+ new File(Properties.SAVE_IMAGES_FOLDER.getValue()).mkdir()
-					+ "'.");
+			log.info("Attempting to create folder '" + Properties.SAVE_IMAGES_FOLDER.getValue() + "'. Result : '"
+					+ new File(Properties.SAVE_IMAGES_FOLDER.getValue()).mkdir() + "'.");
 		}
 
 	}
@@ -187,6 +211,3 @@ public class MotionDetectionEvent {
 	}
 
 }
-
-
-
