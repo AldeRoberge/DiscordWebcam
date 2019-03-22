@@ -4,7 +4,7 @@ import alde.commons.util.window.UtilityJFrame;
 import com.sun.istack.internal.Nullable;
 import discordwebcam.Constants;
 import discordwebcam.camera.SerializedCamera;
-import discordwebcam.discord.Discord;
+import discordwebcam.discord.DiscordBot;
 import org.opencv.imgproc.Imgproc;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -97,7 +97,7 @@ public class EditCameraUI extends UtilityJFrame {
 
 		labelPanel.add(new JLabel("Motion", JLabel.TRAILING));
 
-		labelPanel.add(new JLabel("Discord", JLabel.TRAILING));
+		labelPanel.add(new JLabel("DiscordBot", JLabel.TRAILING));
 
 		JLabel label = new JLabel("Preview");
 		label.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -177,7 +177,7 @@ public class EditCameraUI extends UtilityJFrame {
 		listPanel.add(discordPanel);
 		discordPanel.setLayout(new BoxLayout(discordPanel, BoxLayout.X_AXIS));
 
-		JCheckBox chckbxPublishOnDiscord = new JCheckBox("Publish on Discord");
+		JCheckBox chckbxPublishOnDiscord = new JCheckBox("Publish on DiscordBot");
 		chckbxPublishOnDiscord.setSelected(n.sendOnDiscord);
 		chckbxPublishOnDiscord.setHorizontalAlignment(SwingConstants.CENTER);
 		discordPanel.add(chckbxPublishOnDiscord);
@@ -185,7 +185,7 @@ public class EditCameraUI extends UtilityJFrame {
 		JButton btnTest = new JButton("Send test message");
 		btnTest.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				Discord.sendMessage("Test button was pressed at '" + new Date() + "'.");
+				DiscordBot.sendMessage("Test button was pressed at '" + new Date() + "'.");
 			}
 		});
 

@@ -36,7 +36,7 @@ public class Properties {
 	public static final IntProperty UI_REFRESH_DISK_SPACE_EVERY = new IntProperty("UI_REFRESH_DISK_SPACE_EVERY", "Time (in ms) between refreshes of free disk space. Set to 0 to not refresh.", 5000, propertyFile);
 
 	public static final Property DISCORD_BOT_TOKEN = new Property("DISCORD_BOT_TOKEN", "Your discord bot token", "your-token", propertyFile);
-	public static final Property DISCORD_CHANNEL_ID = new Property("DISCORD_CHANNEL_ID", "Discord channel ID", "discord-channel-id", propertyFile);
+	public static final Property DISCORD_CHANNEL_ID = new Property("DISCORD_CHANNEL_ID", "DiscordBot channel ID", "discord-channel-id", propertyFile);
 
 	public static final Property SAVE_IMAGES_FOLDER = new Property("SAVE_IMAGES_FOLDER", "The folder to save images to", "C:\\Users\\rotmg\\Desktop", propertyFile);
 

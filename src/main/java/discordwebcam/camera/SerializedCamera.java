@@ -1,20 +1,35 @@
 package discordwebcam.camera;
 
-import com.sun.istack.internal.NotNull;
-import org.opencv.core.Size;
-
 import java.io.Serializable;
 
 public class SerializedCamera implements Serializable {
 
 	static final long serialVersionUID = -7704013905756195820L;
 
-	public String name = "Unnamed camera";
+	public String name;
 
-	public CameraType type = CameraType.LOCAL;
+	public CameraType type;
 
 	public String networkAddress = "no address";
 	public int ID = -1;
+
+	@Override
+	public boolean equals(Object o) {
+		if (o == this) {
+			return true;
+		}
+		if (!(o instanceof SerializedCamera)) {
+			return false;
+		}
+		SerializedCamera cc = (SerializedCamera) o;
+
+		if (type == CameraType.LOCAL) {
+			return cc.ID == (this.ID);
+		} else {
+			return cc.networkAddress.equals(this.networkAddress);
+		}
+
+	}
 
 	public int x = 20;
 	public int y = 20;

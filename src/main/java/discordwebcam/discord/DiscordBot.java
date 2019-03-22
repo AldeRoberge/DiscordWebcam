@@ -1,6 +1,7 @@
 package discordwebcam.discord;
 
 import discordwebcam.Constants;
+import discordwebcam.camera.SerializedCamera;
 import discordwebcam.detection.MotionDetectionEvent;
 import discordwebcam.logger.StaticDialog;
 import discordwebcam.properties.Properties;
@@ -11,9 +12,9 @@ import org.javacord.api.entity.message.embed.EmbedBuilder;
 import java.awt.*;
 
 /**
- * Static class to send detection messages on Discord
+ * Static class to send detection messages on DiscordBot
  */
-public class Discord {
+public class DiscordBot {
 
 	static DiscordApi api;
 
@@ -21,15 +22,16 @@ public class Discord {
 		try {
 			api = new DiscordApiBuilder().setToken(Properties.DISCORD_BOT_TOKEN.getValue()).login().join();
 		} catch (Exception e) {
-			StaticDialog.display("Error with Discord Bot", "Error connecting Discord bot. \n Try changing the Discord Bot Token in '" + Properties.getPropertiesFilePath() + "'.", e);
+			StaticDialog.display("Error with DiscordBot Bot", "Error connecting DiscordBot bot. \n Try changing the DiscordBot Bot Token in '" + Properties.getPropertiesFilePath() + "'.", e);
 		}
 	}
 
-	public static void notifyDetection(MotionDetectionEvent e) {
-		api.getTextChannelById(Properties.DISCORD_CHANNEL_ID.getValue()).ifPresent(textChannel -> textChannel.sendMessage(getEmbedFromMotionDetection(e)));
-	}
 
-	public static EmbedBuilder getEmbedFromMotionDetection(MotionDetectionEvent e) {
+	/*public static void notifyDetection(MotionDetectionEvent e) {
+		api.getTextChannelById(Properties.DISCORD_CHANNEL_ID.getValue()).ifPresent(textChannel -> textChannel.sendMessage(getEmbedFromMotionDetection(e)));
+	}*/
+
+	/*public static EmbedBuilder getEmbedFromMotionDetection(SerializedCamera e) {
 		return new EmbedBuilder()
 				.setTitle("Camera " + e.cameraName + " detected motion.")
 				.setDescription(e.detectionDate.toLocaleString())
@@ -40,7 +42,7 @@ public class Discord {
 				.setColor(Color.RED)
 				//.setFooter("Footer", "https://cdn.discordapp.com/embed/avatars/1.png")
 				.setImage(e.imageFile);
-	}
+	}*/
 
 	public static void sendMessage(String string) {
 		api.getTextChannelById(Properties.DISCORD_CHANNEL_ID.getValue()).ifPresent(textChannel -> textChannel.sendMessage(string));

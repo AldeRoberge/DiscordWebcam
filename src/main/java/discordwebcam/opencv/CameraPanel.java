@@ -4,7 +4,6 @@ import discordwebcam.Constants;
 import discordwebcam.camera.CameraType;
 import discordwebcam.camera.SerializedCamera;
 import discordwebcam.detection.MotionDetectionEvent;
-import discordwebcam.discord.Discord;
 import discordwebcam.logger.StaticDialog;
 import discordwebcam.properties.Properties;
 import discordwebcam.ui.EditCameraUI;
@@ -61,11 +60,15 @@ public class CameraPanel extends JInternalFrame {
 
 	private JProgressBar progressBar = new JProgressBar(0, 100);
 
+	MotionDetectionEvent motionDetectionEvent;
+
 	public CameraPanel(SerializedCamera n, Runnable onRemove) {
 
 		super(n.name, true, true, true, true);
 
 		this.serializedCamera = n;
+
+		motionDetectionEvent = new MotionDetectionEvent(serializedCamera);
 
 		setBackground(Constants.CAMERA_PANEL_BACKGROUND_COLOR);
 
@@ -132,7 +135,7 @@ public class CameraPanel extends JInternalFrame {
 
 		// BEGIN DISCORD //
 
-		sendOnDiscord = new JMenuItem("Discord");
+		sendOnDiscord = new JMenuItem("DiscordBot");
 		sendOnDiscord.addActionListener(e -> {
 			n.sendOnDiscord = !n.sendOnDiscord;
 			updateSendOnDiscordIcon(n.sendOnDiscord);
@@ -382,13 +385,7 @@ public class CameraPanel extends JInternalFrame {
 											in = new ByteArrayInputStream(byteArray);
 											buf = ImageIO.read(in);
 
-											File outputfile = new File(newFilePath);
-											ImageIO.write(buf, "png", outputfile);
-
-											MotionDetectionEvent e = new MotionDetectionEvent(outputfile, new Date(),
-													serializedCamera.name);
-
-											Discord.notifyDetection(e);
+											motionDetectionEvent.motionDetected(buf, serializedCamera);
 
 										} catch (Exception ex) {
 

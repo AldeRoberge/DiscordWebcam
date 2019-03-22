@@ -104,8 +104,6 @@ public class UI extends UtilityJFrame {
 
 		registerSystemTray();
 
-		addWindowStateListener(arg0 -> log.info(arg0.getNewState() + ""));
-
 		setSize(Properties.UI_WIDTH.getIntValue(), Properties.UI_HEIGHT.getIntValue());
 
 		setIconImage(Constants.softwareIcon);
