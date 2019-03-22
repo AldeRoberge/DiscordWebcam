@@ -11,23 +11,6 @@ public class StaticDialog extends JFrame {
 
 	private JPanel contentPane;
 
-	public static void display(String title, String message) {
-		display(title, message, null);
-	}
-
-	public static void display(String title, String message, Exception e) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					StaticDialog frame = new StaticDialog(title, message, e);
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
 	/**
 	 * Create the frame.
 	 */
@@ -64,6 +47,23 @@ public class StaticDialog extends JFrame {
 			errorPanel.setVisible(false);
 
 		}
+	}
+
+	public static void display(String title, String message) {
+		display(title, message, null);
+	}
+
+	public static void display(String title, String message, Exception e) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					StaticDialog frame = new StaticDialog(title, message, e);
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
 	}
 
 }

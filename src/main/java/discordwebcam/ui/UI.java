@@ -23,6 +23,8 @@ import java.util.TimerTask;
 
 public class UI extends UtilityJFrame {
 
+	private static Logger log = LoggerFactory.getLogger(UI.class);
+
 	/*
 	 * Loads the native drivers for OpenCV
 	 */
@@ -31,68 +33,9 @@ public class UI extends UtilityJFrame {
 		System.loadLibrary("opencv_ffmpeg342_64"); //crucial to use IP Camera
 	}
 
-	private static Logger log = LoggerFactory.getLogger(UI.class);
-
-	public static void main(String[] args) {
-		try {
-			UIManager.setLookAndFeel(
-					UIManager.getSystemLookAndFeelClassName());
-		} catch (UnsupportedLookAndFeelException | ClassNotFoundException | InstantiationException | IllegalAccessException e) {
-			log.error("Could not set look and feel. ", e);
-		}
-
-		if (Properties.IS_FIRST_LAUNCH.getBooleanValue()) {
-			showEditPropertiesPanel(true);
-		} else {
-			showUI();
-		}
-
-	}
-
-	// This function is shared with UI's Edit -> Edit properties. Thats why we use 'runOnClose' to differentiate
-	static void showEditPropertiesPanel(boolean runOnClose) {
-		UtilityJFrame f = new UtilityJFrame();
-
-		f.setIconImage(Constants.gearIcon);
-
-		f.setTitle("Set properties");
-		f.add(Properties.getPropertiesPanel(), BorderLayout.CENTER);
-		Button closeButton = new Button("Close");
-		closeButton.addActionListener(e -> {
-			log.info("Close");
-			f.setVisible(false);
-
-			if (runOnClose) {
-				showUI();
-				Properties.IS_FIRST_LAUNCH.setValue(false);
-			}
-		});
-
-		f.add(closeButton, BorderLayout.SOUTH);
-		f.addWindowListener(new WindowAdapter() {
-			public void windowClosing(WindowEvent e) {
-				if (runOnClose) {
-					showUI();
-				}
-				f.setVisible(false);
-			}
-		});
-
-		f.setPreferredSize(new Dimension(525, 250));
-
-		f.pack();
-
-		f.setVisible(true);
-
-	}
-
-	private static void showUI() {
-		new UI();
-	}
-
 	JDesktopPane desktop;
-
 	CameraListSerializer cameraListSerializer = new CameraListSerializer();
+	ArrayList<CameraPanel> cameraFrameList = new ArrayList<>();
 
 	public UI() {
 		super(Constants.SOFTWARE_NAME);
@@ -190,6 +133,63 @@ public class UI extends UtilityJFrame {
 
 		performStartup();
 
+	}
+
+	public static void main(String[] args) {
+		try {
+			UIManager.setLookAndFeel(
+					UIManager.getSystemLookAndFeelClassName());
+		} catch (UnsupportedLookAndFeelException | ClassNotFoundException | InstantiationException | IllegalAccessException e) {
+			log.error("Could not set look and feel. ", e);
+		}
+
+		if (Properties.IS_FIRST_LAUNCH.getBooleanValue()) {
+			showEditPropertiesPanel(true);
+		} else {
+			showUI();
+		}
+
+	}
+
+	// This function is shared with UI's Edit -> Edit properties. Thats why we use 'runOnClose' to differentiate
+	static void showEditPropertiesPanel(boolean runOnClose) {
+		UtilityJFrame f = new UtilityJFrame();
+
+		f.setIconImage(Constants.gearIcon);
+
+		f.setTitle("Set properties");
+		f.add(Properties.getPropertiesPanel(), BorderLayout.CENTER);
+		Button closeButton = new Button("Close");
+		closeButton.addActionListener(e -> {
+			log.info("Close");
+			f.setVisible(false);
+
+			if (runOnClose) {
+				showUI();
+				Properties.IS_FIRST_LAUNCH.setValue(false);
+			}
+		});
+
+		f.add(closeButton, BorderLayout.SOUTH);
+		f.addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent e) {
+				if (runOnClose) {
+					showUI();
+				}
+				f.setVisible(false);
+			}
+		});
+
+		f.setPreferredSize(new Dimension(525, 250));
+
+		f.pack();
+
+		f.setVisible(true);
+
+	}
+
+	private static void showUI() {
+		new UI();
 	}
 
 	private void performStartup() {
@@ -300,8 +300,6 @@ public class UI extends UtilityJFrame {
 	private void showLogger() {
 		desktop.add(new LoggerWrapper());
 	}
-
-	ArrayList<CameraPanel> cameraFrameList = new ArrayList<>();
 
 	public void addCamera(SerializedCamera n) {
 

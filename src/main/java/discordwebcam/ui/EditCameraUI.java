@@ -24,25 +24,6 @@ import java.util.HashMap;
 public class EditCameraUI extends UtilityJFrame {
 
 	static Logger log = LoggerFactory.getLogger(EditCameraUI.class);
-
-	private JPanel contentPane;
-
-	JButton btnRotateButton;
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(() -> {
-			try {
-				EditCameraUI frame = new EditCameraUI(new SerializedCamera("ip", "adress"), null, null);
-				frame.setVisible(true);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		});
-	}
-
 	static HashMap<String, Integer> interpolationTypes = new HashMap<>();
 
 	static {
@@ -54,11 +35,14 @@ public class EditCameraUI extends UtilityJFrame {
 		interpolationTypes.put("INTER_LINEAR_EXACT", Imgproc.INTER_LINEAR_EXACT);
 	}
 
+	JButton btnRotateButton;
+	private JPanel contentPane;
+
 	/**
 	 * Create the frame.
 	 */
 	public EditCameraUI(final SerializedCamera n, @Nullable final Runnable runOnClose,
-			@Nullable final Runnable runOnRotate) {
+	                    @Nullable final Runnable runOnRotate) {
 
 		if (n.name.equals("")) {
 			setTitle("Edit untitled camera");
@@ -312,6 +296,20 @@ public class EditCameraUI extends UtilityJFrame {
 		setAlwaysOnTop(true);
 		setVisible(true);
 
+	}
+
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(() -> {
+			try {
+				EditCameraUI frame = new EditCameraUI(new SerializedCamera("ip", "adress"), null, null);
+				frame.setVisible(true);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		});
 	}
 
 	private void updateRotateIcon(int rotateDeg) {

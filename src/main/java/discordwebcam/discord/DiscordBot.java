@@ -1,15 +1,10 @@
 package discordwebcam.discord;
 
-import discordwebcam.Constants;
-import discordwebcam.camera.SerializedCamera;
-import discordwebcam.detection.MotionDetectionEvent;
 import discordwebcam.logger.StaticDialog;
 import discordwebcam.properties.Properties;
 import org.javacord.api.DiscordApi;
 import org.javacord.api.DiscordApiBuilder;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
-
-import java.awt.*;
 
 /**
  * Static class to send detection messages on DiscordBot

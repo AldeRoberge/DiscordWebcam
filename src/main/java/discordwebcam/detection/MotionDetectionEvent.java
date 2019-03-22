@@ -24,16 +24,13 @@ import java.util.*;
  */
 public class MotionDetectionEvent {
 
-	private static org.slf4j.Logger log = LoggerFactory.getLogger(MotionDetectionEvent.class);
-
-	static Timer t = new Timer();
-
 	public static final int ROWS = 3;
 	public static final int COLUMNS = 2;
-
 	private static final int MAX_AMOUNT_OF_IMAGES = ROWS * COLUMNS;
-
+	static Timer t = new Timer();
+	private static org.slf4j.Logger log = LoggerFactory.getLogger(MotionDetectionEvent.class);
 	SerializedCamera serializedCamera;
+	List<BufferedImage> imageBuffer = new ArrayList<>();
 
 	public MotionDetectionEvent(SerializedCamera s) {
 		this.serializedCamera = s;
@@ -41,7 +38,21 @@ public class MotionDetectionEvent {
 		reschedulePeriodicCheck();
 	}
 
-	List<BufferedImage> imageBuffer = new ArrayList<>();
+	/*
+	 * Used by save to file
+	 */
+	public static String getCurrentTimeStamp() {
+		SimpleDateFormat sdfDate = new SimpleDateFormat("dd-MM-yyyy_HH-mm-ss-SSS");// dd/MM/yyyy
+		Date now = new Date();
+		return sdfDate.format(now);
+	}
+
+	/*
+	 * Used by Discord
+	 */
+	public static String getPrettierTimeStamp() {
+		return new Date().toLocaleString();
+	}
 
 	private void reschedulePeriodicCheck() {
 		t.cancel();
@@ -147,8 +158,9 @@ public class MotionDetectionEvent {
 
 			if (success) {
 
-				EmbedBuilder e = new EmbedBuilder().setTitle("Camera " + serializedCamera.name + " detected motion.")
+				EmbedBuilder e = new EmbedBuilder().setTitle("Detected motion.")
 						.setDescription(getPrettierTimeStamp()).setAuthor(Constants.SOFTWARE_NAME)
+						.setAuthor(Constants.SOFTWARE_NAME, "", Constants.softwareIcon)
 						// .addField("A field", "Some text inside the field")
 						// .addInlineField("An inline field", "More text")
 						// .addInlineField("Another inline field", "Even more text")
@@ -170,22 +182,6 @@ public class MotionDetectionEvent {
 			e.printStackTrace();
 		}
 
-	}
-
-	/*
-	 * Used by save to file
-	 */
-	public static String getCurrentTimeStamp() {
-		SimpleDateFormat sdfDate = new SimpleDateFormat("dd-MM-yyyy_HH-mm-ss-SSS");// dd/MM/yyyy
-		Date now = new Date();
-		return sdfDate.format(now);
-	}
-
-	/*
-	 * Used by Discord
-	 */
-	public static String getPrettierTimeStamp() {
-		return new Date().toLocaleString();
 	}
 
 	private File buildFileName() {

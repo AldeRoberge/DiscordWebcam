@@ -32,9 +32,9 @@ import java.util.List;
 public class CameraPanel extends JInternalFrame {
 
 	static Logger log = LoggerFactory.getLogger(CameraPanel.class);
-
+	ArrayList<Rect> detectionsSquares = new ArrayList<>();
+	MotionDetectionEvent motionDetectionEvent;
 	private SerializedCamera serializedCamera;
-
 	private boolean running = false;
 	private boolean firstFrame = true;
 	private VideoCapture video = null;
@@ -46,17 +46,12 @@ public class CameraPanel extends JInternalFrame {
 	private Mat processedFrame = new Mat(240, 320, CvType.CV_8UC3);
 	private ImagePanel image;
 	private int savedelay = 0;
-
-	ArrayList<Rect> detectionsSquares = new ArrayList<>();
-
 	private CaptureThread thread;
-
 	private JMenuItem sendOnDiscord;
 	private JMenuItem motionDetection;
-
 	private JProgressBar progressBar = new JProgressBar(0, 100);
-
-	MotionDetectionEvent motionDetectionEvent;
+	private double cameraWidth = 0;
+	private double cameraHeight = 0;
 
 	public CameraPanel(SerializedCamera n, Runnable onRemove) {
 
@@ -163,15 +158,17 @@ public class CameraPanel extends JInternalFrame {
 	}
 
 	private void updateMotionDetectionIcon(boolean detection) {
+
 		if (detection) {
 			motionDetection.setIcon(new ImageIcon(Constants.runningIcon));
+			progressBar.setString(null);
+			progressBar.setValue(0);
 		} else {
 			motionDetection.setIcon(new ImageIcon(Constants.stoppedIcon));
+			progressBar.setString("Deactivated");
+			progressBar.setValue(progressBar.getMaximum());
 		}
 	}
-
-	private double cameraWidth = 0;
-	private double cameraHeight = 0;
 
 	private void start() {
 
@@ -273,6 +270,26 @@ public class CameraPanel extends JInternalFrame {
 
 		v.release();
 		return rect_array;
+	}
+
+	private void flip(Mat src, Mat dst, int deg) {
+
+		if (deg != 0) {
+
+			if (deg == 270 || deg == -90) {
+				// Rotate clockwise 270 degrees
+				Core.transpose(src, dst);
+				Core.flip(dst, dst, 0);
+			} else if (deg == 180 || deg == -180) {
+				// Rotate clockwise 180 degrees
+				Core.flip(src, dst, -1);
+			} else if (deg == 90 || deg == -270) {
+				// Rotate clockwise 90 degrees
+				Core.transpose(src, dst);
+				Core.flip(dst, dst, 1);
+			}
+		}
+
 	}
 
 	class CaptureThread extends Thread {
@@ -452,26 +469,6 @@ public class CameraPanel extends JInternalFrame {
 			}
 
 		}
-	}
-
-	private void flip(Mat src, Mat dst, int deg) {
-
-		if (deg != 0) {
-
-			if (deg == 270 || deg == -90) {
-				// Rotate clockwise 270 degrees
-				Core.transpose(src, dst);
-				Core.flip(dst, dst, 0);
-			} else if (deg == 180 || deg == -180) {
-				// Rotate clockwise 180 degrees
-				Core.flip(src, dst, -1);
-			} else if (deg == 90 || deg == -270) {
-				// Rotate clockwise 90 degrees
-				Core.transpose(src, dst);
-				Core.flip(dst, dst, 1);
-			}
-		}
-
 	}
 
 }

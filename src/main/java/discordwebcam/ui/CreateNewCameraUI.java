@@ -1,6 +1,5 @@
 package discordwebcam.ui;
 
-
 import alde.commons.util.jtextfield.UtilityJTextField;
 import alde.commons.util.window.UtilityJFrame;
 import discordwebcam.Constants;
@@ -19,24 +18,6 @@ public class CreateNewCameraUI extends UtilityJFrame {
 	private JPanel contentPane;
 	private UtilityJTextField nameField;
 	private UtilityJTextField networkField;
-
-	
-	
-	
-	
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(() -> {
-			try {
-				CreateNewCameraUI frame = new CreateNewCameraUI(c -> System.out.println("Network camera : " + c));
-				frame.setVisible(true);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		});
-	}
 
 	/**
 	 * Create the frame.
@@ -151,10 +132,21 @@ public class CreateNewCameraUI extends UtilityJFrame {
 		okayPanel.add(button);
 
 		setVisible(true);
-		
-		
-		
 
+	}
+
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(() -> {
+			try {
+				CreateNewCameraUI frame = new CreateNewCameraUI(c -> System.out.println("Network camera : " + c));
+				frame.setVisible(true);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		});
 	}
 
 	private void acceptCamera() {

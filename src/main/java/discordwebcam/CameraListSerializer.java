@@ -2,8 +2,8 @@ package discordwebcam;
 
 import alde.commons.util.file.FileEditor;
 import alde.commons.util.text.StackTraceToString;
-import org.slf4j.LoggerFactory;
 import discordwebcam.camera.SerializedCamera;
+import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.util.ArrayList;
