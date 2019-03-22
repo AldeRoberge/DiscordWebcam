@@ -9,12 +9,12 @@ public class SerializedCamera implements Serializable {
 
 	static final long serialVersionUID = -7704013905756195820L;
 
-	public String name;
+	public String name = "Unnamed camera";
 
-	public CameraType type;
+	public CameraType type = CameraType.LOCAL;
 
-	public String networkAddress;
-	public int ID;
+	public String networkAddress = "no address";
+	public int ID = -1;
 
 	public int x = 20;
 	public int y = 20;
@@ -23,17 +23,22 @@ public class SerializedCamera implements Serializable {
 	public double width = 400;
 
 	public boolean motionDetection = false;
-	public int threshold = 15; //max = 255
+	public boolean showMotionDetectionInPreview = false;
+	public int motionDetectionThreshold = 15;
 
-	public boolean sendOnDiscord;
+	public boolean sendOnDiscord = false;
 
-	public boolean downscaleQuality;
-	public int downScaleAmount = 1;
-	
+	public boolean downscaleQuality = false;
 	public boolean downscalePreviewQuality = false;
+	public int downScaleAmount = 1;
+
 	public Integer interpolationType = 0;
 
-	public int rotateDeg;
+	public boolean repaintPreviewWhenOutOfFocus = false;
+	public int timeBetweenPreviewRepaint = 10;
+
+	public int rotateDeg = 0;
+	public double sensitivity;
 
 	public SerializedCamera(String name, String networkAddress) {
 		this.type = CameraType.NETWORK;
@@ -51,11 +56,7 @@ public class SerializedCamera implements Serializable {
 
 	@Override
 	public String toString() {
-		return "SerializedCamera{" +
-				"name='" + name + '\'' +
-				", networkAddress='" + networkAddress + '\'' +
-				'}';
+		return "SerializedCamera{" + "name='" + name + '\'' + ", networkAddress='" + networkAddress + '\'' + '}';
 	}
 
 }
-

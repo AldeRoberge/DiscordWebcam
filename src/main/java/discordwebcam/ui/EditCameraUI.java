@@ -6,6 +6,8 @@ import discordwebcam.Constants;
 import discordwebcam.camera.SerializedCamera;
 import discordwebcam.discord.Discord;
 import org.opencv.imgproc.Imgproc;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -20,6 +22,8 @@ import java.util.Date;
 import java.util.HashMap;
 
 public class EditCameraUI extends UtilityJFrame {
+
+	static Logger log = LoggerFactory.getLogger(EditCameraUI.class);
 
 	private JPanel contentPane;
 
@@ -51,7 +55,8 @@ public class EditCameraUI extends UtilityJFrame {
 	/**
 	 * Create the frame.
 	 */
-	public EditCameraUI(final SerializedCamera n, @Nullable final Runnable runOnClose, @Nullable final Runnable runOnRotate) {
+	public EditCameraUI(final SerializedCamera n, @Nullable final Runnable runOnClose,
+			@Nullable final Runnable runOnRotate) {
 
 		if (n.name.equals("")) {
 			setTitle("Edit untitled camera");
@@ -69,7 +74,7 @@ public class EditCameraUI extends UtilityJFrame {
 
 		setIconImage(Constants.gearIcon);
 
-		setBounds(100, 100, 730, 265);
+		setBounds(100, 100, 693, 324);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
@@ -86,14 +91,33 @@ public class EditCameraUI extends UtilityJFrame {
 		JPanel labelPanel = new JPanel(new GridLayout(0, 1, 2, 2));
 		mainPanel.add(labelPanel, BorderLayout.WEST);
 
+		labelPanel.add(new JLabel("Camera", JLabel.TRAILING));
+
+		labelPanel.add(new JLabel("Motion", JLabel.TRAILING));
+
+		labelPanel.add(new JLabel("Discord", JLabel.TRAILING));
+
+		JLabel label = new JLabel("Preview");
+		label.setHorizontalAlignment(SwingConstants.RIGHT);
+		labelPanel.add(label);
+
+		JLabel lblQuality = new JLabel("Quality");
+		lblQuality.setHorizontalAlignment(SwingConstants.RIGHT);
+		labelPanel.add(lblQuality);
+
+		JLabel label_1 = new JLabel("Rotate");
+		label_1.setHorizontalAlignment(SwingConstants.RIGHT);
+		labelPanel.add(label_1);
+
 		JPanel listPanel = new JPanel(new GridLayout(0, 1, 2, 2));
 		mainPanel.add(listPanel, BorderLayout.CENTER);
-
-		labelPanel.add(new JLabel("Name", JLabel.TRAILING));
 
 		JPanel cameraNamePanel = new JPanel();
 		listPanel.add(cameraNamePanel);
 		cameraNamePanel.setLayout(new BoxLayout(cameraNamePanel, BoxLayout.X_AXIS));
+
+		JLabel cameraNameLabel = new JLabel("Name : ");
+		cameraNamePanel.add(cameraNameLabel);
 		JTextField cameraName = new JTextField(n.name);
 		cameraNamePanel.add(cameraName);
 
@@ -119,61 +143,85 @@ public class EditCameraUI extends UtilityJFrame {
 
 		});
 
-		labelPanel.add(new JLabel("Motion detection", JLabel.TRAILING));
-
-		JPanel allowMotionDetectionPanel = new JPanel();
-		listPanel.add(allowMotionDetectionPanel);
-		allowMotionDetectionPanel.setLayout(new BoxLayout(allowMotionDetectionPanel, BoxLayout.X_AXIS));
+		JPanel motionDetectionPanel = new JPanel();
+		listPanel.add(motionDetectionPanel);
+		motionDetectionPanel.setLayout(new BoxLayout(motionDetectionPanel, BoxLayout.X_AXIS));
 
 		JCheckBox chckbxMotionDetection = new JCheckBox("Allow motion detection");
 		chckbxMotionDetection.setSelected(n.motionDetection);
-		allowMotionDetectionPanel.add(chckbxMotionDetection);
+		motionDetectionPanel.add(chckbxMotionDetection);
 
 		chckbxMotionDetection.addActionListener(e -> n.motionDetection = chckbxMotionDetection.isSelected());
 
-		JSlider thresholdSlider = new JSlider();
-		thresholdSlider.setPaintTicks(true);
-		thresholdSlider.setMajorTickSpacing(51);
-		thresholdSlider.setMinorTickSpacing(17);
-		thresholdSlider.setPaintLabels(true);
-		thresholdSlider.setSnapToTicks(true);
-		thresholdSlider.setValue(n.threshold);
-		thresholdSlider.setMaximum(Constants.MAX_THRESHOLD);
-		allowMotionDetectionPanel.add(thresholdSlider);
+		JCheckBox chckbxShowMotionDetection = new JCheckBox("Show motion detection boxes");
+		chckbxShowMotionDetection
+				.addActionListener(e -> n.showMotionDetectionInPreview = chckbxShowMotionDetection.isSelected());
+		motionDetectionPanel.add(chckbxShowMotionDetection);
 
-		thresholdSlider.addChangeListener(e -> n.threshold = thresholdSlider.getValue());
+		JSlider detectionThresholdSlider = new JSlider();
+		detectionThresholdSlider.setPaintTicks(true);
+		detectionThresholdSlider.setMajorTickSpacing(51);
+		detectionThresholdSlider.setMinorTickSpacing(17);
+		detectionThresholdSlider.setPaintLabels(true);
+		detectionThresholdSlider.setSnapToTicks(true);
+		detectionThresholdSlider.setValue(n.motionDetectionThreshold);
+		detectionThresholdSlider.setMaximum(Constants.MAX_THRESHOLD);
+		motionDetectionPanel.add(detectionThresholdSlider);
 
-		JPanel publishOnDiscordPanel = new JPanel();
-		listPanel.add(publishOnDiscordPanel);
-		publishOnDiscordPanel.setLayout(new BoxLayout(publishOnDiscordPanel, BoxLayout.X_AXIS));
+		detectionThresholdSlider.addChangeListener(e -> n.motionDetectionThreshold = detectionThresholdSlider.getValue());
+
+		JPanel discordPanel = new JPanel();
+		listPanel.add(discordPanel);
+		discordPanel.setLayout(new BoxLayout(discordPanel, BoxLayout.X_AXIS));
 
 		JCheckBox chckbxPublishOnDiscord = new JCheckBox("Publish on Discord");
 		chckbxPublishOnDiscord.setSelected(n.sendOnDiscord);
 		chckbxPublishOnDiscord.setHorizontalAlignment(SwingConstants.CENTER);
-		publishOnDiscordPanel.add(chckbxPublishOnDiscord);
+		discordPanel.add(chckbxPublishOnDiscord);
 
-		JButton btnTest = new JButton("Test");
+		JButton btnTest = new JButton("Send test message");
 		btnTest.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				Discord.sendMessage("Test button was pressed at '" + new Date() + "'.");
 			}
 		});
-		publishOnDiscordPanel.add(btnTest);
 
-		JPanel panel_1 = new JPanel();
-		FlowLayout flowLayout = (FlowLayout) panel_1.getLayout();
-		flowLayout.setAlignment(FlowLayout.LEFT);
-		listPanel.add(panel_1);
+		Component horizontalStrut = Box.createHorizontalStrut(5);
+		discordPanel.add(horizontalStrut);
+		discordPanel.add(btnTest);
+
+		JPanel previewPanel = new JPanel();
+		listPanel.add(previewPanel);
+		previewPanel.setLayout(new BorderLayout(0, 0));
+
+		JSlider slider = new JSlider();
+		slider.setMinimum(1);
+		slider.setMinorTickSpacing(100);
+		slider.setSnapToTicks(true);
+		slider.setPaintTicks(true);
+		slider.setMajorTickSpacing(500);
+		slider.setMaximum(5000);
+		slider.addChangeListener(e -> n.timeBetweenPreviewRepaint = slider.getValue());
+		previewPanel.add(slider);
+
+		JCheckBox chckbxNewCheckBox = new JCheckBox("Don't repaint when window is not focused");
+		chckbxNewCheckBox.addActionListener(e -> n.repaintPreviewWhenOutOfFocus = chckbxNewCheckBox.isSelected());
+		previewPanel.add(chckbxNewCheckBox, BorderLayout.WEST);
+
+		JPanel qualityPanel = new JPanel();
+		FlowLayout fl_qualityPanel = (FlowLayout) qualityPanel.getLayout();
+		fl_qualityPanel.setAlignment(FlowLayout.LEFT);
+		listPanel.add(qualityPanel);
 
 		JCheckBox chckbxDownscaleQuality = new JCheckBox("Downscale quality");
 		chckbxDownscaleQuality.addActionListener(e -> n.downscaleQuality = chckbxDownscaleQuality.isSelected());
 		chckbxDownscaleQuality.setHorizontalAlignment(SwingConstants.LEFT);
-		panel_1.add(chckbxDownscaleQuality);
+		qualityPanel.add(chckbxDownscaleQuality);
 
 		JCheckBox chckbxDownscaleInPreview = new JCheckBox("Downscale in preview");
 		chckbxDownscaleInPreview
 				.addActionListener(e -> n.downscalePreviewQuality = chckbxDownscaleInPreview.isSelected());
-		panel_1.add(chckbxDownscaleInPreview);
+		qualityPanel.add(chckbxDownscaleInPreview);
 
 		JSlider downscaleAmount = new JSlider();
 		downscaleAmount.setValue(1);
@@ -181,9 +229,10 @@ public class EditCameraUI extends UtilityJFrame {
 		downscaleAmount.setMaximum(100);
 		downscaleAmount.addChangeListener(e -> n.downScaleAmount = downscaleAmount.getValue());
 
-		panel_1.add(downscaleAmount);
+		qualityPanel.add(downscaleAmount);
 
 		JComboBox<String> interpolationType = new JComboBox<String>();
+		interpolationType.setMaximumRowCount(10);
 
 		for (String s : interpolationTypes.keySet()) {
 			interpolationType.addItem(s);
@@ -192,19 +241,22 @@ public class EditCameraUI extends UtilityJFrame {
 		interpolationType.addActionListener(
 				e -> n.interpolationType = interpolationTypes.get(interpolationType.getSelectedItem()));
 
-		panel_1.add(interpolationType);
+		qualityPanel.add(interpolationType);
 
-		JPanel panel_2 = new JPanel();
-		listPanel.add(panel_2);
+		JPanel rotatePanel = new JPanel();
+		listPanel.add(rotatePanel);
 
-		JButton btnRotateButton = new JButton("Rotate button");
+		JButton btnRotateButton = new JButton("Rotate");
 		btnRotateButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+
 				if (n.rotateDeg == 360) {
 					n.rotateDeg = 0;
 				}
 
 				n.rotateDeg += 90;
+
+				log.info("Flipping camera '" + n.name + "' for '" + n.rotateDeg + "' degrees.");
 
 				if (runOnRotate != null) {
 					runOnRotate.run();
@@ -213,17 +265,9 @@ public class EditCameraUI extends UtilityJFrame {
 			}
 		});
 		btnRotateButton.setIcon(new ImageIcon(Constants.rotateIcon));
-		panel_2.add(btnRotateButton);
+		rotatePanel.add(btnRotateButton);
 
 		chckbxPublishOnDiscord.addActionListener(e -> n.sendOnDiscord = chckbxPublishOnDiscord.isSelected());
-
-		labelPanel.add(new JLabel("Discord", JLabel.TRAILING));
-
-		JLabel lblNewLabel = new JLabel("Downscale quality");
-		labelPanel.add(lblNewLabel);
-
-		JLabel lblRotate = new JLabel("Rotate");
-		labelPanel.add(lblRotate);
 
 		panel.add(mainPanel, BorderLayout.CENTER);
 

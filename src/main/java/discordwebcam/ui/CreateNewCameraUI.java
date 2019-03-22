@@ -20,6 +20,10 @@ public class CreateNewCameraUI extends UtilityJFrame {
 	private UtilityJTextField nameField;
 	private UtilityJTextField networkField;
 
+	
+	
+	
+	
 	/**
 	 * Launch the application.
 	 */
@@ -129,7 +133,8 @@ public class CreateNewCameraUI extends UtilityJFrame {
 		nameField = new UtilityJTextField("Unnamed camera");
 		nameField.setHint("Enter a camera name");
 		nameField.setToolTipText("Helps to identify between different cameras.");
-		namePanel.add(nameField);
+		nameField.allowAutocomplete();
+		nameField.allowMemory();
 		nameField.setColumns(20);
 
 		JPanel networkAddressPanel = new JPanel();
@@ -146,6 +151,9 @@ public class CreateNewCameraUI extends UtilityJFrame {
 		okayPanel.add(button);
 
 		setVisible(true);
+		
+		
+		
 
 	}
 

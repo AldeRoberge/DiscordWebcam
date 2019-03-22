@@ -52,10 +52,14 @@ public class CameraPanel extends JInternalFrame {
 	private ImagePanel image;
 	private int savedelay = 0;
 
+	ArrayList<Rect> detectionsSquares = new ArrayList<>();
+
 	private CaptureThread thread;
 
 	private JMenuItem sendOnDiscord;
 	private JMenuItem motionDetection;
+
+	private JProgressBar progressBar = new JProgressBar(0, 100);
 
 	public CameraPanel(SerializedCamera n, Runnable onRemove) {
 
@@ -140,6 +144,12 @@ public class CameraPanel extends JInternalFrame {
 
 		//
 
+		progressBar.setSize(new Dimension(getWidth(), 100));
+		progressBar.setForeground(Color.RED);
+		progressBar.setBackground(Color.WHITE);
+		progressBar.setStringPainted(true);
+		menuBar.add(progressBar);
+
 		add(menuBar, BorderLayout.SOUTH);
 
 		start();
@@ -174,8 +184,8 @@ public class CameraPanel extends JInternalFrame {
 				video = new VideoCapture(serializedCamera.networkAddress);
 			}
 
-			cameraWidth = video.get(Videoio.CV_CAP_PROP_FRAME_WIDTH); //get the width of frames of the video
-			cameraHeight = video.get(Videoio.CV_CAP_PROP_FRAME_HEIGHT); //get the height of frames of the video
+			cameraWidth = video.get(Videoio.CV_CAP_PROP_FRAME_WIDTH); // get the width of frames of the video
+			cameraHeight = video.get(Videoio.CV_CAP_PROP_FRAME_HEIGHT); // get the height of frames of the video
 
 			setSizeChanged();
 
@@ -240,7 +250,7 @@ public class CameraPanel extends JInternalFrame {
 	}
 
 	public static String getCurrentTimeStamp() {
-		SimpleDateFormat sdfDate = new SimpleDateFormat("dd-MM-yyyy_HH-mm-ss-SSS");//dd/MM/yyyy
+		SimpleDateFormat sdfDate = new SimpleDateFormat("dd-MM-yyyy_HH-mm-ss-SSS");// dd/MM/yyyy
 		Date now = new Date();
 		return sdfDate.format(now);
 	}
@@ -274,6 +284,8 @@ public class CameraPanel extends JInternalFrame {
 
 	class CaptureThread extends Thread {
 
+		private long lastUpdate = System.currentTimeMillis();
+
 		@Override
 		public void run() {
 			if (video.isOpened()) {
@@ -283,13 +295,11 @@ public class CameraPanel extends JInternalFrame {
 
 						video.read(frameaux);
 
-						//TODO why does read work, but not retrieve?
+						// TODO why does read work, but not retrieve?
 
-						//video.retrieve(frameaux);
+						// video.retrieve(frameaux);
 						Imgproc.resize(frameaux, frame, frame.size());
 						frame.copyTo(currentFrame);
-
-
 
 						if (firstFrame) {
 							frame.copyTo(lastFrame);
@@ -303,49 +313,49 @@ public class CameraPanel extends JInternalFrame {
 							lowerQuality();
 						}
 
-
-
 						if (serializedCamera.motionDetection) {
 							Imgproc.GaussianBlur(currentFrame, currentFrame, new Size(3, 3), 0);
 							Imgproc.GaussianBlur(lastFrame, lastFrame, new Size(3, 3), 0);
 
-							//bsMOG.apply(frame, processedFrame, 0.005);
+							// bsMOG.apply(frame, processedFrame, 0.005);
 							Core.subtract(currentFrame, lastFrame, processedFrame);
-							//Core.absdiff(frame,lastFrame,processedFrame);
+							// Core.absdiff(frame,lastFrame,processedFrame);
 
 							Imgproc.cvtColor(processedFrame, processedFrame, Imgproc.COLOR_RGB2GRAY);
 							//
 
-							//Imgproc.adaptiveThreshold(processedFrame, processedFrame, 255, Imgproc.ADAPTIVE_THRESH_MEAN_C, Imgproc.THRESH_BINARY_INV, 5, 2);
-							Imgproc.threshold(processedFrame, processedFrame, serializedCamera.threshold, 255, Imgproc.THRESH_BINARY);
+							// Imgproc.adaptiveThreshold(processedFrame, processedFrame, 255,
+							// Imgproc.ADAPTIVE_THRESH_MEAN_C, Imgproc.THRESH_BINARY_INV, 5, 2);
+							Imgproc.threshold(processedFrame, processedFrame, serializedCamera.motionDetectionThreshold,
+									255, Imgproc.THRESH_BINARY);
 
-							ArrayList<Rect> array = detection_contours(currentFrame, processedFrame);
-							///*
-							if (array.size() > 0) {
-								Iterator<Rect> it2 = array.iterator();
+							detectionsSquares = detection_contours(currentFrame, processedFrame);
+							if (detectionsSquares.size() > 0) {
+								Iterator<Rect> it2 = detectionsSquares.iterator();
 								while (it2.hasNext()) {
 									Rect obj = it2.next();
-									Imgproc.rectangle(currentFrame, obj.br(), obj.tl(),
-											new Scalar(0, 255, 0), 1);
+									Imgproc.rectangle(currentFrame, obj.br(), obj.tl(), new Scalar(0, 255, 0), 1);
 								}
 							}
-							//*/
 
-							double sensibility = 15;
-							//log.info(sensibility);
+							double sensibility = serializedCamera.sensitivity;
+							// log.info(sensibility);
 							double nonZeroPixels = Core.countNonZero(processedFrame);
-							//log.info("nonZeroPixels: " + nonZeroPixels);
+							// log.info("nonZeroPixels: " + nonZeroPixels);
 
 							double nrows = processedFrame.rows();
 							double ncols = processedFrame.cols();
 							double total = nrows * ncols / 10;
 
-							double detections = (nonZeroPixels / total) * 100;
-							//log.info(detections);
+							int detections = (int) ((nonZeroPixels / total) * 100);
+							// log.info(detections);
+
+							progressBar.setValue(detections);
+
 							if (detections >= sensibility) {
-								//log.info("ALARM ENABLED!");
-								Imgproc.putText(currentFrame, "MOTION DETECTED",
-										new Point(5, currentFrame.cols() / 2), //currentFrame.rows()/2 currentFrame.cols()/2
+								// log.info("ALARM ENABLED!");
+								Imgproc.putText(currentFrame, "MOTION DETECTED", new Point(5, currentFrame.cols() / 2), // currentFrame.rows()/2
+										// currentFrame.cols()/2
 										Core.FONT_HERSHEY_TRIPLEX, 1d, new Scalar(0, 0, 255));
 
 								if (serializedCamera.sendOnDiscord) {
@@ -353,13 +363,17 @@ public class CameraPanel extends JInternalFrame {
 										savedelay = 0;
 
 										if (!(new File(Properties.SAVE_IMAGES_FOLDER.getValue()).exists())) {
-											log.info("Attempting to create folder '" + Properties.SAVE_IMAGES_FOLDER.getValue() + "'. Result : '" + new File(Properties.SAVE_IMAGES_FOLDER.getValue()).mkdir() + "'.");
+											log.info("Attempting to create folder '"
+													+ Properties.SAVE_IMAGES_FOLDER.getValue() + "'. Result : '"
+													+ new File(Properties.SAVE_IMAGES_FOLDER.getValue()).mkdir()
+													+ "'.");
 										}
 
-										String newFilePath = Properties.SAVE_IMAGES_FOLDER.getValue()
-												+ File.separator + getCurrentTimeStamp() + ".png";
+										String newFilePath = Properties.SAVE_IMAGES_FOLDER.getValue() + File.separator
+												+ getCurrentTimeStamp() + ".png";
 
-										if (!serializedCamera.downscalePreviewQuality) { // Has not already been downscaled
+										if (!serializedCamera.downscalePreviewQuality) { // Has not already been
+											// downscaled
 											lowerQuality();
 										}
 
@@ -376,13 +390,17 @@ public class CameraPanel extends JInternalFrame {
 											File outputfile = new File(newFilePath);
 											ImageIO.write(buf, "png", outputfile);
 
-											MotionDetectionEvent e = new MotionDetectionEvent(outputfile, new Date(), serializedCamera.name);
+											MotionDetectionEvent e = new MotionDetectionEvent(outputfile, new Date(),
+													serializedCamera.name);
 
 											Discord.notifyDetection(e);
 
 										} catch (Exception ex) {
 
-											log.error("Something went wrong with saving the detection image file '" + newFilePath + "'. Make sure folder '" + Properties.SAVE_IMAGES_FOLDER.getValue() + "' exists and there is enough empty storage space to save the image.");
+											log.error("Something went wrong with saving the detection image file '"
+													+ newFilePath + "'. Make sure folder '"
+													+ Properties.SAVE_IMAGES_FOLDER.getValue()
+													+ "' exists and there is enough empty storage space to save the image.");
 
 											ex.printStackTrace();
 										}
@@ -394,34 +412,42 @@ public class CameraPanel extends JInternalFrame {
 								savedelay = 0;
 							}
 
-							//currentFrame.copyTo(processedFrame);
+							// currentFrame.copyTo(processedFrame);
 
 						} else {
 
-							//frame.copyTo(processedFrame);
+							// frame.copyTo(processedFrame);
 
 						}
 
-						currentFrame.copyTo(processedFrame);
+						if (System.currentTimeMillis() - lastUpdate > serializedCamera.timeBetweenPreviewRepaint) {
+							lastUpdate = System.currentTimeMillis();
 
-						Imgcodecs.imencode(".jpg", frameaux, matOfByte);
-						byte[] byteArray = matOfByte.toArray();
+							currentFrame.copyTo(processedFrame);
 
-						InputStream in;
+							if (serializedCamera.showMotionDetectionInPreview) {
 
-						BufferedImage bufImage = null;
+								for (Rect obj : detectionsSquares) {
+									Imgproc.circle(frameaux, new Point(obj.x * frameaux.width() / processedFrame.width(), obj.y * frameaux.height() / processedFrame.height()), 2, new Scalar(0, 255, 0));
+								}
 
-						try {
-							in = new ByteArrayInputStream(byteArray);
-							bufImage = ImageIO.read(in);
+							}
 
-							//image.updateImage(new ImageIcon("figs/lena.png").getImage());
-							image.updateImage(bufImage);
-						} catch (Exception ex) {
-							ex.printStackTrace();
+							Imgcodecs.imencode(".jpg", frameaux, matOfByte);
+
+							try {
+
+								InputStream in = new ByteArrayInputStream(matOfByte.toArray());
+								BufferedImage bufImage = ImageIO.read(in);
+
+								// image.updateImage(new ImageIcon("figs/lena.png").getImage());
+								image.updateImage(bufImage);
+							} catch (Exception ex) {
+								ex.printStackTrace();
+							}
+
+							frame.copyTo(lastFrame);
 						}
-
-						frame.copyTo(lastFrame);
 
 						try {
 							Thread.sleep(1);
@@ -431,7 +457,8 @@ public class CameraPanel extends JInternalFrame {
 					} catch (Exception e) {
 						log.error("Error : ", e);
 
-						StaticDialog.display("Error with camera " + serializedCamera.name, "Error with camera. Make sure there is no process already using it.", e);
+						StaticDialog.display("Error with camera " + serializedCamera.name,
+								"Error with camera. Make sure there is no process already using it.", e);
 
 						running = false;
 
@@ -454,7 +481,8 @@ public class CameraPanel extends JInternalFrame {
 
 				System.out.println("newWidth : " + newWidth + ", " + newHeight);
 
-				Imgproc.resize(frame, frameaux, new Size(newWidth, newHeight), 0, 0, serializedCamera.interpolationType);
+				Imgproc.resize(frame, frameaux, new Size(newWidth, newHeight), 0, 0,
+						serializedCamera.interpolationType);
 
 				System.out.println("New quality : " + frameaux.size());
 			}
@@ -464,20 +492,22 @@ public class CameraPanel extends JInternalFrame {
 
 	private void flip(Mat src, Mat dst, int deg) {
 
-		log.info("Flipping deg " + deg);
+		if (deg != 0) {
 
-		if (deg == 270 || deg == -90) {
-			// Rotate clockwise 270 degrees
-			Core.transpose(src, dst);
-			Core.flip(dst, dst, 0);
-		} else if (deg == 180 || deg == -180) {
-			// Rotate clockwise 180 degrees
-			Core.flip(src, dst, -1);
-		} else if (deg == 90 || deg == -270) {
-			// Rotate clockwise 90 degrees
-			Core.transpose(src, dst);
-			Core.flip(dst, dst, 1);
+			if (deg == 270 || deg == -90) {
+				// Rotate clockwise 270 degrees
+				Core.transpose(src, dst);
+				Core.flip(dst, dst, 0);
+			} else if (deg == 180 || deg == -180) {
+				// Rotate clockwise 180 degrees
+				Core.flip(src, dst, -1);
+			} else if (deg == 90 || deg == -270) {
+				// Rotate clockwise 90 degrees
+				Core.transpose(src, dst);
+				Core.flip(dst, dst, 1);
+			}
 		}
+
 	}
 
 }
@@ -491,7 +521,6 @@ class ImagePanel extends JPanel {
 
 	public void updateImage(Image img) {
 		this.img = img;
-		validate();
 		repaint();
 	}
 
