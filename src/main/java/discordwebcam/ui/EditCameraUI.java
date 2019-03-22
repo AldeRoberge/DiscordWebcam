@@ -3,6 +3,9 @@ package discordwebcam.ui;
 import alde.commons.util.window.UtilityJFrame;
 import discordwebcam.Constants;
 import discordwebcam.camera.SerializedCamera;
+import discordwebcam.discord.Discord;
+
+import org.opencv.imgproc.Imgproc;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -11,6 +14,10 @@ import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.Date;
+import java.util.HashMap;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class EditCameraUI extends UtilityJFrame {
 
@@ -30,17 +37,28 @@ public class EditCameraUI extends UtilityJFrame {
 		});
 	}
 
+	static HashMap<String, Integer> interpolationTypes = new HashMap<>();
+
+	static {
+		interpolationTypes.put("INTER_NEAREST", Imgproc.INTER_NEAREST);
+		interpolationTypes.put("INTER_LINEAR", Imgproc.INTER_LINEAR);
+		interpolationTypes.put("INTER_CUBIC", Imgproc.INTER_CUBIC);
+		interpolationTypes.put("INTER_AREA", Imgproc.INTER_AREA);
+		interpolationTypes.put("INTER_LANCZOS4", Imgproc.INTER_LANCZOS4);
+		interpolationTypes.put("INTER_LINEAR_EXACT", Imgproc.INTER_LINEAR_EXACT);
+	}
+
 	/**
 	 * Create the frame.
 	 */
 	public EditCameraUI(final SerializedCamera n, final Runnable runOnClose) {
-	
+
 		if (n.name.equals("")) {
 			setTitle("Edit untitled camera");
 		} else {
 			setTitle("Edit camera '" + n.name + "'");
 		}
-		
+
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
 		addWindowListener(new WindowAdapter() {
@@ -51,7 +69,7 @@ public class EditCameraUI extends UtilityJFrame {
 
 		setIconImage(Constants.gearIcon);
 
-		setBounds(100, 100, 530, 200);
+		setBounds(100, 100, 730, 265);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
@@ -134,9 +152,54 @@ public class EditCameraUI extends UtilityJFrame {
 		chckbxPublishOnDiscord.setHorizontalAlignment(SwingConstants.CENTER);
 		publishOnDiscordPanel.add(chckbxPublishOnDiscord);
 
+		JButton btnTest = new JButton("Test");
+		btnTest.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				Discord.sendMessage("Test button was pressed at '" + new Date() + "'.");
+			}
+		});
+		publishOnDiscordPanel.add(btnTest);
+
+		JPanel panel_1 = new JPanel();
+		FlowLayout flowLayout = (FlowLayout) panel_1.getLayout();
+		flowLayout.setAlignment(FlowLayout.LEFT);
+		listPanel.add(panel_1);
+
+		JCheckBox chckbxDownscaleQuality = new JCheckBox("Downscale quality");
+		chckbxDownscaleQuality.addActionListener(e -> n.downscaleQuality = chckbxDownscaleQuality.isSelected());
+		chckbxDownscaleQuality.setHorizontalAlignment(SwingConstants.LEFT);
+		panel_1.add(chckbxDownscaleQuality);
+
+		JCheckBox chckbxDownscaleInPreview = new JCheckBox("Downscale in preview");
+		chckbxDownscaleInPreview
+				.addActionListener(e -> n.downscalePreviewQuality = chckbxDownscaleInPreview.isSelected());
+		panel_1.add(chckbxDownscaleInPreview);
+
+		JSlider downscaleAmount = new JSlider();
+		downscaleAmount.setValue(1);
+		downscaleAmount.setMinimum(1);
+		downscaleAmount.setMaximum(100);
+		downscaleAmount.addChangeListener(e -> n.downScaleAmount = downscaleAmount.getValue());
+
+		panel_1.add(downscaleAmount);
+
+		JComboBox<String> interpolationType = new JComboBox<String>();
+
+		for (String s : interpolationTypes.keySet()) {
+			interpolationType.addItem(s);
+		}
+
+		interpolationType.addActionListener(
+				e -> n.interpolationType = interpolationTypes.get(interpolationType.getSelectedItem()));
+
+		panel_1.add(interpolationType);
+
 		chckbxPublishOnDiscord.addActionListener(e -> n.sendOnDiscord = chckbxPublishOnDiscord.isSelected());
 
 		labelPanel.add(new JLabel("Discord", JLabel.TRAILING));
+
+		JLabel lblNewLabel = new JLabel("Downscale quality");
+		labelPanel.add(lblNewLabel);
 
 		panel.add(mainPanel, BorderLayout.CENTER);
 
@@ -154,11 +217,11 @@ public class EditCameraUI extends UtilityJFrame {
 	}
 
 	private void close(Runnable runOnClose) {
-		
+
 		if (runOnClose != null) {
 			runOnClose.run();
 		}
-		
+
 		dispose();
 	}
 

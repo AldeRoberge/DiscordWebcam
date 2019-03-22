@@ -4,17 +4,19 @@ import alde.commons.util.file.FileSizeToString;
 import alde.commons.util.window.UtilityJFrame;
 import discordwebcam.CameraListSerializer;
 import discordwebcam.Constants;
+import discordwebcam.camera.SerializedCamera;
+import discordwebcam.logger.StaticDialog;
 import discordwebcam.opencv.CameraPanel;
+import discordwebcam.properties.Properties;
 import org.opencv.core.Core;
 import org.opencv.videoio.VideoCapture;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import discordwebcam.properties.Properties;
-import discordwebcam.camera.SerializedCamera;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.TimerTask;
@@ -141,10 +143,13 @@ public class UI extends UtilityJFrame {
 				e1.printStackTrace();
 			}
 
-			showDialog("Found " + validLocalCameras.size() + " valid camera(s).");
+			if (validLocalCameras.size() == 0) {
+				StaticDialog.display("Warning", "No local camera found.");
+			} else {
 
-			for (Integer i : validLocalCameras) {
-				addCamera(new SerializedCamera("Camera " + i, i));
+				for (Integer i : validLocalCameras) {
+					addCamera(new SerializedCamera("Camera " + i, i));
+				}
 			}
 
 		});
@@ -186,7 +191,7 @@ public class UI extends UtilityJFrame {
 		t.schedule(new TimerTask() {
 			@Override
 			public void run() {
-				statusLabel.setText(" Disk space : " + FileSizeToString.getByteSizeAsString(new File(".").getUsableSpace()));
+				statusLabel.setText(" Free disk space : " + FileSizeToString.getByteSizeAsString(new File(".").getUsableSpace()));
 
 				if (Properties.UI_REFRESH_DISK_SPACE_EVERY.getIntValue() == 0) {
 					cancel();
@@ -211,13 +216,6 @@ public class UI extends UtilityJFrame {
 		add(desktop);
 		setLocationRelativeTo(null);
 		setVisible(true);
-
-	}
-
-	private void showDialog(String s) {
-
-		log.info(s);
-		JOptionPane.showMessageDialog(null, s);
 
 	}
 

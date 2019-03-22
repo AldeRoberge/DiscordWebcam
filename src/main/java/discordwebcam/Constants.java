@@ -22,6 +22,9 @@ public class Constants {
 
 	public static BufferedImage loggerIcon;
 
+	public static BufferedImage informationIcon;
+	public static BufferedImage errorIcon;
+
 	public static BufferedImage running;
 	public static BufferedImage waiting;
 	public static BufferedImage stopped;
@@ -40,6 +43,9 @@ public class Constants {
 			cameraIconGrayScale = read("camera_bw.png", 16);
 
 			loggerIcon = read("logger.png", 16);
+
+			informationIcon = read("information.png", 16);
+			errorIcon = read("error.png", 16);
 
 			running = read("status_running.png", 16);
 			waiting = read("status_waiting.png", 16);

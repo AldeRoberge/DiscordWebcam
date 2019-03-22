@@ -3,6 +3,12 @@ package discordwebcam.detection;
 import java.io.File;
 import java.util.Date;
 
+/**
+ * Contains information to a motion detection event
+ * The date, image file location, and camera name.
+ *
+ * Used to send a notification message on Discord
+ */
 public class MotionDetectionEvent {
 
 	public Date detectionDate;

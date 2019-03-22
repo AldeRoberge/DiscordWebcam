@@ -85,5 +85,8 @@ public class Properties {
 
 	}
 
+	public static String getPropertiesFilePath() {
+		return propertyFile.getFilePath();
+	}
 }
 

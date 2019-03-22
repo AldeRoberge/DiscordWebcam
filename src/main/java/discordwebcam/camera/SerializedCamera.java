@@ -1,5 +1,7 @@
 package discordwebcam.camera;
 
+import org.opencv.core.Size;
+
 import java.io.Serializable;
 
 public class SerializedCamera implements Serializable {
@@ -24,13 +26,18 @@ public class SerializedCamera implements Serializable {
 
 	public boolean sendOnDiscord;
 
+	public boolean downscaleQuality;
+	public int downScaleAmount = 1;
+	
+	public boolean downscalePreviewQuality = false;
+	public Integer interpolationType = 0;
+
 	public SerializedCamera(String name, String networkAddress) {
 		this.type = CameraType.NETWORK;
 
 		this.name = name;
 		this.networkAddress = networkAddress;
 	}
-
 
 	public SerializedCamera(String name, int ID) {
 		this.type = CameraType.LOCAL;
@@ -44,13 +51,6 @@ public class SerializedCamera implements Serializable {
 		return "SerializedCamera{" +
 				"name='" + name + '\'' +
 				", networkAddress='" + networkAddress + '\'' +
-				", x=" + x +
-				", y=" + y +
-				", height=" + height +
-				", width=" + width +
-				", motionDetection=" + motionDetection +
-				", threshold=" + threshold +
-				", sendOnDiscord=" + sendOnDiscord +
 				'}';
 	}
 
