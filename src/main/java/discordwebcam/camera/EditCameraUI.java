@@ -1,7 +1,6 @@
 package discordwebcam.camera;
 
 import alde.commons.util.window.UtilityJFrame;
-import com.sun.istack.internal.Nullable;
 import discordwebcam.Constants;
 import discordwebcam.discord.DiscordBot;
 import org.opencv.imgproc.Imgproc;
@@ -40,8 +39,9 @@ public class EditCameraUI extends UtilityJFrame {
 	/**
 	 * Create the frame.
 	 */
-	public EditCameraUI(final SerializedCamera n, @Nullable final Runnable runOnClose,
-	                    @Nullable final Runnable runOnRotate) {
+	public EditCameraUI(final CameraPanel cameraPanel) {
+
+		SerializedCamera n = cameraPanel.serializedCamera;
 
 		if (n.name.equals("")) {
 			setTitle("Edit untitled camera");
@@ -53,7 +53,7 @@ public class EditCameraUI extends UtilityJFrame {
 
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
-				close(runOnClose);
+				cameraPanel.cameraInfoChanged();
 			}
 		});
 
@@ -188,8 +188,6 @@ public class EditCameraUI extends UtilityJFrame {
 		btnTest.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 
-
-
 				DiscordBot.sendMessage("Test button was pressed at '" + new Date() + "'.");
 			}
 		});
@@ -270,9 +268,7 @@ public class EditCameraUI extends UtilityJFrame {
 
 				log.info("Flipping camera '" + n.name + "' for '" + n.rotateDeg + "' degrees.");
 
-				if (runOnRotate != null) {
-					runOnRotate.run();
-				}
+				cameraPanel.setSizeChanged();
 
 				updateRotateIcon(n.rotateDeg);
 
@@ -291,27 +287,12 @@ public class EditCameraUI extends UtilityJFrame {
 		JButton btnClose = new JButton("Close");
 
 		btnClose.setSelected(true);
-		btnClose.addActionListener(e -> close(runOnClose));
 
 		contentPane.add(btnClose, BorderLayout.SOUTH);
 
 		setAlwaysOnTop(true);
 		setVisible(true);
 
-	}
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(() -> {
-			try {
-				EditCameraUI frame = new EditCameraUI(new SerializedCamera("ip", "adress"), null, null);
-				frame.setVisible(true);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		});
 	}
 
 	private void updateRotateIcon(int rotateDeg) {

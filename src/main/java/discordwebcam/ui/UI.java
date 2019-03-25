@@ -9,7 +9,7 @@ import alde.commons.util.text.StackTraceToString;
 import alde.commons.util.window.UtilityJFrame;
 import com.sun.javafx.webkit.WebConsoleListener;
 import discordwebcam.Constants;
-import discordwebcam.camera.CreateNewCameraUI;
+import discordwebcam.camera.NewCameraUI;
 import discordwebcam.camera.SerializedCamera;
 import discordwebcam.logger.StaticDialog;
 import discordwebcam.camera.CameraPanel;
@@ -67,7 +67,7 @@ public class UI extends UtilityJFrame {
 
 		Menu file = new Menu("File");
 		MenuItem addNewCamera = new MenuItem("Add a network camera");
-		addNewCamera.addActionListener(e -> new CreateNewCameraUI(camera -> {
+		addNewCamera.addActionListener(e -> new NewCameraUI(camera -> {
 			log.info("Received network camera : " + camera);
 			addCamera(camera);
 			addNewCamera(camera);

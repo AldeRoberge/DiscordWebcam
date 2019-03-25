@@ -11,7 +11,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.function.Consumer;
 
-public class CreateNewCameraUI extends UtilityJFrame {
+public class NewCameraUI extends UtilityJFrame {
 
 	private final Consumer<SerializedCamera> getNewCamera;
 	private JPanel contentPane;
@@ -21,7 +21,7 @@ public class CreateNewCameraUI extends UtilityJFrame {
 	/**
 	 * Create the frame.
 	 */
-	public CreateNewCameraUI(Consumer<SerializedCamera> getNewCamera) {
+	public NewCameraUI(Consumer<SerializedCamera> getNewCamera) {
 
 		this.getNewCamera = getNewCamera;
 
@@ -140,7 +140,7 @@ public class CreateNewCameraUI extends UtilityJFrame {
 	public static void main(String[] args) {
 		EventQueue.invokeLater(() -> {
 			try {
-				CreateNewCameraUI frame = new CreateNewCameraUI(c -> System.out.println("Network camera : " + c));
+				NewCameraUI frame = new NewCameraUI(c -> System.out.println("Network camera : " + c));
 				frame.setVisible(true);
 			} catch (Exception e) {
 				e.printStackTrace();

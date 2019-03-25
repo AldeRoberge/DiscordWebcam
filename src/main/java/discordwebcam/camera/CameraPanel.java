@@ -32,7 +32,7 @@ public class CameraPanel extends JInternalFrame {
 	static Logger log = LoggerFactory.getLogger(CameraPanel.class);
 	ArrayList<Rect> detectionsSquares = new ArrayList<>();
 	MotionDetectionEvent motionDetectionEvent;
-	private SerializedCamera serializedCamera;
+	SerializedCamera serializedCamera;
 	private boolean running = false;
 	private boolean firstFrame = true;
 	private VideoCapture video = null;
@@ -102,12 +102,7 @@ public class CameraPanel extends JInternalFrame {
 
 		settings.addActionListener(e -> {
 			log.info("Opening settings");
-			new EditCameraUI(n, () -> {
-				setTitle(n.name);
-				updateMotionDetectionIcon(n.motionDetection);
-				updateSendOnDiscordIcon(n.sendOnDiscord);
-
-			}, () -> setSizeChanged());
+			new EditCameraUI(this);
 		});
 
 		// BEGIN MOTION DETECTION TOGGLE //
@@ -207,20 +202,20 @@ public class CameraPanel extends JInternalFrame {
 		}
 	}
 
-	private void setSizeChanged() {
-		double actualWidth = cameraWidth;
-		double actualHeight = cameraHeight;
+	void setSizeChanged() {
+		double actualW = cameraWidth;
+		double actualH = cameraHeight;
 
 		// Is flipped
 		if (90 == serializedCamera.rotateDeg || 270 == serializedCamera.rotateDeg) {
-			actualWidth = cameraHeight;
-			actualHeight = cameraWidth;
+			actualW = cameraHeight;
+			actualH = cameraWidth;
 		}
 
-		serializedCamera.width = actualWidth;
-		serializedCamera.height = actualHeight;
+		serializedCamera.width = actualW;
+		serializedCamera.height = actualH;
 
-		setPreferredSize(new Dimension((int) actualWidth, (int) actualHeight));
+		setPreferredSize(new Dimension((int) actualW, (int) actualH));
 		setSize(getPreferredSize());
 
 	}
@@ -288,6 +283,12 @@ public class CameraPanel extends JInternalFrame {
 			}
 		}
 
+	}
+
+	public void cameraInfoChanged() {
+		setTitle(serializedCamera.name);
+		updateMotionDetectionIcon(serializedCamera.motionDetection);
+		updateSendOnDiscordIcon(serializedCamera.sendOnDiscord);
 	}
 
 	class CaptureThread extends Thread {

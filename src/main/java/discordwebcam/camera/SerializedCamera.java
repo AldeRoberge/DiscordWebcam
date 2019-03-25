@@ -2,6 +2,9 @@ package discordwebcam.camera;
 
 import java.io.Serializable;
 
+/**
+ * Model of a camera
+ */
 public class SerializedCamera implements Serializable {
 
 	static final long serialVersionUID = -7704013905756195820L;
@@ -16,8 +19,8 @@ public class SerializedCamera implements Serializable {
 	public int y = 20;
 	public double height = 400;
 	public double width = 400;
-	public boolean motionDetection = false;
-	public boolean showMotionDetectionInPreview = false;
+	public boolean motionDetection = true;
+	public boolean showMotionDetectionInPreview = true;
 	public int motionDetectionThreshold = 15;
 	public boolean sendOnDiscord = false;
 	public boolean downscaleQuality = false;
