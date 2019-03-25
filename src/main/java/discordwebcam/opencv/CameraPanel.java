@@ -368,8 +368,14 @@ public class CameraPanel extends JInternalFrame {
 
 								if (serializedCamera.sendOnDiscord) {
 
-									System.out.println("Motions : " + detections + ", " + sensibility);
-									takeScreenshotAndSendToDiscord();
+									if (savedelay == 2) {
+										savedelay = 0;
+
+										System.out.println("Motions : " + detections + ", " + sensibility);
+										takeScreenshotAndSendToDiscord();
+									} else {
+										savedelay = savedelay + 1;
+									}
 
 								}
 							} else {
@@ -392,7 +398,10 @@ public class CameraPanel extends JInternalFrame {
 							if (serializedCamera.showMotionDetectionInPreview) {
 
 								for (Rect obj : detectionsSquares) {
-									Imgproc.circle(frameaux, new Point(obj.x * frameaux.width() / processedFrame.width(), obj.y * frameaux.height() / processedFrame.height()), 2, new Scalar(0, 255, 0));
+									//Imgproc.circle(frameaux, new Point(obj.x * frameaux.width() / processedFrame.width(), obj.y * frameaux.height() / processedFrame.height()), 2, new Scalar(0, 255, 0));
+
+									Imgproc.rectangle(frameaux, new Point(obj.x * frameaux.width() / processedFrame.width(), obj.y * frameaux.height() / processedFrame.height()), new Point(obj.x + obj.width * frameaux.width() / processedFrame.width(), obj.y + obj.height * frameaux.height() / processedFrame.height()), new Scalar(0, 255, 0));
+
 								}
 
 							}
@@ -454,29 +463,22 @@ public class CameraPanel extends JInternalFrame {
 		}
 	}
 
-	private void takeScreenshotAndSendToDiscord() {
+	public void takeScreenshotAndSendToDiscord() {
 
-		if (savedelay == 2) {
-			savedelay = 0;
+		Imgcodecs.imencode(".jpg", frame, matOfByte);
+		byte[] byteArray = matOfByte.toArray();
 
-			Imgcodecs.imencode(".jpg", frame, matOfByte);
-			byte[] byteArray = matOfByte.toArray();
+		BufferedImage buf;
+		InputStream in;
 
-			BufferedImage buf;
-			InputStream in;
-
-			in = new ByteArrayInputStream(byteArray);
-			try {
-				buf = ImageIO.read(in);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-
+		in = new ByteArrayInputStream(byteArray);
+		try {
+			buf = ImageIO.read(in);
 			motionDetectionEvent.motionDetected(buf);
-
-		} else {
-			savedelay = savedelay + 1;
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
+
 	}
 
 }

@@ -153,13 +153,9 @@ public class UI extends UtilityJFrame {
 	}
 
 	private void sendFakeDetection() {
-
-
 		for (CameraPanel c : cameraFrameList) {
-			c.
+			c.takeScreenshotAndSendToDiscord();
 		}
-
-
 	}
 
 	/**
