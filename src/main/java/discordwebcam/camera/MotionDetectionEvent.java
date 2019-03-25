@@ -1,7 +1,6 @@
-package discordwebcam.detection;
+package discordwebcam.camera;
 
 import discordwebcam.Constants;
-import discordwebcam.camera.SerializedCamera;
 import discordwebcam.discord.DiscordBot;
 import discordwebcam.properties.Properties;
 import org.javacord.api.entity.message.embed.EmbedBuilder;

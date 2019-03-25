@@ -1,9 +1,8 @@
-package discordwebcam.ui;
+package discordwebcam.camera;
 
 import alde.commons.util.window.UtilityJFrame;
 import com.sun.istack.internal.Nullable;
 import discordwebcam.Constants;
-import discordwebcam.camera.SerializedCamera;
 import discordwebcam.discord.DiscordBot;
 import org.opencv.imgproc.Imgproc;
 import org.slf4j.Logger;

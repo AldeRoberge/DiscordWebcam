@@ -1,9 +1,8 @@
-package discordwebcam.ui;
+package discordwebcam.camera;
 
 import alde.commons.util.jtextfield.UtilityJTextField;
 import alde.commons.util.window.UtilityJFrame;
 import discordwebcam.Constants;
-import discordwebcam.camera.SerializedCamera;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;

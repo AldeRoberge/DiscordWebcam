@@ -1,12 +1,8 @@
-package discordwebcam.opencv;
+package discordwebcam.camera;
 
 import discordwebcam.Constants;
-import discordwebcam.camera.CameraType;
-import discordwebcam.camera.SerializedCamera;
-import discordwebcam.detection.MotionDetectionEvent;
 import discordwebcam.logger.StaticDialog;
 import discordwebcam.properties.Properties;
-import discordwebcam.ui.EditCameraUI;
 import org.opencv.core.Point;
 import org.opencv.core.*;
 import org.opencv.imgcodecs.Imgcodecs;

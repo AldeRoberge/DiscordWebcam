@@ -1,14 +1,24 @@
 package discordwebcam.ui;
 
+import alde.commons.console.Console;
+import alde.commons.console.ConsoleAction;
+import alde.commons.logger.LoggerPanel;
+import alde.commons.util.file.FileEditor;
 import alde.commons.util.file.FileSizeToString;
+import alde.commons.util.text.StackTraceToString;
 import alde.commons.util.window.UtilityJFrame;
-import discordwebcam.CameraListSerializer;
+import com.sun.javafx.webkit.WebConsoleListener;
 import discordwebcam.Constants;
+import discordwebcam.camera.CreateNewCameraUI;
 import discordwebcam.camera.SerializedCamera;
 import discordwebcam.logger.StaticDialog;
-import discordwebcam.opencv.CameraPanel;
+import discordwebcam.camera.CameraPanel;
 import discordwebcam.properties.Properties;
 import javafx.application.Application;
+import javafx.embed.swing.SwingFXUtils;
+import javafx.scene.Scene;
+import javafx.scene.web.WebView;
+import javafx.stage.Stage;
 import org.opencv.core.Core;
 import org.opencv.videoio.VideoCapture;
 import org.slf4j.Logger;
@@ -18,7 +28,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.File;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.TimerTask;
 
@@ -378,6 +388,132 @@ public class UI extends UtilityJFrame {
 		Properties.UI_HEIGHT.setIntValue(getHeight());
 
 		System.exit(0);
+	}
+
+}
+
+
+class CameraListSerializer {
+
+	private static org.slf4j.Logger log = LoggerFactory.getLogger(FileEditor.class);
+
+	public final File file = new File(new File(".") + File.separator + "cameras.serialized");
+
+	private ArrayList<SerializedCamera> list;
+
+	public CameraListSerializer() {
+		list = get();
+	}
+
+	public void save() {
+		try {
+			FileOutputStream fos = new FileOutputStream(file);
+			ObjectOutputStream oos = new ObjectOutputStream(fos);
+			oos.writeObject(list);
+			oos.close();
+			fos.close();
+		} catch (IOException ioe) {
+			log.info("Error while serialising cameras.");
+			ioe.printStackTrace();
+		}
+	}
+
+	public ArrayList<SerializedCamera> get() {
+
+		if (list != null) {
+			return list;
+		} else {
+			if (file.exists() && !(file.length() == 0)) {
+				try {
+					FileInputStream fis = new FileInputStream(file);
+
+					ObjectInputStream ois = new ObjectInputStream(fis);
+					list = (ArrayList<SerializedCamera>) ois.readObject();
+					ois.close();
+					fis.close();
+
+				} catch (IOException | ClassNotFoundException e) {
+					log.error(StackTraceToString.sTTS(e));
+					e.printStackTrace();
+
+					list = new ArrayList<>();
+				}
+			} else {
+				log.warn("File " + file.getAbsolutePath() + " is empty or does not exist!");
+				list = new ArrayList<>();
+			}
+
+			return list;
+
+		}
+
+	}
+
+}
+
+
+class EmbeddedBrowser extends Application {
+
+	private static Logger log = LoggerFactory.getLogger(EmbeddedBrowser.class);
+
+	@Override
+	public void start(Stage primaryStage) {
+		WebView webView = new WebView();
+		webView.getEngine().load(EmbeddedBrowser.class.getResource("/app/index.html").toString());
+		webView.setContextMenuEnabled(false);
+		primaryStage.setScene(new Scene(webView, 1000, 800));
+		primaryStage.setTitle("Help");
+		primaryStage.getIcons().add(SwingFXUtils.toFXImage(Constants.softwareIcon, null));
+		primaryStage.show();
+		WebConsoleListener.setDefaultListener((wv, message, lineNumber, sourceId) -> {
+			log.info("[Embedded Browser] : " + message + "[at " + lineNumber + "]");
+		});
+	}
+
+}
+
+
+class LoggerWrapper extends JInternalFrame {
+
+	private static LoggerPanel l = new LoggerPanel();
+	private static alde.commons.console.Console c = new Console();
+
+	public LoggerWrapper() {
+
+		super("Logger", true, true, true, true);
+
+		setSize(new Dimension(400, 300));
+		setLocation(20, 20);
+
+		setFrameIcon(new ImageIcon(Constants.loggerIcon));
+
+		JPanel mainPanel = new JPanel(new BorderLayout());
+		mainPanel.add(l, BorderLayout.CENTER);
+		mainPanel.add(c, BorderLayout.SOUTH);
+
+		this.getContentPane().add(mainPanel);
+
+		setVisible(true);
+
+	}
+
+	public static void addAction(String keyword, Runnable action) {
+		c.addAction(new ConsoleAction() {
+			@Override
+			public void accept(String command) {
+				action.run();
+			}
+
+			@Override
+			protected String getDescription() {
+				return null;
+			}
+
+			@Override
+			public String[] getKeywords() {
+				return new String[]{keyword};
+			}
+		});
 	}
 
 }

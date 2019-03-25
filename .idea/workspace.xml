@@ -393,7 +393,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1553486468373" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1553486469695" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/lib/rasp/opencv-3.0.0-1.0.jar!/" />
     <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.15231092" />
@@ -442,19 +442,6 @@
       <module name="DiscordWebcam" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="discordwebcam.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="EmbeddedBrowser (1)" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="discordwebcam.ui.EmbeddedBrowser" />
-      <module name="DiscordWebcam" />
-      <extension name="coverage">
-        <pattern>
           <option name="PATTERN" value="discordwebcam.ui.*" />
           <option name="ENABLED" value="true" />
         </pattern>
@@ -476,12 +463,12 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="UI (1)" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="discordwebcam.ui.UI" />
+    <configuration name="EmbeddedBrowser" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="discordwebcam.ui.EmbeddedBrowser" />
       <module name="DiscordWebcam" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="discordwebcam.ui.*" />
+          <option name="PATTERN" value="discordwebcam.camera.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -495,6 +482,19 @@
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value=".*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="UI" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="discordwebcam.ui.UI" />
+      <module name="DiscordWebcam" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="discordwebcam.camera.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
