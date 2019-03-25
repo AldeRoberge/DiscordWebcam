@@ -5,20 +5,29 @@ import discordwebcam.properties.Properties;
 import org.javacord.api.DiscordApi;
 import org.javacord.api.DiscordApiBuilder;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Static class to send detection messages on DiscordBot
  */
 public class DiscordBot {
 
+	static Logger log = LoggerFactory.getLogger(DiscordBot.class);
+
 	static DiscordApi api;
 
 	static {
 		try {
 			api = new DiscordApiBuilder().setToken(Properties.DISCORD_BOT_TOKEN.getValue()).login().join();
+
+			// Print the invite url of your bot
+			log.info("You can invite the bot by using the following url: " + api.createBotInvite());
+
 		} catch (Exception e) {
 			StaticDialog.display("Error with DiscordBot Bot", "Error connecting DiscordBot bot. \n Try changing the DiscordBot Bot Token in '" + Properties.getPropertiesFilePath() + "'.", e);
 		}
+
 	}
 
 

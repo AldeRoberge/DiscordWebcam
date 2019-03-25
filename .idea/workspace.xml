@@ -10,16 +10,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c94170a5-da28-4eca-8653-6fe0762b7cbe" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/cameras.serialized" beforeDir="false" afterPath="$PROJECT_DIR$/cameras.serialized" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/discordwebcam/CameraListSerializer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/discordwebcam/CameraListSerializer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/discordwebcam/ui/EmbeddedBrowser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/artifacts/DiscordWebcam/discord-webcam.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/artifacts/DiscordWebcam_jar/run.cmd" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/discordwebcam/Constants.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/discordwebcam/Constants.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/discordwebcam/camera/CameraType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/discordwebcam/camera/CameraType.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/discordwebcam/camera/SerializedCamera.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/discordwebcam/camera/SerializedCamera.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/discordwebcam/detection/MotionDetectionEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/discordwebcam/detection/MotionDetectionEvent.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/discordwebcam/discord/DiscordBot.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/discordwebcam/discord/DiscordBot.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/discordwebcam/logger/StaticDialog.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/discordwebcam/logger/StaticDialog.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/discordwebcam/opencv/CameraPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/discordwebcam/opencv/CameraPanel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/discordwebcam/properties/Properties.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/discordwebcam/properties/Properties.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/discordwebcam/ui/CreateNewCameraUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/discordwebcam/ui/CreateNewCameraUI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/discordwebcam/ui/EditCameraUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/discordwebcam/ui/EditCameraUI.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/discordwebcam/ui/UI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/discordwebcam/ui/UI.java" afterDir="false" />
       <change beforePath="$USER_HOME$/Documents/GitHub/AldeCommons/src/main/java/META-INF/MANIFEST.MF" beforeDir="false" afterPath="$USER_HOME$/Documents/GitHub/AldeCommons/src/main/java/META-INF/MANIFEST.MF" afterDir="false" />
       <change beforePath="$USER_HOME$/Documents/GitHub/AldeCommons/src/main/java/alde/commons/console/Console.java" beforeDir="false" afterPath="$USER_HOME$/Documents/GitHub/AldeCommons/src/main/java/alde/commons/console/Console.java" afterDir="false" />
@@ -46,59 +45,19 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/discordwebcam/ui/UI.java">
+        <entry file="file://$PROJECT_DIR$/src/main/java/discordwebcam/camera/SerializedCamera.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2999">
-              <caret line="198" selection-start-line="198" selection-end-line="198" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#2307#2308#0" expanded="true" />
-                <element signature="e#2322#2323#0" expanded="true" />
-                <element signature="e#7571#7572#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="1105">
+              <caret line="65" column="5" selection-start-line="65" selection-start-column="5" selection-end-line="65" selection-end-column="5" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/discordwebcam/detection/MotionDetectionEvent.java">
+        <entry file="file://$PROJECT_DIR$/src/main/java/discordwebcam/Constants.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="432">
-              <caret line="164" column="74" lean-forward="true" selection-start-line="164" selection-start-column="74" selection-end-line="164" selection-end-column="74" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#4489#4490#0" expanded="true" />
-                <element signature="e#4530#4531#0" expanded="true" />
-                <element signature="e#1282#1533#0" expanded="true" />
-                <element signature="e#1532#1533#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$USER_HOME$/Documents/GitHub/AldeCommons/src/main/java/alde/commons/properties/Property.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="331">
-              <caret line="47" selection-start-line="47" selection-end-line="47" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$USER_HOME$/Documents/GitHub/AldeCommons/src/main/java/alde/commons/properties/BooleanProperty.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="229">
-              <caret line="20" selection-start-line="20" selection-end-line="20" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/main/java/discordwebcam/properties/Properties.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="212">
-              <caret line="22" column="5" selection-start-line="22" selection-start-column="5" selection-end-line="22" selection-end-column="5" />
+            <state relative-caret-position="172">
+              <caret line="13" selection-start-line="13" selection-end-line="14" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -107,30 +66,10 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/discordwebcam/ui/EditCameraUI.java">
+        <entry file="file://$PROJECT_DIR$/src/main/java/discordwebcam/logger/StaticDialog.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="93">
-              <caret line="193" selection-start-line="193" selection-end-line="193" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#3746#3747#0" expanded="true" />
-                <element signature="e#3769#3770#0" expanded="true" />
-                <element signature="e#3830#3831#0" expanded="true" />
-                <element signature="e#3853#3854#0" expanded="true" />
-                <element signature="e#3915#3916#0" expanded="true" />
-                <element signature="e#3938#3939#0" expanded="true" />
-                <element signature="e#3970#3971#0" expanded="true" />
-                <element signature="e#4010#4011#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/discordwebcam/opencv/CameraPanel.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="211">
-              <caret line="475" column="6" selection-start-line="475" selection-start-column="6" selection-end-line="475" selection-end-column="6" />
+            <state relative-caret-position="833">
+              <caret line="49" column="5" lean-forward="true" selection-start-line="49" selection-start-column="5" selection-end-line="49" selection-end-column="5" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -139,28 +78,10 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/discordwebcam/ui/CreateNewCameraUI.java">
+        <entry file="file://$PROJECT_DIR$/src/main/java/discordwebcam/discord/DiscordBot.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="308">
-              <caret line="20" selection-start-line="20" selection-end-line="20" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#1255#1351#0" expanded="true" />
-                <element signature="e#1350#1351#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="jar://C:/Program Files/Java/jdk1.8.0_201/src.zip!/javax/swing/JProgressBar.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="425">
-              <caret line="511" column="16" selection-start-line="511" selection-start-column="16" selection-end-line="511" selection-end-column="16" />
-              <folding>
-                <element signature="e#7292#7293#0" expanded="true" />
-                <element signature="e#7332#7333#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="153">
+              <caret line="15" selection-start-line="15" selection-end-line="16" />
             </state>
           </provider>
         </entry>
@@ -170,6 +91,24 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="68">
               <caret line="10" column="13" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="13" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/java/discordwebcam/ui/EmbeddedBrowser.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="170">
+              <caret line="18" column="41" selection-start-line="18" selection-start-column="41" selection-end-line="18" selection-end-column="41" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/discordwebcam/camera/CameraType.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="153">
+              <caret line="9" column="1" lean-forward="true" selection-start-line="9" selection-start-column="1" selection-end-line="9" selection-end-column="1" />
             </state>
           </provider>
         </entry>
@@ -233,9 +172,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/main/java/test/CreateNewCameraUI.java" />
-        <option value="$PROJECT_DIR$/src/main/java/test/ui/Main.java" />
-        <option value="$PROJECT_DIR$/src/main/java/test/ui/EditCameraUI.java" />
         <option value="$USER_HOME$/Documents/GitHub/AldeCommons/src/main/java/alde/commons/console/Console.java" />
         <option value="$USER_HOME$/Documents/GitHub/AldeCommons/src/main/java/alde/commons/logger/LoggerPanel.java" />
         <option value="$USER_HOME$/Documents/GitHub/AldeCommons/src/main/java/alde/commons/ExampleConsole.java" />
@@ -273,17 +209,20 @@
         <option value="$PROJECT_DIR$/src/main/java/discordwebcam/logger/StaticDialog.java" />
         <option value="$PROJECT_DIR$/discord-webcam.properties" />
         <option value="$PROJECT_DIR$/discordwebcam.properties" />
-        <option value="$PROJECT_DIR$/src/main/java/discordwebcam/Constants.java" />
         <option value="$PROJECT_DIR$/src/main/java/discordwebcam/ui/EditCameraUI.java" />
         <option value="$PROJECT_DIR$/src/main/java/discordwebcam/mosaic/MosaicBuilder.java" />
         <option value="$PROJECT_DIR$/src/main/java/discordwebcam/discord/Discord.java" />
-        <option value="$PROJECT_DIR$/src/main/java/discordwebcam/discord/DiscordBot.java" />
-        <option value="$PROJECT_DIR$/src/main/java/discordwebcam/ui/UI.java" />
-        <option value="$PROJECT_DIR$/src/main/java/discordwebcam/camera/SerializedCamera.java" />
         <option value="$PROJECT_DIR$/src/main/java/discordwebcam/opencv/CameraPanel.java" />
         <option value="$PROJECT_DIR$/src/main/java/discordwebcam/ui/CreateNewCameraUI.java" />
         <option value="$PROJECT_DIR$/src/main/java/discordwebcam/detection/MotionDetectionEvent.java" />
+        <option value="$PROJECT_DIR$/src/main/java/discordwebcam/ui/UI.java" />
+        <option value="$PROJECT_DIR$/src/main/java/discordwebcam/camera/CameraType.java" />
+        <option value="$PROJECT_DIR$/src/main/java/discordwebcam/camera/SerializedCamera.java" />
         <option value="$PROJECT_DIR$/src/main/java/discordwebcam/properties/Properties.java" />
+        <option value="$PROJECT_DIR$/src/main/java/discordwebcam/discord/DiscordBot.java" />
+        <option value="$USER_HOME$/Documents/GitHub/AldeCommons/src/main/java/alde/commons/util/embeddedbrowser/EmbeddedBrowser.java" />
+        <option value="$PROJECT_DIR$/src/main/java/discordwebcam/Constants.java" />
+        <option value="$PROJECT_DIR$/src/main/java/discordwebcam/ui/EmbeddedBrowser.java" />
       </list>
     </option>
   </component>
@@ -306,10 +245,10 @@
     </treeState>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="155" />
-    <option name="y" value="261" />
-    <option name="width" value="1306" />
-    <option name="height" value="1047" />
+    <option name="x" value="-8" />
+    <option name="y" value="-8" />
+    <option name="width" value="1936" />
+    <option name="height" value="1056" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="2" id="Add" />
@@ -360,7 +299,7 @@
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="discordwebcam" type="462c0819:PsiDirectoryNode" />
-              <item name="detection" type="462c0819:PsiDirectoryNode" />
+              <item name="camera" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="DiscordWebcam" type="b2602c69:ProjectViewProjectNode" />
@@ -369,7 +308,7 @@
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="discordwebcam" type="462c0819:PsiDirectoryNode" />
-              <item name="opencv" type="462c0819:PsiDirectoryNode" />
+              <item name="discord" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="DiscordWebcam" type="b2602c69:ProjectViewProjectNode" />
@@ -378,26 +317,7 @@
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="discordwebcam" type="462c0819:PsiDirectoryNode" />
-              <item name="opencv" type="462c0819:PsiDirectoryNode" />
-              <item name="CameraPanel.java" type="529ef68f:ClassesTreeStructureProvider$PsiClassOwnerTreeNode" />
-            </path>
-            <path>
-              <item name="DiscordWebcam" type="b2602c69:ProjectViewProjectNode" />
-              <item name="DiscordWebcam" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="discordwebcam" type="462c0819:PsiDirectoryNode" />
-              <item name="properties" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="DiscordWebcam" type="b2602c69:ProjectViewProjectNode" />
-              <item name="DiscordWebcam" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="discordwebcam" type="462c0819:PsiDirectoryNode" />
-              <item name="ui" type="462c0819:PsiDirectoryNode" />
+              <item name="logger" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -407,9 +327,9 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1553291514364" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1553483479137" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/lib/rasp/opencv-3.0.0-1.0.jar!/" />
-    <property name="project.structure.last.edited" value="Libraries" />
+    <property name="project.structure.last.edited" value="Artifacts" />
     <property name="project.structure.proportion" value="0.15231092" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="restartRequiresConfirmation" value="false" />
@@ -417,17 +337,8 @@
     <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
   </component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\rotmg\Desktop\DiscordWebcam\lib\native" />
-      <recent name="C:\Users\rotmg\Desktop\DiscordWebcam\src\main\resources" />
-      <recent name="C:\Users\rotmg\Desktop\DiscordWebcam\lib\rasp" />
-      <recent name="C:\Users\rotmg\Desktop\DiscordWebcam" />
-    </key>
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
       <recent name="" />
-    </key>
-    <key name="CopyClassDialog.RECENTS_KEY">
-      <recent name="test" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\rotmg\Desktop\DiscordWebcam\src\main\resources" />
@@ -435,6 +346,16 @@
       <recent name="C:\Users\rotmg\Desktop\DiscordWebcam" />
       <recent name="C:\Users\rotmg\Desktop\DiscordWebcam\lib" />
       <recent name="C:\Users\rotmg\Desktop\DiscordWebcam\figs" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="discordwebcam.ui" />
+      <recent name="test" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\rotmg\Desktop\DiscordWebcam\lib\native" />
+      <recent name="C:\Users\rotmg\Desktop\DiscordWebcam\src\main\resources" />
+      <recent name="C:\Users\rotmg\Desktop\DiscordWebcam\lib\rasp" />
+      <recent name="C:\Users\rotmg\Desktop\DiscordWebcam" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -449,20 +370,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Application.UI (1)">
-    <configuration name="CreateNewCameraUI" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="test.CreateNewCameraUI" />
-      <module name="DiscordWebcam" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value=".*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
+  <component name="RunManager" selected="Application.EmbeddedBrowser (1)">
     <configuration name="Discord" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="discordwebcam.Discord" />
       <module name="DiscordWebcam" />
@@ -476,12 +384,38 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="test.ui.Main" />
+    <configuration name="EmbeddedBrowser (1)" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="discordwebcam.ui.EmbeddedBrowser" />
       <module name="DiscordWebcam" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value=".*" />
+          <option name="PATTERN" value="discordwebcam.ui.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="EmbeddedBrowser" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="alde.commons.util.embeddedbrowser.EmbeddedBrowser" />
+      <module name="AldeCommons" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="alde.commons.util.embeddedbrowser.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="UI (1)" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="discordwebcam.ui.UI" />
+      <module name="DiscordWebcam" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="discordwebcam.ui.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -517,11 +451,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.EmbeddedBrowser (1)" />
+        <item itemvalue="Application.EmbeddedBrowser" />
         <item itemvalue="Application.UI (1)" />
         <item itemvalue="Application.UI" />
         <item itemvalue="Application.Discord" />
-        <item itemvalue="Application.Main" />
-        <item itemvalue="Application.CreateNewCameraUI" />
       </list>
     </recent_temporary>
   </component>
@@ -549,8 +483,9 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.17270789" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.17750533" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -560,12 +495,12 @@
       <window_info anchor="bottom" id="Inspection Results" order="0" sideWeight="0.49946696" weight="0.08775731" />
       <window_info anchor="bottom" id="Message" order="1" />
       <window_info anchor="bottom" id="Find" order="2" sideWeight="0.49253732" weight="0.18743229" />
-      <window_info anchor="bottom" id="Run" order="3" sideWeight="0.65724945" weight="0.22751896" />
+      <window_info anchor="bottom" id="Run" order="3" sideWeight="0.65724945" visible="true" weight="0.22751896" />
       <window_info anchor="bottom" id="Debug" order="4" sideWeight="0.4978678" weight="0.19934994" />
       <window_info anchor="bottom" id="Cvs" order="5" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="6" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="7" weight="0.32936078" />
-      <window_info anchor="bottom" id="Terminal" order="8" sideWeight="0.49946696" weight="0.3261105" />
+      <window_info anchor="bottom" id="Terminal" order="8" sideWeight="0.49946696" weight="0.10400867" />
       <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.34275052" side_tool="true" weight="0.22751896" />
       <window_info anchor="bottom" id="Version Control" order="10" weight="0.32936078" />
       <window_info anchor="bottom" id="Messages" order="11" sideWeight="0.48347548" weight="0.29035753" />
@@ -580,49 +515,6 @@
     </layout>
   </component>
   <component name="editorHistoryManager">
-    <entry file="jar://$PROJECT_DIR$/lib/opencv-342.jar!/org/opencv/core/Size.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="12" column="11" selection-start-line="12" selection-start-column="11" selection-end-line="12" selection-end-column="11" />
-          <folding>
-            <element signature="e#227#228#0" expanded="true" />
-            <element signature="e#253#254#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/discordwebcam/camera/CameraType.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="4" column="7" selection-start-line="4" selection-start-column="7" selection-end-line="4" selection-end-column="7" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_201/src.zip!/java/util/HashMap.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="228">
-          <caret line="554" column="13" selection-start-line="554" selection-start-column="13" selection-end-line="554" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_201/src.zip!/javax/swing/JComboBox.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="220">
-          <caret line="598" column="18" selection-start-line="598" selection-start-column="18" selection-end-line="598" selection-end-column="18" />
-          <folding>
-            <element signature="e#20050#20051#0" expanded="true" />
-            <element signature="e#20100#20101#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/discordwebcam/logger/StaticLogger.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="4" column="25" selection-start-line="4" selection-start-column="13" selection-end-line="4" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://C:/Program Files/Java/jdk1.8.0_201/src.zip!/java/awt/Dialog.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="228">
@@ -679,56 +571,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/discordwebcam/ui/LoggerWrapper.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="441">
-          <caret line="32" column="5" selection-start-line="32" selection-start-column="5" selection-end-line="32" selection-end-column="5" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#908#909#0" expanded="true" />
-            <element signature="e#931#932#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/discord-webcam.properties">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="79" selection-start-column="79" selection-end-column="79" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/discordwebcam.discord-webcam.discordwebcam.properties">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="8" column="12" selection-start-line="8" selection-start-column="12" selection-end-line="8" selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/discord-webcam.properties" />
+    <entry file="file://$PROJECT_DIR$/discordwebcam.discord-webcam.discordwebcam.properties" />
     <entry file="file://$PROJECT_DIR$/discordwebcam.properties">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="187">
           <caret line="11" selection-start-line="11" selection-end-line="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/discordwebcam/Constants.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="303">
-          <caret line="43" column="44" selection-start-line="43" selection-start-column="44" selection-end-line="43" selection-end-column="44" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/discordwebcam/logger/StaticDialog.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="781">
-          <caret line="49" column="41" selection-start-line="49" selection-start-column="41" selection-end-line="49" selection-end-column="41" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -804,13 +652,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/discordwebcam/mosaic/MosaicBuilder.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="8" selection-start-line="8" selection-end-line="8" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/discordwebcam/mosaic/MosaicBuilder.java" />
     <entry file="jar://C:/Program Files/Java/jdk1.8.0_201/src.zip!/java/awt/image/BufferedImage.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="336">
@@ -832,24 +674,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/test/1553287769449.png">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/test/1553287770177.png">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/test/1553287768576.png">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/test/1553287768573.png">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/test/1553287767844.png">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/test/1553287767111.png">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
+    <entry file="file://$PROJECT_DIR$/test/1553287769449.png" />
+    <entry file="file://$PROJECT_DIR$/test/1553287770177.png" />
+    <entry file="file://$PROJECT_DIR$/test/1553287768576.png" />
+    <entry file="file://$PROJECT_DIR$/test/1553287768573.png" />
+    <entry file="file://$PROJECT_DIR$/test/1553287767844.png" />
+    <entry file="file://$PROJECT_DIR$/test/1553287767111.png" />
     <entry file="jar://C:/Program Files/Java/jdk1.8.0_201/src.zip!/javax/imageio/ImageIO.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="229">
@@ -857,57 +687,46 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/discordwebcam/discord/DiscordBot.java">
+    <entry file="file://$PROJECT_DIR$/22-03-2019_17-05-23-145.png" />
+    <entry file="file://$PROJECT_DIR$/src/main/java/discordwebcam/detection/MotionDetectionEvent.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="107">
-          <caret line="11" column="13" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/22-03-2019_17-05-23-145.png">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/discordwebcam/camera/SerializedCamera.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="493">
-          <caret line="29" column="41" selection-start-line="29" selection-start-column="31" selection-end-line="29" selection-end-column="41" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/discordwebcam/ui/EditCameraUI.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="93">
-          <caret line="193" selection-start-line="193" selection-end-line="193" />
+        <state relative-caret-position="2516">
+          <caret line="164" column="74" selection-start-line="164" selection-start-column="74" selection-end-line="164" selection-end-column="74" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#3746#3747#0" expanded="true" />
-            <element signature="e#3769#3770#0" expanded="true" />
-            <element signature="e#3830#3831#0" expanded="true" />
-            <element signature="e#3853#3854#0" expanded="true" />
-            <element signature="e#3915#3916#0" expanded="true" />
-            <element signature="e#3938#3939#0" expanded="true" />
-            <element signature="e#3970#3971#0" expanded="true" />
-            <element signature="e#4010#4011#0" expanded="true" />
+            <element signature="e#1491#1492#0" expanded="true" />
+            <element signature="e#1532#1533#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/discordwebcam/ui/UI.java">
+    <entry file="file://$USER_HOME$/Documents/GitHub/AldeCommons/src/main/java/alde/commons/properties/Property.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2999">
-          <caret line="198" selection-start-line="198" selection-end-line="198" />
+        <state relative-caret-position="663">
+          <caret line="47" selection-start-line="47" selection-end-line="47" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Documents/GitHub/AldeCommons/src/main/java/alde/commons/properties/BooleanProperty.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="323">
+          <caret line="20" selection-start-line="20" selection-end-line="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/discordwebcam/ui/CreateNewCameraUI.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="170">
+          <caret line="20" selection-start-line="20" selection-end-line="20" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#2307#2308#0" expanded="true" />
-            <element signature="e#2322#2323#0" expanded="true" />
-            <element signature="e#7571#7572#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="jar://C:/Program Files/Java/jdk1.8.0_201/src.zip!/javax/swing/JProgressBar.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="425">
+        <state relative-caret-position="7854">
           <caret line="511" column="16" selection-start-line="511" selection-start-column="16" selection-end-line="511" selection-end-column="16" />
           <folding>
             <element signature="e#7292#7293#0" expanded="true" />
@@ -916,25 +735,110 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/discordwebcam/ui/CreateNewCameraUI.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/discordwebcam/ui/LoggerWrapper.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="308">
-          <caret line="20" selection-start-line="20" selection-end-line="20" />
+        <state relative-caret-position="441">
+          <caret line="32" column="5" selection-start-line="32" selection-start-column="5" selection-end-line="32" selection-end-column="5" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#1255#1351#0" expanded="true" />
-            <element signature="e#1350#1351#0" expanded="true" />
+            <element signature="e#908#909#0" expanded="true" />
+            <element signature="e#931#932#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/discordwebcam/ui/EditCameraUI.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="314">
+          <caret line="203" column="41" lean-forward="true" selection-start-line="203" selection-start-column="41" selection-end-line="203" selection-end-column="41" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/discordwebcam/properties/Properties.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="348">
+          <caret line="24" column="20" selection-start-line="24" selection-start-column="20" selection-end-line="24" selection-end-column="20" />
+          <folding>
+            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/discordwebcam/opencv/CameraPanel.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="211">
-          <caret line="475" column="6" selection-start-line="475" selection-start-column="6" selection-end-line="475" selection-end-column="6" />
+        <state relative-caret-position="142">
+          <caret line="33" selection-start-line="33" selection-end-line="33" selection-end-column="67" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/discordwebcam/ui/UI.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="807">
+          <caret line="65" column="11" lean-forward="true" selection-start-line="65" selection-start-column="11" selection-end-line="65" selection-end-column="11" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Documents/GitHub/AldeCommons/src/main/java/alde/commons/util/embeddedbrowser/EmbeddedBrowser.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="427">
+          <caret line="49" column="57" lean-forward="true" selection-start-line="49" selection-start-column="36" selection-end-line="49" selection-end-column="57" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_201/javafx-src.zip!/javafx/scene/web/WebEngine.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-77">
+          <caret line="911" column="16" selection-start-line="911" selection-start-column="16" selection-end-line="911" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_201/src.zip!/java/lang/ClassLoader.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-128">
+          <caret line="1220" column="22" selection-start-line="1220" selection-start-column="22" selection-end-line="1220" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/discordwebcam/camera/CameraType.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="9" column="1" lean-forward="true" selection-start-line="9" selection-start-column="1" selection-end-line="9" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/discordwebcam/camera/SerializedCamera.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1105">
+          <caret line="65" column="5" selection-start-line="65" selection-start-column="5" selection-end-line="65" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/discordwebcam/logger/StaticDialog.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="833">
+          <caret line="49" column="5" lean-forward="true" selection-start-line="49" selection-start-column="5" selection-end-line="49" selection-end-column="5" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/discordwebcam/discord/DiscordBot.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="15" selection-start-line="15" selection-end-line="16" />
         </state>
       </provider>
     </entry>
@@ -945,41 +849,20 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/discordwebcam/detection/MotionDetectionEvent.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/discordwebcam/Constants.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="432">
-          <caret line="164" column="74" lean-forward="true" selection-start-line="164" selection-start-column="74" selection-end-line="164" selection-end-column="74" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#4489#4490#0" expanded="true" />
-            <element signature="e#4530#4531#0" expanded="true" />
-            <element signature="e#1282#1533#0" expanded="true" />
-            <element signature="e#1532#1533#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/Documents/GitHub/AldeCommons/src/main/java/alde/commons/properties/Property.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="331">
-          <caret line="47" selection-start-line="47" selection-end-line="47" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/Documents/GitHub/AldeCommons/src/main/java/alde/commons/properties/BooleanProperty.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="229">
-          <caret line="20" selection-start-line="20" selection-end-line="20" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/discordwebcam/properties/Properties.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="212">
-          <caret line="22" column="5" selection-start-line="22" selection-start-column="5" selection-end-line="22" selection-end-column="5" />
+        <state relative-caret-position="172">
+          <caret line="13" selection-start-line="13" selection-end-line="14" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/discordwebcam/ui/EmbeddedBrowser.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="170">
+          <caret line="18" column="41" selection-start-line="18" selection-start-column="41" selection-end-line="18" selection-end-column="41" />
         </state>
       </provider>
     </entry>

@@ -35,7 +35,6 @@ public class Properties {
 	public static final Property DISCORD_CHANNEL_ID = new Property("DISCORD_CHANNEL_ID", "DiscordBot channel ID", "discord-channel-id", propertyFile);
 	public static final Property SAVE_IMAGES_FOLDER = new Property("SAVE_IMAGES_FOLDER", "The folder to save images to", "C:\\Users\\rotmg\\Desktop", propertyFile);
 	public static final IntProperty MAX_LOCAL_CAMERA_ID_CHECK = new IntProperty("MAX_LOCAL_CAMERA_ID_CHECK", "Increase this if you have trouble finding a local (USB) camera.", 5, propertyFile);
-
 	//@formatter:on
 
 	/**

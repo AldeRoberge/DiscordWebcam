@@ -62,9 +62,7 @@ public class UI extends UtilityJFrame {
 
 		MenuItem detectLocalCameras = new MenuItem("Detect local cameras");
 		detectLocalCameras.addActionListener(e -> {
-
 			detectLocalCamerasS();
-
 		});
 		file.add(detectLocalCameras);
 

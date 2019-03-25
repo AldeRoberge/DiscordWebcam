@@ -1,5 +1,9 @@
 package discordwebcam;
 
+import discordwebcam.discord.DiscordBot;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -7,11 +11,15 @@ import java.io.IOException;
 
 public class Constants {
 
+	static Logger log = LoggerFactory.getLogger(Constants.class);
+
+
 	public static final int MAX_THRESHOLD = 255;
 	public static final String SOFTWARE_NAME = "Final Security Suite";
 
 	public static final Color CAMERA_PANEL_BACKGROUND_COLOR = Color.BLACK;
 	public static final int MAX_SENSITIVITY = 1000;
+
 
 	public static BufferedImage softwareIcon;
 
@@ -66,6 +74,8 @@ public class Constants {
 
 		} catch (IOException e) {
 			e.printStackTrace();
+
+			log.error("Error while loading icons.");
 		}
 
 	}
