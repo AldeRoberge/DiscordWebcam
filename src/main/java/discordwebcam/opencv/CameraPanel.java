@@ -5,6 +5,7 @@ import discordwebcam.camera.CameraType;
 import discordwebcam.camera.SerializedCamera;
 import discordwebcam.detection.MotionDetectionEvent;
 import discordwebcam.logger.StaticDialog;
+import discordwebcam.properties.Properties;
 import discordwebcam.ui.EditCameraUI;
 import org.opencv.core.Point;
 import org.opencv.core.*;
@@ -24,6 +25,7 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -126,7 +128,7 @@ public class CameraPanel extends JInternalFrame {
 
 		// BEGIN DISCORD //
 
-		sendOnDiscord = new JMenuItem("DiscordBot");
+		sendOnDiscord = new JMenuItem("Discord");
 		sendOnDiscord.addActionListener(e -> {
 			n.sendOnDiscord = !n.sendOnDiscord;
 			updateSendOnDiscordIcon(n.sendOnDiscord);
@@ -363,31 +365,12 @@ public class CameraPanel extends JInternalFrame {
 							progressBar.setValue(detections);
 
 							if (detections >= sensibility) {
-								// log.info("ALARM ENABLED!");
-								Imgproc.putText(currentFrame, "MOTION DETECTED", new Point(5, currentFrame.cols() / 2), // currentFrame.rows()/2
-										// currentFrame.cols()/2
-										Core.FONT_HERSHEY_TRIPLEX, 1d, new Scalar(0, 0, 255));
 
 								if (serializedCamera.sendOnDiscord) {
 
 									System.out.println("Motions : " + detections + ", " + sensibility);
+									takeScreenshotAndSendToDiscord();
 
-									if (savedelay == 2) {
-										savedelay = 0;
-
-										Imgcodecs.imencode(".jpg", frame, matOfByte);
-										byte[] byteArray = matOfByte.toArray();
-
-										BufferedImage buf;
-										InputStream in;
-
-										in = new ByteArrayInputStream(byteArray);
-										buf = ImageIO.read(in);
-
-										motionDetectionEvent.motionDetected(buf);
-
-									} else
-										savedelay = savedelay + 1;
 								}
 							} else {
 								savedelay = 0;
@@ -471,6 +454,31 @@ public class CameraPanel extends JInternalFrame {
 		}
 	}
 
+	private void takeScreenshotAndSendToDiscord() {
+
+		if (savedelay == 2) {
+			savedelay = 0;
+
+			Imgcodecs.imencode(".jpg", frame, matOfByte);
+			byte[] byteArray = matOfByte.toArray();
+
+			BufferedImage buf;
+			InputStream in;
+
+			in = new ByteArrayInputStream(byteArray);
+			try {
+				buf = ImageIO.read(in);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
+			motionDetectionEvent.motionDetected(buf);
+
+		} else {
+			savedelay = savedelay + 1;
+		}
+	}
+
 }
 
 class ImagePanel extends JPanel {
@@ -489,11 +497,13 @@ class ImagePanel extends JPanel {
 	public void paintComponent(Graphics g) {
 		g.drawImage(img, 0, 0, getWidth(), getHeight(), null);
 
-		String debugInfo = "Image height : " + img.getWidth(this) + ", width : " + img.getHeight(this);
+		if (Properties.DEBUG_SHOW_IMAGE_HEIGHT.getBooleanValue()) {
+			String debugInfo = "Image height : " + img.getWidth(this) + ", width : " + img.getHeight(this);
+			g.setColor(Color.BLACK);
+			g.drawString(debugInfo, 10, 10);
+			g.setColor(Color.WHITE);
+			g.drawString(debugInfo, 10, 11);
+		}
 
-		g.setColor(Color.BLACK);
-		g.drawString(debugInfo, 10, 10);
-		g.setColor(Color.WHITE);
-		g.drawString(debugInfo, 10, 11);
 	}
 }

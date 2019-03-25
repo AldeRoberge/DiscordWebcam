@@ -17,7 +17,7 @@ public class LoggerWrapper extends JInternalFrame {
 
 		super("Logger", true, true, true, true);
 
-		setSize(new Dimension(200, 200));
+		setSize(new Dimension(400, 300));
 		setLocation(20, 20);
 
 		setFrameIcon(new ImageIcon(Constants.loggerIcon));

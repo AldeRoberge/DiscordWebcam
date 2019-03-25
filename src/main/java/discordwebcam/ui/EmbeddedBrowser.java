@@ -12,8 +12,7 @@ import org.slf4j.LoggerFactory;
 
 public class EmbeddedBrowser extends Application {
 
-	static Logger log = LoggerFactory.getLogger(EmbeddedBrowser.class);
-
+	private static Logger log = LoggerFactory.getLogger(EmbeddedBrowser.class);
 
 	@Override
 	public void start(Stage primaryStage) {

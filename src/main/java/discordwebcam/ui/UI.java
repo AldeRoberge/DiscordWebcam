@@ -8,6 +8,7 @@ import discordwebcam.camera.SerializedCamera;
 import discordwebcam.logger.StaticDialog;
 import discordwebcam.opencv.CameraPanel;
 import discordwebcam.properties.Properties;
+import javafx.application.Application;
 import org.opencv.core.Core;
 import org.opencv.videoio.VideoCapture;
 import org.slf4j.Logger;
@@ -48,25 +49,30 @@ public class UI extends UtilityJFrame {
 
 		setIconImage(Constants.softwareIcon);
 
-		// Menu
+		// Menu bar
 
 		MenuBar menu = new MenuBar();
+
+		// FILE
+
 		Menu file = new Menu("File");
 		MenuItem addNewCamera = new MenuItem("Add a network camera");
 		addNewCamera.addActionListener(e -> new CreateNewCameraUI(camera -> {
 			log.info("Received network camera : " + camera);
 			addCamera(camera);
-			saveNewCamera(camera);
+			addNewCamera(camera);
 		}));
 		file.add(addNewCamera);
 
 		MenuItem detectLocalCameras = new MenuItem("Detect local cameras");
 		detectLocalCameras.addActionListener(e -> {
-			detectLocalCamerasS();
+			detectLocalCameras();
 		});
 		file.add(detectLocalCameras);
 
 		menu.add(file);
+
+		// EDIT
 
 		Menu edit = new Menu("Edit");
 		MenuItem editProperties = new MenuItem("Edit properties");
@@ -79,6 +85,19 @@ public class UI extends UtilityJFrame {
 		edit.add(showLogger);
 
 		menu.add(edit);
+
+		// HELP
+
+		Menu help = new Menu("Help");
+		MenuItem showHelp = new MenuItem("Show help");
+		showHelp.addActionListener(e -> showHelp());
+		help.add(showHelp);
+		
+		MenuItem sendDetection = new MenuItem("Send fake detection image");
+		sendDetection.addActionListener(e -> sendFakeDetection());
+		help.add(sendDetection);
+
+		menu.add(help);
 
 		setMenuBar(menu);
 
@@ -133,6 +152,19 @@ public class UI extends UtilityJFrame {
 
 	}
 
+	private void sendFakeDetection() {
+
+
+		for (CameraPanel c : cameraFrameList) {
+			c.
+		}
+
+
+	}
+
+	/**
+	 * Main entry of the program
+	 */
 	public static void main(String[] args) {
 		try {
 			UIManager.setLookAndFeel(
@@ -149,20 +181,38 @@ public class UI extends UtilityJFrame {
 
 	}
 
-	// This function is shared with UI's Edit -> Edit properties. Thats why we use 'runOnClose' to differentiate
-	static void showEditPropertiesPanel(boolean runOnClose) {
+	/**
+	 * Launches a JavaFX app that embeds the Help website at resources/app/index.html
+	 */
+	private void showHelp() {
+		try {
+			Application.launch(EmbeddedBrowser.class, null, null);
+		} catch (Exception e) {
+			e.printStackTrace();
+
+			log.error("Error with EmbeddedBrowser : ", e);
+		}
+	}
+
+	private static void showEditPropertiesPanel(boolean isFirstLaunch) {
 		UtilityJFrame f = new UtilityJFrame();
 
 		f.setIconImage(Constants.gearIcon);
 
-		f.setTitle("Set properties");
-		f.add(Properties.getPropertiesPanel(), BorderLayout.CENTER);
+		f.setTitle("Edit properties");
+
+		if (isFirstLaunch) {
+			f.add(Properties.getEditPropertiesPanel(Properties.DISCORD_BOT_TOKEN, Properties.DISCORD_CHANNEL_ID), BorderLayout.CENTER);
+		} else {
+			f.add(Properties.getEditPropertiesPanel(), BorderLayout.CENTER);
+		}
+
 		Button closeButton = new Button("Close");
 		closeButton.addActionListener(e -> {
 			log.info("Close");
 			f.setVisible(false);
 
-			if (runOnClose) {
+			if (isFirstLaunch) {
 				showUI();
 				Properties.IS_FIRST_LAUNCH.setValue(false);
 			}
@@ -171,7 +221,7 @@ public class UI extends UtilityJFrame {
 		f.add(closeButton, BorderLayout.SOUTH);
 		f.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
-				if (runOnClose) {
+				if (isFirstLaunch) {
 					showUI();
 				}
 				f.setVisible(false);
@@ -196,11 +246,11 @@ public class UI extends UtilityJFrame {
 		}
 
 		if (cameraFrameList.size() == 0 && Properties.GET_LOCAL_CAMERAS_ON_STARTUP.getBooleanValue()) {
-			detectLocalCamerasS();
+			detectLocalCameras();
 		}
 	}
 
-	private void detectLocalCamerasS() {
+	private void detectLocalCameras() {
 		ArrayList<Integer> validLocalCameras = new ArrayList<>();
 
 		log.debug("Looking local cameras from 0 to " + Properties.MAX_LOCAL_CAMERA_ID_CHECK.getIntValue() + " cameras.");
@@ -218,12 +268,6 @@ public class UI extends UtilityJFrame {
 
 		}
 
-			/*try {
-				Thread.sleep(2000);
-			} catch (InterruptedException e1) {
-				e1.printStackTrace();
-			}*/
-
 		if (validLocalCameras.size() == 0) {
 			StaticDialog.display("Warning", "No camera found.");
 		} else {
@@ -234,6 +278,9 @@ public class UI extends UtilityJFrame {
 		}
 	}
 
+	/**
+	 * Registers behavior for when the application is minimised
+	 */
 	private void registerSystemTray() {
 
 		if (SystemTray.isSupported()) {
@@ -243,7 +290,7 @@ public class UI extends UtilityJFrame {
 			MenuItem defaultItem = new MenuItem("Exit");
 			defaultItem.addActionListener(e -> {
 				log.info("Exiting....");
-				saveConfig();
+				saveConfigBeforeClosing();
 				System.exit(0);
 			});
 			popup.add(defaultItem);
@@ -315,12 +362,12 @@ public class UI extends UtilityJFrame {
 		cameraListSerializer.save();
 	}
 
-	public void saveNewCamera(SerializedCamera n) {
+	public void addNewCamera(SerializedCamera n) {
 		cameraListSerializer.get().add(n);
 		cameraListSerializer.save();
 	}
 
-	private void saveConfig() {
+	private void saveConfigBeforeClosing() {
 
 		for (CameraPanel c : cameraFrameList) {
 			c.dispose();

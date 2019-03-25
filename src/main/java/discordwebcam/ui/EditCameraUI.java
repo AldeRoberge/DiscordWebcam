@@ -180,7 +180,7 @@ public class EditCameraUI extends UtilityJFrame {
 		listPanel.add(discordPanel);
 		discordPanel.setLayout(new BoxLayout(discordPanel, BoxLayout.X_AXIS));
 
-		JCheckBox chckbxPublishOnDiscord = new JCheckBox("Publish on DiscordBot");
+		JCheckBox chckbxPublishOnDiscord = new JCheckBox("Publish on Discord");
 		chckbxPublishOnDiscord.setSelected(n.sendOnDiscord);
 		chckbxPublishOnDiscord.setHorizontalAlignment(SwingConstants.CENTER);
 		discordPanel.add(chckbxPublishOnDiscord);
@@ -188,6 +188,9 @@ public class EditCameraUI extends UtilityJFrame {
 		JButton btnTest = new JButton("Send test message");
 		btnTest.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+
+
+
 				DiscordBot.sendMessage("Test button was pressed at '" + new Date() + "'.");
 			}
 		});

@@ -27,7 +27,7 @@ public class CreateNewCameraUI extends UtilityJFrame {
 		this.getNewCamera = getNewCamera;
 
 		setResizable(false);
-		setTitle("Add new network camera");
+		setTitle("Add a new network camera");
 
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 

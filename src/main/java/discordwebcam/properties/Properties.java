@@ -9,6 +9,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -24,17 +25,18 @@ public class Properties {
 
 	//@formatter:off
 	public static final BooleanProperty IS_FIRST_LAUNCH = new BooleanProperty("IS_FIRST_LAUNCH", "Displays the 'edit properties' UI on launch", true, propertyFile);
-	public static final BooleanProperty SHOW_LOGGER_ON_STARTUP = new BooleanProperty("SHOW_LOGGER_ON_STARTUP", "Shows the logger on startup", true, propertyFile);
+	public static final BooleanProperty SHOW_LOGGER_ON_STARTUP = new BooleanProperty("SHOW_LOGGER_ON_STARTUP", "Shows the logger on startup", false, propertyFile);
 	public static final BooleanProperty GET_LOCAL_CAMERAS_ON_STARTUP = new BooleanProperty("GET_LOCAL_CAMERAS_ON_STARTUP", "Gets the local cameras on startup if no cameras are saved.", true, propertyFile);
 	public static final IntProperty UI_WIDTH = new IntProperty("UI_WIDTH", "The program's width", 800, propertyFile);
-	public static final IntProperty UI_HEIGHT = new IntProperty("UI_HEIGHT", "The program height", 600, propertyFile);
+	public static final IntProperty UI_HEIGHT = new IntProperty("UI_HEIGHT", "The program's height", 600, propertyFile);
 	public static final IntProperty UI_X = new IntProperty("UI_X", "The program's x location on screen", 20, propertyFile);
 	public static final IntProperty UI_Y = new IntProperty("UI_Y", "The program's y location on screen", 20, propertyFile);
 	public static final IntProperty UI_REFRESH_DISK_SPACE_EVERY = new IntProperty("UI_REFRESH_DISK_SPACE_EVERY", "Time (in ms) between refreshes of free disk space. Set to 0 to not refresh.", 5000, propertyFile);
 	public static final Property DISCORD_BOT_TOKEN = new Property("DISCORD_BOT_TOKEN", "Your discord bot token", "your-token", propertyFile);
-	public static final Property DISCORD_CHANNEL_ID = new Property("DISCORD_CHANNEL_ID", "DiscordBot channel ID", "discord-channel-id", propertyFile);
+	public static final Property DISCORD_CHANNEL_ID = new Property("DISCORD_CHANNEL_ID", "Discord channel ID", "discord-channel-id", propertyFile);
 	public static final Property SAVE_IMAGES_FOLDER = new Property("SAVE_IMAGES_FOLDER", "The folder to save images to", "C:\\Users\\rotmg\\Desktop", propertyFile);
 	public static final IntProperty MAX_LOCAL_CAMERA_ID_CHECK = new IntProperty("MAX_LOCAL_CAMERA_ID_CHECK", "Increase this if you have trouble finding a local (USB) camera.", 5, propertyFile);
+	public static final BooleanProperty DEBUG_SHOW_IMAGE_HEIGHT = new BooleanProperty("DEBUG_SHOW_IMAGE_HEIGHT", "Shows the actual image size in the camera panel.", false, propertyFile);
 	//@formatter:on
 
 	/**
@@ -57,7 +59,16 @@ public class Properties {
 		return properties;
 	}
 
-	public static JPanel getPropertiesPanel() {
+	public static JPanel getEditPropertiesPanel() {
+		return getEditPropertiesPanel(getProperties());
+	}
+
+	public static JPanel getEditPropertiesPanel(Property... properties) {
+		return getEditPropertiesPanel(new ArrayList<>(Arrays.asList(properties)));
+
+	}
+
+	public static JPanel getEditPropertiesPanel(List<Property> properties) {
 
 		JPanel jPanel = new JPanel();
 
@@ -71,7 +82,7 @@ public class Properties {
 
 		propertyPanel.setLayout(new BoxLayout(propertyPanel, BoxLayout.Y_AXIS));
 
-		for (Property p : getProperties()) {
+		for (Property p : properties) {
 			propertyPanel.add(p.getEditPropertyPanel());
 		}
 

@@ -9,7 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Static class to send detection messages on DiscordBot
+ * Static class to send detection messages on Discord
  */
 public class DiscordBot {
 
@@ -25,7 +25,7 @@ public class DiscordBot {
 			log.info("You can invite the bot by using the following url: " + api.createBotInvite());
 
 		} catch (Exception e) {
-			StaticDialog.display("Error with DiscordBot Bot", "Error connecting DiscordBot bot. \n Try changing the DiscordBot Bot Token in '" + Properties.getPropertiesFilePath() + "'.", e);
+			StaticDialog.display("Error with Discord Bot", "Error connecting Discord bot. \n Try changing the Discord Bot Token in '" + Properties.getPropertiesFilePath() + "'.", e);
 		}
 
 	}

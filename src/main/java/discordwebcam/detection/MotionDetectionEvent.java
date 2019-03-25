@@ -17,18 +17,18 @@ import java.util.List;
 import java.util.*;
 
 /**
- * Contains information to a motion detection event The date, image file
- * location, and serializedCamera name.
- * <p>
- * Used to send a notification message on DiscordBot
+ * Used to send a notification message on Discord
  */
 public class MotionDetectionEvent {
+
+	private static org.slf4j.Logger log = LoggerFactory.getLogger(MotionDetectionEvent.class);
 
 	public static final int ROWS = 3;
 	public static final int COLUMNS = 2;
 	private static final int MAX_AMOUNT_OF_IMAGES = ROWS * COLUMNS;
+
 	static Timer t = new Timer();
-	private static org.slf4j.Logger log = LoggerFactory.getLogger(MotionDetectionEvent.class);
+
 	SerializedCamera serializedCamera;
 	List<BufferedImage> imageBuffer = new ArrayList<>();
 
@@ -54,6 +54,11 @@ public class MotionDetectionEvent {
 		return new Date().toLocaleString();
 	}
 
+	/**
+	 * Starts a periodic check to see if images are waiting to be sent.
+	 *
+	 * It is rescheduled (cancels previous) when new images are added.
+	 */
 	private void reschedulePeriodicCheck() {
 		t.cancel();
 
@@ -62,14 +67,12 @@ public class MotionDetectionEvent {
 		t.schedule(new TimerTask() {
 			@Override
 			public void run() {
-				System.out.println("Found " + imageBuffer.size() + " imageBuffer motion detection cameras...");
-
 				if (imageBuffer.size() > 0) {
 					buildMosaicAndSendToDiscord(imageBuffer);
 				}
 
 			}
-		}, 0, 5000);
+		}, 0, 10000); //TODO make this changeable
 	}
 
 	public void motionDetected(BufferedImage image) {
@@ -159,7 +162,7 @@ public class MotionDetectionEvent {
 			if (success) {
 
 				EmbedBuilder e = new EmbedBuilder().setTitle("Detected motion.")
-						.setDescription(getPrettierTimeStamp()).setAuthor(Constants.SOFTWARE_NAME)
+						.setDescription(getPrettierTimeStamp())
 						.setAuthor(Constants.SOFTWARE_NAME, "", Constants.softwareIcon)
 						// .addField("A field", "Some text inside the field")
 						// .addInlineField("An inline field", "More text")
