@@ -85,25 +85,10 @@ public class NewCameraUI extends UtilityJFrame {
 		configPanel.add(configPanel2);
 		configPanel2.setLayout(new BorderLayout(0, 0));
 
-		JPanel labelPanel = new JPanel();
-		configPanel2.add(labelPanel, BorderLayout.WEST);
-		labelPanel.setLayout(new BoxLayout(labelPanel, BoxLayout.Y_AXIS));
-
-		JPanel panel_8 = new JPanel();
-		labelPanel.add(panel_8);
-
-		JLabel lblName = new JLabel("Name : ");
-		lblName.setHorizontalAlignment(SwingConstants.CENTER);
-		panel_8.add(lblName);
-
-		JPanel panel_9 = new JPanel();
-		labelPanel.add(panel_9);
-
-		JLabel lblNetworkAddress = new JLabel("Network address : ");
-		lblNetworkAddress.setHorizontalAlignment(SwingConstants.CENTER);
-		panel_9.add(lblNetworkAddress);
-
 		JPanel textFieldPanel = new JPanel();
+
+		configPanel.add(new JLabel("Network address : "), BorderLayout.EAST);
+
 		configPanel2.add(textFieldPanel, BorderLayout.CENTER);
 		textFieldPanel.setLayout(new BoxLayout(textFieldPanel, BoxLayout.Y_AXIS));
 

@@ -165,10 +165,6 @@ public class EditCameraUI extends UtilityJFrame {
 
 		JSlider sensitivitySlider = new JSlider();
 		sensitivityPanel.add(sensitivitySlider);
-		sensitivitySlider.setPaintTicks(true);
-		sensitivitySlider.setMajorTickSpacing(51);
-		sensitivitySlider.setMinorTickSpacing(17);
-		sensitivitySlider.setPaintLabels(true);
 		sensitivitySlider.setSnapToTicks(true);
 		sensitivitySlider.setValue(n.motionDetectionSensitivity);
 		sensitivitySlider.setMaximum(Constants.MAX_SENSITIVITY);

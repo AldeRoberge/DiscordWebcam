@@ -6,8 +6,9 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="AldeCommons" />
         <module name="DiscordWebcam" />
+        <module name="discordwebcam" />
+        <module name="AldeCommons" />
       </profile>
     </annotationProcessing>
   </component>
