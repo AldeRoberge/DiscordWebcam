@@ -15,34 +15,60 @@ public class SerializedCamera implements Serializable {
 
 	public String networkAddress = "no address";
 	public int ID = -1;
-	public int x = 20;
-	public int y = 20;
-	public double height = 400;
-	public double width = 400;
-	public boolean motionDetection = true;
-	public boolean showMotionDetectionInPreview = true;
-	public int motionDetectionThreshold = 15;
-	public boolean sendOnDiscord = false;
-	public boolean downscaleQuality = false;
-	public boolean downscalePreviewQuality = false;
-	public int downScaleAmount = 1;
-	public Integer interpolationType = 0;
-	public boolean repaintPreviewWhenOutOfFocus = false;
-	public int timeBetweenPreviewRepaint = 10;
-	public int rotateDeg = 0;
-	public int motionDetectionSensitivity = 15;
-	public SerializedCamera(String name, String networkAddress) {
-		this.type = CameraType.NETWORK;
 
+	public int x;
+	public int y;
+
+	public double height;
+	public double width;
+
+	public boolean motionDetection;
+	public boolean showMotionDetectionInPreview;
+	public int motionDetectionThreshold;
+	public boolean sendOnDiscord;
+	public boolean downscaleQuality;
+	public boolean downscalePreviewQuality;
+	public int downScaleAmount;
+	public Integer interpolationType;
+	public boolean repaintPreviewWhenOutOfFocus;
+	public int timeBetweenPreviewRepaint;
+	public int rotateDeg;
+	public int motionDetectionSensitivity;
+
+	public SerializedCamera(String name, String networkAddress) {
+		this();
+
+		this.type = CameraType.NETWORK;
 		this.name = name;
 		this.networkAddress = networkAddress;
 	}
 
 	public SerializedCamera(String name, int ID) {
-		this.type = CameraType.LOCAL;
+		this();
 
+		this.type = CameraType.LOCAL;
 		this.name = name;
 		this.ID = ID;
+	}
+
+	public SerializedCamera() {
+		x = 20;
+		y = 20;
+		height = 400;
+		width = 400;
+
+		motionDetection = true;
+		showMotionDetectionInPreview = true;
+		motionDetectionThreshold = 15;
+		sendOnDiscord = false;
+		downscaleQuality = false;
+		downscalePreviewQuality = false;
+		downScaleAmount = 1;
+		interpolationType = 0;
+		repaintPreviewWhenOutOfFocus = false;
+		timeBetweenPreviewRepaint = 10;
+		rotateDeg = 0;
+		motionDetectionSensitivity = 15;
 	}
 
 	@Override

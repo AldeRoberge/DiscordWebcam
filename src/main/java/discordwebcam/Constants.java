@@ -14,7 +14,7 @@ public class Constants {
 	static Logger log = LoggerFactory.getLogger(Constants.class);
 
 
-	public static final int MAX_THRESHOLD = 255;
+	public static final int MAX_THRESHOLD = 100;
 	public static final String SOFTWARE_NAME = "Final Security Suite";
 
 	public static final Color CAMERA_PANEL_BACKGROUND_COLOR = Color.BLACK;

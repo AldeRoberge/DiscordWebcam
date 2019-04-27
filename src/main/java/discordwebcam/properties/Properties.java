@@ -37,6 +37,9 @@ public class Properties {
 	public static final Property SAVE_IMAGES_FOLDER = new Property("SAVE_IMAGES_FOLDER", "The folder to save images to", "C:\\Users\\rotmg\\Desktop", propertyFile);
 	public static final IntProperty MAX_LOCAL_CAMERA_ID_CHECK = new IntProperty("MAX_LOCAL_CAMERA_ID_CHECK", "Increase this if you have trouble finding a local (USB) camera.", 5, propertyFile);
 	public static final BooleanProperty DEBUG_SHOW_IMAGE_HEIGHT = new BooleanProperty("DEBUG_SHOW_IMAGE_HEIGHT", "Shows the actual image size in the camera panel.", false, propertyFile);
+
+	public static final Property SAVE_SCREENSHOTS_FOLDER = new Property("SAVE_SCREENSHOTS_FOLDER", "The folder to save screenshots to", "C:\\Users\\rotmg\\Desktop", propertyFile);
+
 	//@formatter:on
 
 	/**

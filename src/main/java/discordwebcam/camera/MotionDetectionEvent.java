@@ -1,17 +1,17 @@
 package discordwebcam.camera;
 
 import discordwebcam.Constants;
+import discordwebcam.DateUtils;
+import discordwebcam.FileUtils;
 import discordwebcam.discord.DiscordBot;
 import discordwebcam.properties.Properties;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.slf4j.LoggerFactory;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.*;
 
@@ -37,13 +37,13 @@ public class MotionDetectionEvent {
 		reschedulePeriodicCheck();
 	}
 
-	/*
-	 * Used by save to file
-	 */
-	public static String getCurrentTimeStamp() {
-		SimpleDateFormat sdfDate = new SimpleDateFormat("dd-MM-yyyy_HH-mm-ss-SSS");// dd/MM/yyyy
-		Date now = new Date();
-		return sdfDate.format(now);
+	private static File buildFileName() {
+
+		String folder = Properties.SAVE_IMAGES_FOLDER.getValue();
+
+		FileUtils.makeSureFolderExists(folder);
+		String newFilePath = folder + File.separator + DateUtils.getCurrentTimeStamp() + ".png";
+		return new File(newFilePath);
 	}
 
 	/*
@@ -55,7 +55,7 @@ public class MotionDetectionEvent {
 
 	/**
 	 * Starts a periodic check to see if images are waiting to be sent.
-	 *
+	 * <p>
 	 * It is rescheduled (cancels previous) when new images are added.
 	 */
 	private void reschedulePeriodicCheck() {
@@ -82,6 +82,9 @@ public class MotionDetectionEvent {
 
 		if (imageBuffer.size() > MAX_AMOUNT_OF_IMAGES) {
 			buildMosaicAndSendToDiscord(imageBuffer);
+
+			log.info("Sending images...");
+
 		}
 
 	}
@@ -156,11 +159,11 @@ public class MotionDetectionEvent {
 
 			File fileToSaveTo = buildFileName();
 
-			boolean success = saveToFile(mosaic, fileToSaveTo);
+			boolean success = FileUtils.saveToFile(mosaic, fileToSaveTo);
 
 			if (success) {
 
-				EmbedBuilder e = new EmbedBuilder().setTitle("Detected motion.")
+				EmbedBuilder e = new EmbedBuilder().setTitle("MOTION DETECTED")
 						.setDescription(getPrettierTimeStamp())
 						.setAuthor(Constants.SOFTWARE_NAME, "", Constants.softwareIcon)
 						// .addField("A field", "Some text inside the field")
@@ -184,28 +187,6 @@ public class MotionDetectionEvent {
 			e.printStackTrace();
 		}
 
-	}
-
-	private File buildFileName() {
-
-		makeSureFolderExists();
-
-		String newFilePath = Properties.SAVE_IMAGES_FOLDER.getValue() + File.separator + getCurrentTimeStamp() + ".png";
-
-		return new File(newFilePath);
-
-	}
-
-	private void makeSureFolderExists() {
-		if (!(new File(Properties.SAVE_IMAGES_FOLDER.getValue()).exists())) {
-			log.info("Attempting to create folder '" + Properties.SAVE_IMAGES_FOLDER.getValue() + "'. Result : '"
-					+ new File(Properties.SAVE_IMAGES_FOLDER.getValue()).mkdir() + "'.");
-		}
-
-	}
-
-	private boolean saveToFile(BufferedImage image, File outputfile) throws IOException {
-		return ImageIO.write(image, "png", outputfile);
 	}
 
 }

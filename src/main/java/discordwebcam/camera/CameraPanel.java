@@ -1,8 +1,11 @@
 package discordwebcam.camera;
 
+import com.ocpsoft.pretty.time.PrettyTime;
 import discordwebcam.Constants;
 import discordwebcam.logger.StaticDialog;
 import discordwebcam.properties.Properties;
+import discordwebcam.ui.UI;
+import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.opencv.core.Point;
 import org.opencv.core.*;
 import org.opencv.imgcodecs.Imgcodecs;
@@ -24,30 +27,41 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
 public class CameraPanel extends JInternalFrame {
 
 	static Logger log = LoggerFactory.getLogger(CameraPanel.class);
+
 	ArrayList<Rect> detectionsSquares = new ArrayList<>();
 	MotionDetectionEvent motionDetectionEvent;
+
 	SerializedCamera serializedCamera;
+
 	private boolean running = false;
 	private boolean firstFrame = true;
+
 	private VideoCapture video = null;
 	private MatOfByte matOfByte = new MatOfByte();
 	private Mat frameaux = new Mat();
+
 	private Mat frame = new Mat(240, 320, CvType.CV_8UC3);
 	private Mat lastFrame = new Mat(240, 320, CvType.CV_8UC3);
 	private Mat currentFrame = new Mat(240, 320, CvType.CV_8UC3);
 	private Mat processedFrame = new Mat(240, 320, CvType.CV_8UC3);
+
 	private ImagePanel image;
 	private int savedelay = 0;
+
 	private CaptureThread thread;
+
 	private JMenuItem sendOnDiscord;
 	private JMenuItem motionDetection;
+
 	private JProgressBar progressBar = new JProgressBar(0, 100);
+
 	private double cameraWidth = 0;
 	private double cameraHeight = 0;
 
@@ -151,7 +165,6 @@ public class CameraPanel extends JInternalFrame {
 	}
 
 	private void updateMotionDetectionIcon(boolean detection) {
-
 		if (detection) {
 			motionDetection.setIcon(new ImageIcon(Constants.runningIcon));
 			progressBar.setString(null);
@@ -194,7 +207,7 @@ public class CameraPanel extends JInternalFrame {
 				running = true;
 				firstFrame = true;
 			} else {
-				log.error("Could not start camera " + serializedCamera);
+				log.debug("Could not start camera " + serializedCamera);
 			}
 
 		} else {
@@ -203,6 +216,9 @@ public class CameraPanel extends JInternalFrame {
 	}
 
 	void setSizeChanged() {
+
+
+
 		double actualW = cameraWidth;
 		double actualH = cameraHeight;
 
@@ -217,6 +233,9 @@ public class CameraPanel extends JInternalFrame {
 
 		setPreferredSize(new Dimension((int) actualW, (int) actualH));
 		setSize(getPreferredSize());
+
+
+		UI.saveConfig();
 
 	}
 
@@ -289,11 +308,42 @@ public class CameraPanel extends JInternalFrame {
 		setTitle(serializedCamera.name);
 		updateMotionDetectionIcon(serializedCamera.motionDetection);
 		updateSendOnDiscordIcon(serializedCamera.sendOnDiscord);
+
+
+	}
+
+	static PrettyTime p = new PrettyTime();
+
+	public EmbedBuilder getStatus() {
+
+		if (serializedCamera.name.equals("")) serializedCamera.name = "Unnamed camera";
+
+		EmbedBuilder e = new EmbedBuilder().setTitle(serializedCamera.name)
+
+				.addInlineField("Is running", "" + running)
+				.addInlineField("Motion detection enabled", "" + serializedCamera.motionDetection)
+				.addInlineField("Sending on discord enabled", "" + serializedCamera.sendOnDiscord)
+				.addInlineField("Last update was", getInfoAboutLastUpdate())
+				.setImage("https://i.imgur.com/mYe5ixu.png")
+				.setColor(Color.RED);
+
+		return e;
+
+	}
+
+	private String getInfoAboutLastUpdate() {
+
+		if (thread == null) {
+			return ("No updates.");
+		} else {
+			return ("Last update was " + p.format(new Date(thread.lastUpdate)) + ".");
+		}
+
 	}
 
 	class CaptureThread extends Thread {
 
-		private long lastUpdate = System.currentTimeMillis();
+		public long lastUpdate = System.currentTimeMillis();
 
 		@Override
 		public void run() {
@@ -369,7 +419,7 @@ public class CameraPanel extends JInternalFrame {
 										savedelay = 0;
 
 										System.out.println("Motions : " + detections + ", " + sensibility);
-										takeScreenshotAndSendToDiscord();
+										saveDetectionImageAndSendToDiscord();
 									} else {
 										savedelay = savedelay + 1;
 									}
@@ -460,7 +510,7 @@ public class CameraPanel extends JInternalFrame {
 		}
 	}
 
-	public void takeScreenshotAndSendToDiscord() {
+	public void saveDetectionImageAndSendToDiscord() {
 
 		Imgcodecs.imencode(".jpg", frame, matOfByte);
 		byte[] byteArray = matOfByte.toArray();

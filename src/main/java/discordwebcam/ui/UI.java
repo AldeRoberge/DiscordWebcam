@@ -3,22 +3,27 @@ package discordwebcam.ui;
 import alde.commons.console.Console;
 import alde.commons.console.ConsoleAction;
 import alde.commons.logger.LoggerPanel;
+import alde.commons.util.BannerUtil;
 import alde.commons.util.file.FileEditor;
 import alde.commons.util.file.FileSizeToString;
 import alde.commons.util.text.StackTraceToString;
 import alde.commons.util.window.UtilityJFrame;
 import com.sun.javafx.webkit.WebConsoleListener;
 import discordwebcam.Constants;
+import discordwebcam.DateUtils;
+import discordwebcam.FileUtils;
+import discordwebcam.camera.CameraPanel;
 import discordwebcam.camera.NewCameraUI;
 import discordwebcam.camera.SerializedCamera;
+import discordwebcam.discord.DiscordBot;
 import discordwebcam.logger.StaticDialog;
-import discordwebcam.camera.CameraPanel;
 import discordwebcam.properties.Properties;
 import javafx.application.Application;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.Scene;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
+import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.opencv.core.Core;
 import org.opencv.videoio.VideoCapture;
 import org.slf4j.Logger;
@@ -28,6 +33,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.TimerTask;
@@ -40,12 +46,14 @@ public class UI extends UtilityJFrame {
 	 * Loads the native drivers for OpenCV
 	 */
 	static {
+		DiscordBot.init();
+
 		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
 		System.loadLibrary("opencv_ffmpeg342_64"); //crucial to use IP Camera
 	}
 
 	JDesktopPane desktop;
-	CameraListSerializer cameraListSerializer = new CameraListSerializer();
+	static CameraListSerializer cameraListSerializer = new CameraListSerializer();
 	ArrayList<CameraPanel> cameraFrameList = new ArrayList<>();
 
 	public UI() {
@@ -102,7 +110,7 @@ public class UI extends UtilityJFrame {
 		MenuItem showHelp = new MenuItem("Show help");
 		showHelp.addActionListener(e -> showHelp());
 		help.add(showHelp);
-		
+
 		MenuItem sendDetection = new MenuItem("Send fake detection image");
 		sendDetection.addActionListener(e -> sendFakeDetection());
 		help.add(sendDetection);
@@ -132,7 +140,7 @@ public class UI extends UtilityJFrame {
 		t.schedule(new TimerTask() {
 			@Override
 			public void run() {
-				statusLabel.setText(" Free disk space : " + FileSizeToString.getByteSizeAsString(new File(".").getUsableSpace()));
+				statusLabel.setText(" Free disk space : " + getEmptySpaceOnComputer());
 
 				if (Properties.UI_REFRESH_DISK_SPACE_EVERY.getIntValue() == 0) {
 					cancel();
@@ -146,25 +154,24 @@ public class UI extends UtilityJFrame {
 		desktop = new JDesktopPane();
 		desktop.setBackground(Color.BLACK);
 
-		try {
-			for (SerializedCamera n : cameraListSerializer.get()) {
-				addCamera(n);
-			}
-		} catch (Exception e) {
-			log.info("Error with deserialization. Try deleting the file at " + cameraListSerializer.file.getAbsolutePath() + ".");
-		}
-
 		add(desktop);
 		setLocationRelativeTo(null);
+
+		log.info("Loading UI...");
+
 		setVisible(true);
 
 		performStartup();
 
 	}
 
+	private String getEmptySpaceOnComputer() {
+		return FileSizeToString.getByteSizeAsString(new File(".").getUsableSpace());
+	}
+
 	private void sendFakeDetection() {
 		for (CameraPanel c : cameraFrameList) {
-			c.takeScreenshotAndSendToDiscord();
+			c.saveDetectionImageAndSendToDiscord();
 		}
 	}
 
@@ -179,12 +186,42 @@ public class UI extends UtilityJFrame {
 			log.error("Could not set look and feel. ", e);
 		}
 
+		BannerUtil.printBanner("banner.txt");
+
 		if (Properties.IS_FIRST_LAUNCH.getBooleanValue()) {
 			showEditPropertiesPanel(true);
 		} else {
 			showUI();
 		}
 
+	}
+
+	public File takeScreenshot() {
+		BufferedImage image = null;
+
+		File file = buildFileName();
+
+		try {
+			image = new Robot().createScreenCapture(new Rectangle(Toolkit.getDefaultToolkit().getScreenSize()));
+
+			try {
+				FileUtils.saveToFile(image, file);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		} catch (AWTException e) {
+			e.printStackTrace();
+		}
+
+		return file;
+	}
+
+	private static File buildFileName() {
+		String folder = Properties.SAVE_SCREENSHOTS_FOLDER.getValue();
+
+		FileUtils.makeSureFolderExists(folder);
+		String newFilePath = folder + File.separator + DateUtils.getCurrentTimeStamp() + ".png";
+		return new File(newFilePath);
 	}
 
 	/**
@@ -254,6 +291,97 @@ public class UI extends UtilityJFrame {
 		if (cameraFrameList.size() == 0 && Properties.GET_LOCAL_CAMERAS_ON_STARTUP.getBooleanValue()) {
 			detectLocalCameras();
 		}
+
+		registerCommands();
+
+		new Thread(() -> {
+			try {
+				for (SerializedCamera n : cameraListSerializer.get()) {
+					addCamera(n);
+				}
+			} catch (Exception e) {
+				log.info("Error with deserialization. Try deleting the file at " + cameraListSerializer.file.getAbsolutePath() + ".");
+			}
+		}).start();
+
+	}
+
+	private void registerCommands() {
+
+		console.addAction(new ConsoleAction() {
+			@Override
+			public void accept(String command) {
+				sendFakeDetection();
+			}
+
+			@Override
+			protected String getDescription() {
+				return "Sends fake detection";
+			}
+
+			@Override
+			public String[] getKeywords() {
+				return new String[]{"trigger"};
+			}
+		});
+
+		console.addAction(new ConsoleAction() {
+			@Override
+			public void accept(String command) {
+
+				log.info("Taking screenshot...");
+
+				String imagePath = takeScreenshot();
+
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException ex) {
+					ex.printStackTrace();
+				}
+
+				EmbedBuilder e = new EmbedBuilder().setTitle("Screenshot")
+						.setImage(new File(imagePath));
+
+				DiscordBot.sendMessage(e);
+
+			}
+
+			@Override
+			protected String getDescription() {
+				return "Sends a screenshot";
+			}
+
+			@Override
+			public String[] getKeywords() {
+				return new String[]{"screenshot"};
+			}
+		});
+
+		console.addAction(new ConsoleAction() {
+			@Override
+			public void accept(String command) {
+
+				log.info("Sending camera informations");
+
+				StringBuilder s = new StringBuilder();
+
+				for (CameraPanel c : cameraFrameList) {
+					DiscordBot.sendMessage(c.getStatus());
+				}
+
+			}
+
+			@Override
+			protected String getDescription() {
+				return "Shows informations about all cameras";
+			}
+
+			@Override
+			public String[] getKeywords() {
+				return new String[]{"info"};
+			}
+		});
+
 	}
 
 	private void detectLocalCameras() {
@@ -348,8 +476,14 @@ public class UI extends UtilityJFrame {
 
 	}
 
+	static Console console = new Console();
+
+	public static Console getConsole() {
+		return console;
+	}
+
 	private void showLogger() {
-		desktop.add(new LoggerWrapper());
+		desktop.add(new LoggerWrapper(console));
 	}
 
 	public void addCamera(SerializedCamera n) {
@@ -373,6 +507,10 @@ public class UI extends UtilityJFrame {
 		cameraListSerializer.save();
 	}
 
+	public static void saveConfig() {
+		cameraListSerializer.save();
+	}
+
 	private void saveConfigBeforeClosing() {
 
 		for (CameraPanel c : cameraFrameList) {
@@ -391,7 +529,6 @@ public class UI extends UtilityJFrame {
 	}
 
 }
-
 
 class CameraListSerializer {
 
@@ -451,7 +588,6 @@ class CameraListSerializer {
 
 }
 
-
 class EmbeddedBrowser extends Application {
 
 	private static Logger log = LoggerFactory.getLogger(EmbeddedBrowser.class);
@@ -472,15 +608,16 @@ class EmbeddedBrowser extends Application {
 
 }
 
-
 class LoggerWrapper extends JInternalFrame {
 
 	private static LoggerPanel l = new LoggerPanel();
-	private static alde.commons.console.Console c = new Console();
+	private static alde.commons.console.Console c;
 
-	public LoggerWrapper() {
+	public LoggerWrapper(Console console) {
 
 		super("Logger", true, true, true, true);
+
+		this.c = console;
 
 		setSize(new Dimension(400, 300));
 		setLocation(20, 20);
@@ -497,7 +634,7 @@ class LoggerWrapper extends JInternalFrame {
 
 	}
 
-	public static void addAction(String keyword, Runnable action) {
+	public void addAction(String keyword, Runnable action) {
 		c.addAction(new ConsoleAction() {
 			@Override
 			public void accept(String command) {

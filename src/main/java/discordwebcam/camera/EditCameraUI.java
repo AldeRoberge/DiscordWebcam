@@ -3,6 +3,7 @@ package discordwebcam.camera;
 import alde.commons.util.window.UtilityJFrame;
 import discordwebcam.Constants;
 import discordwebcam.discord.DiscordBot;
+import discordwebcam.ui.UI;
 import org.opencv.imgproc.Imgproc;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,7 +50,7 @@ public class EditCameraUI extends UtilityJFrame {
 			setTitle("Edit camera '" + n.name + "'");
 		}
 
-		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
@@ -149,14 +150,9 @@ public class EditCameraUI extends UtilityJFrame {
 
 		JSlider detectionThresholdSlider = new JSlider();
 		sensitivityPanel.add(detectionThresholdSlider);
-		detectionThresholdSlider.setPaintTicks(true);
-		detectionThresholdSlider.setMajorTickSpacing(51);
-		detectionThresholdSlider.setMinorTickSpacing(17);
 		detectionThresholdSlider.setPaintLabels(true);
-		detectionThresholdSlider.setSnapToTicks(true);
 		detectionThresholdSlider.setValue(n.motionDetectionThreshold);
 		detectionThresholdSlider.setMaximum(Constants.MAX_THRESHOLD);
-
 		detectionThresholdSlider
 				.addChangeListener(e -> n.motionDetectionThreshold = detectionThresholdSlider.getValue());
 
@@ -165,7 +161,6 @@ public class EditCameraUI extends UtilityJFrame {
 
 		JSlider sensitivitySlider = new JSlider();
 		sensitivityPanel.add(sensitivitySlider);
-		sensitivitySlider.setSnapToTicks(true);
 		sensitivitySlider.setValue(n.motionDetectionSensitivity);
 		sensitivitySlider.setMaximum(Constants.MAX_SENSITIVITY);
 
@@ -179,6 +174,10 @@ public class EditCameraUI extends UtilityJFrame {
 		chckbxPublishOnDiscord.setSelected(n.sendOnDiscord);
 		chckbxPublishOnDiscord.setHorizontalAlignment(SwingConstants.CENTER);
 		discordPanel.add(chckbxPublishOnDiscord);
+
+
+
+
 
 		JButton btnTest = new JButton("Send test message");
 		btnTest.addActionListener(new ActionListener() {
@@ -207,7 +206,7 @@ public class EditCameraUI extends UtilityJFrame {
 		timeBetweenRepaint.addChangeListener(e -> n.timeBetweenPreviewRepaint = timeBetweenRepaint.getValue());
 		previewPanel.add(timeBetweenRepaint);
 
-		JCheckBox chckbxNewCheckBox = new JCheckBox("Don't repaint when window is not focused");
+		JCheckBox chckbxNewCheckBox = new JCheckBox("Repaint when window is not focused");
 		chckbxNewCheckBox.setSelected(n.repaintPreviewWhenOutOfFocus);
 		chckbxNewCheckBox.addActionListener(e -> n.repaintPreviewWhenOutOfFocus = chckbxNewCheckBox.isSelected());
 		previewPanel.add(chckbxNewCheckBox, BorderLayout.WEST);
@@ -268,6 +267,8 @@ public class EditCameraUI extends UtilityJFrame {
 
 				updateRotateIcon(n.rotateDeg);
 
+
+
 			}
 
 		});
@@ -281,9 +282,14 @@ public class EditCameraUI extends UtilityJFrame {
 		panel.add(mainPanel, BorderLayout.CENTER);
 
 		JButton btnClose = new JButton("Close");
-
+		btnClose.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				UI.saveConfig();
+				setVisible(false);
+			}
+		});
 		btnClose.setSelected(true);
-
 		contentPane.add(btnClose, BorderLayout.SOUTH);
 
 		setAlwaysOnTop(true);
