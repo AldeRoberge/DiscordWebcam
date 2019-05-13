@@ -115,7 +115,6 @@ public class CameraPanel extends JInternalFrame {
 		menuBar.add(settings);
 
 		settings.addActionListener(e -> {
-			log.info("Opening settings");
 			new EditCameraUI(this);
 		});
 
@@ -217,8 +216,6 @@ public class CameraPanel extends JInternalFrame {
 
 	void setSizeChanged() {
 
-
-
 		double actualW = cameraWidth;
 		double actualH = cameraHeight;
 
@@ -235,7 +232,6 @@ public class CameraPanel extends JInternalFrame {
 		setSize(getPreferredSize());
 
 
-		UI.saveConfig();
 
 	}
 
@@ -308,7 +304,6 @@ public class CameraPanel extends JInternalFrame {
 		setTitle(serializedCamera.name);
 		updateMotionDetectionIcon(serializedCamera.motionDetection);
 		updateSendOnDiscordIcon(serializedCamera.sendOnDiscord);
-
 
 	}
 
@@ -475,10 +470,10 @@ public class CameraPanel extends JInternalFrame {
 						}
 
 					} catch (Exception e) {
-						log.error("Error : ", e);
+						log.error("Error : " + e);
 
-						StaticDialog.display("Error with camera " + serializedCamera.name,
-								"Error with camera. Make sure there is no process already using it.", e);
+						/*StaticDialog.display("Error with camera " + serializedCamera.name,
+								"Error with camera. Make sure there is no process already using it.", e);*/
 
 						running = false;
 

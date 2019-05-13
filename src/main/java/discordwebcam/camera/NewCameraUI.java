@@ -106,6 +106,7 @@ public class NewCameraUI extends UtilityJFrame {
 		textFieldPanel.add(networkAddressPanel);
 
 		networkField = new UtilityJTextField("http://192.168.0.107:8080/video?x.mjpeg");
+
 		networkField.setHint("Enter a camera address");
 		networkField.setToolTipText("A mjpeg video feed address.");
 		networkAddressPanel.add(networkField);

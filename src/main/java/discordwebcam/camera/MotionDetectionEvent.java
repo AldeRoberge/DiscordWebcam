@@ -80,6 +80,8 @@ public class MotionDetectionEvent {
 
 		System.out.println("Motion detected " + imageBuffer.size());
 
+		reschedulePeriodicCheck();
+
 		if (imageBuffer.size() > MAX_AMOUNT_OF_IMAGES) {
 			buildMosaicAndSendToDiscord(imageBuffer);
 

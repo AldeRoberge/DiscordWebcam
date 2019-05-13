@@ -37,12 +37,16 @@ public class EditCameraUI extends UtilityJFrame {
 	JButton btnRotateButton;
 	private JPanel contentPane;
 
+	public CameraPanel cameraPanel;
+
 	/**
 	 * Create the frame.
 	 */
 	public EditCameraUI(final CameraPanel cameraPanel) {
 
 		SerializedCamera n = cameraPanel.serializedCamera;
+
+		this.cameraPanel = cameraPanel;
 
 		if (n.name.equals("")) {
 			setTitle("Edit untitled camera");
@@ -175,10 +179,6 @@ public class EditCameraUI extends UtilityJFrame {
 		chckbxPublishOnDiscord.setHorizontalAlignment(SwingConstants.CENTER);
 		discordPanel.add(chckbxPublishOnDiscord);
 
-
-
-
-
 		JButton btnTest = new JButton("Send test message");
 		btnTest.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -263,11 +263,9 @@ public class EditCameraUI extends UtilityJFrame {
 
 				log.info("Flipping camera '" + n.name + "' for '" + n.rotateDeg + "' degrees.");
 
-				cameraPanel.setSizeChanged();
+				save();
 
 				updateRotateIcon(n.rotateDeg);
-
-
 
 			}
 
@@ -285,7 +283,7 @@ public class EditCameraUI extends UtilityJFrame {
 		btnClose.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				UI.saveConfig();
+				save();
 				setVisible(false);
 			}
 		});
@@ -295,6 +293,12 @@ public class EditCameraUI extends UtilityJFrame {
 		setAlwaysOnTop(true);
 		setVisible(true);
 
+	}
+
+	private void save() {
+		UI.saveConfig();
+		cameraPanel.cameraInfoChanged();
+		cameraPanel.setSizeChanged();
 	}
 
 	private void updateRotateIcon(int rotateDeg) {

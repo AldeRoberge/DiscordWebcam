@@ -1,6 +1,5 @@
 package discordwebcam;
 
-import discordwebcam.discord.DiscordBot;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,13 +12,12 @@ public class Constants {
 
 	static Logger log = LoggerFactory.getLogger(Constants.class);
 
-
-	public static final int MAX_THRESHOLD = 100;
 	public static final String SOFTWARE_NAME = "Final Security Suite";
 
-	public static final Color CAMERA_PANEL_BACKGROUND_COLOR = Color.BLACK;
+	public static final int MAX_THRESHOLD = 25;
 	public static final int MAX_SENSITIVITY = 1000;
 
+	public static final Color CAMERA_PANEL_BACKGROUND_COLOR = Color.BLACK;
 
 	public static BufferedImage softwareIcon;
 

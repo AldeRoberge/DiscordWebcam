@@ -331,7 +331,7 @@ public class UI extends UtilityJFrame {
 
 				log.info("Taking screenshot...");
 
-				String imagePath = takeScreenshot();
+				File screenshotFile = takeScreenshot();
 
 				try {
 					Thread.sleep(1000);
@@ -340,7 +340,7 @@ public class UI extends UtilityJFrame {
 				}
 
 				EmbedBuilder e = new EmbedBuilder().setTitle("Screenshot")
-						.setImage(new File(imagePath));
+						.setImage(screenshotFile);
 
 				DiscordBot.sendMessage(e);
 
@@ -628,7 +628,13 @@ class LoggerWrapper extends JInternalFrame {
 		mainPanel.add(l, BorderLayout.CENTER);
 		mainPanel.add(c, BorderLayout.SOUTH);
 
-		this.getContentPane().add(mainPanel);
+		JScrollPane panel = new JScrollPane();
+
+		panel.setAutoscrolls(true);
+
+		panel.setViewportView(mainPanel);
+
+		this.getContentPane().add(panel);
 
 		setVisible(true);
 
